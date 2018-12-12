@@ -3,6 +3,10 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 import { MyApp } from './app.component';
+import { HttpClient, HttpClientModule } from "@angular/common/http";
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
 //Main
 import { HomePage } from '../pages/Main/home/home';
 import { ListPage } from '../pages/Main/list/list';
@@ -17,6 +21,15 @@ import { RegistrationPage } from '../pages/Account/registration/registration';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { LoadingProvider } from '../providers/loading/loading';
+import { ToastProvider } from '../providers/toast/toast';
+import { AlertProvider } from '../providers/alert/alert';
+import { LanguageProvider } from '../providers/language/language';
+import { ConfigProvider } from '../providers/config/config';
+
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/language/', '.json');
+}
 
 @NgModule({
   declarations: [
@@ -31,8 +44,19 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     RegistrationPage,
   ],
   imports: [
+    HttpClientModule,,
     BrowserModule,
     IonicModule.forRoot(MyApp),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      }
+    }),
+  ],
+  exports: [
+    TranslateModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -49,7 +73,12 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: ErrorHandler, useClass: IonicErrorHandler }
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
+    LoadingProvider,
+    ToastProvider,
+    AlertProvider,
+    LanguageProvider,
+    ConfigProvider
   ]
 })
 export class AppModule { }

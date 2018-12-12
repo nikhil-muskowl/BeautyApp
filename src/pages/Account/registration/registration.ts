@@ -69,7 +69,6 @@ export class RegistrationPage {
     } else {
       this.datePicker.open();
     }
-
   }
 
   goBack() {
@@ -94,6 +93,101 @@ export class RegistrationPage {
   }
 
   public goToTermCondition() {
+
+  }
+
+  save() {
+    this.submitAttempt = true;
+    // if (this.registerForm.valid) {
+    //   // this.loadingProvider.present();
+
+    //   this.formData = this.registerForm.valid;
+
+    //   this.customerProvider.apiRegister(this.registerForm.value).subscribe(
+    //     response => {
+    //       this.responseData = response;
+
+    //       this.submitAttempt = true;
+
+    //       if (this.responseData.customer_id) {
+    //         this.customer_id = this.responseData.customer_id;
+    //         this.registerForm.reset();
+    //         this.submitAttempt = false;
+
+    //         var data = {
+    //           customer_id: this.responseData.customer_id,
+    //         };
+
+    //         this.customerProvider.setData(data);
+    //         //this.navCtrl.push(CustomerLoginPage);
+    //         this.navCtrl.push(CustomerAccountPage);
+    //       }
+
+    //       if (this.responseData.text_message != '') {
+    //         this.text_message = this.responseData.text_message;
+    //         this.alertProvider.title = 'Success';
+    //         this.alertProvider.message = this.text_message;
+    //         this.alertProvider.showAlert();
+    //       }
+
+    //       if (this.responseData.error_fullname != '') {
+    //         this.registerForm.controls['fullname'].setErrors({ 'incorrect': true });
+    //         this.error_fullname = this.responseData.error_fullname;
+    //       }
+
+    //       if (this.responseData.error_username != '') {
+    //         this.registerForm.controls['username'].setErrors({ 'incorrect': true });
+    //         this.error_username = this.responseData.error_username;
+    //       }
+
+    //       if (this.responseData.error_email != '') {
+    //         this.registerForm.controls['email'].setErrors({ 'incorrect': true });
+    //         this.error_email = this.responseData.error_email;
+    //       }
+
+    //       if (this.responseData.error_telephone != '') {
+    //         this.registerForm.controls['telephone'].setErrors({ 'incorrect': true });
+    //         this.error_telephone = this.responseData.error_telephone;
+    //       }
+
+    //       if (this.responseData.error_password != '') {
+    //         this.registerForm.controls['password'].setErrors({ 'incorrect': true });
+    //         this.error_password = this.responseData.error_password;
+    //       }
+
+    //       if (this.responseData.error_confirm != '') {
+    //         this.registerForm.controls['confirm'].setErrors({ 'incorrect': true });
+    //         this.error_confirm = this.responseData.error_confirm;
+    //       }
+
+    //       if (this.responseData.error_dob != '') {
+    //         this.registerForm.controls['dob'].setErrors({ 'incorrect': true });
+    //         this.error_dob = this.responseData.error_dob;
+    //       }
+
+    //       if (this.responseData.error_gender != '') {
+    //         this.registerForm.controls['gender'].setErrors({ 'incorrect': true });
+    //         this.error_gender = this.responseData.error_gender;
+    //       }
+
+    //       if (this.responseData.error_warning && this.responseData.error_warning != '') {
+    //         this.error_warning = this.responseData.error_warning;
+
+    //         this.alertProvider.title = 'Warning';
+    //         this.alertProvider.message = this.error_warning;
+    //         this.alertProvider.showAlert();
+    //       }
+
+    //     },
+    //     err => {
+    //       console.error(err);
+    //       //this.loadingProvider.dismiss();
+    //     },
+    //     () => {
+    //       // this.loadingProvider.dismiss();
+    //     }
+    //   );
+    // }
 
   }
 

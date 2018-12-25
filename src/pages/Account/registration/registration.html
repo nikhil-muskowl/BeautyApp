@@ -12,7 +12,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
   <form [formGroup]="registerForm">
     <div text-center>
       <p ion-text color="danger" *ngIf="submitAttempt && error_warning">{{error_warning}}</p>
@@ -23,17 +23,28 @@
       <ion-row>
         <ion-col>
           <ion-item>
-            <!-- <ion-label floating>Fullname</ion-label> -->
             <ion-label floating>
               <ion-icon name="person" item-start class="text-primary"></ion-icon>
-              {{fullname_txt}}
+              {{firstname_txt}}
             </ion-label>
-            <ion-input formControlName="fullname" type="text" [class.invalid]="!registerForm.controls.fullname.valid && (registerForm.controls.fullname.dirty || submitAttempt)"></ion-input>
+            <ion-input formControlName="firstname" type="text" [class.invalid]="!registerForm.controls.firstname.valid && (registerForm.controls.firstname.dirty || submitAttempt)"></ion-input>
           </ion-item>
-          <p class="invalid-message" *ngIf="!registerForm.controls.fullname.valid  && (registerForm.controls.fullname.dirty || submitAttempt)">{{error_fullname}}</p>
+          <p class="invalid-message" *ngIf="!registerForm.controls.firstname.valid  && (registerForm.controls.firstname.dirty || submitAttempt)">{{error_firstname}}</p>
         </ion-col>
       </ion-row>
       <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label floating>
+              <ion-icon name="person" item-start class="text-primary"></ion-icon>
+              {{lastname_txt}}
+            </ion-label>
+            <ion-input formControlName="lastname" type="text" [class.invalid]="!registerForm.controls.lastname.valid && (registerForm.controls.lastname.dirty || submitAttempt)"></ion-input>
+          </ion-item>
+          <p class="invalid-message" *ngIf="!registerForm.controls.lastname.valid  && (registerForm.controls.lastname.dirty || submitAttempt)">{{error_lastname}}</p>
+        </ion-col>
+      </ion-row>
+      <!-- <ion-row>
         <ion-col>
           <ion-item>
             <ion-label floating>
@@ -44,7 +55,7 @@
           </ion-item>
           <p class="invalid-message" *ngIf="!registerForm.controls.username.valid  && (registerForm.controls.username.dirty || submitAttempt)">{{error_username}}</p>
         </ion-col>
-      </ion-row>
+      </ion-row> -->
       <ion-row>
         <ion-col>
           <ion-item>
@@ -93,7 +104,7 @@
           <p class="invalid-message" *ngIf="!registerForm.controls.confirm.valid  && (registerForm.controls.confirm.dirty || submitAttempt)">{{error_confirm}}</p>
         </ion-col>
       </ion-row>
-      <ion-row>
+      <!-- <ion-row>
         <ion-col>
           <ion-item>
             <ion-label floating>
@@ -124,7 +135,25 @@
           </ion-item>
           <p class="invalid-message" *ngIf="!registerForm.controls.gender.valid  && (registerForm.controls.gender.dirty || submitAttempt)">{{error_gender}}</p>
         </ion-col>
-      </ion-row>
+      </ion-row> -->
+
+
     </ion-grid>
   </form>
+
+  <div padding>
+    <button ion-button color="primary" block (click)="save()">{{register_txt}}</button>
+  </div>
+
+  <div class="terms" text-center>
+    <span ion-text>{{signin_agree}}</span>
+    <span ion-text tappable (click)="goToTermCondition()"><strong><u>{{terms}}</u></strong></span>
+    <span ion-text>{{and}} </span>
+    <span ion-text tappable (click)="goToPrivacyPolicy()"><strong><u>{{privacy_policy}}</u></strong></span>
+  </div>
+
+  <div class="login-div" padding text-center>
+    <span id="acc" ion-text>{{already_account}}</span>
+    <span id="log" ion-text tappable (click)="goToLogin()"><strong><u>{{log_in}}</u></strong></span>
+  </div>
 </ion-content>

@@ -1,11 +1,14 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { App, Nav, Platform, IonicApp, MenuController, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-
+//Main
 import { HomePage } from '../pages/Main/home/home';
 import { ListPage } from '../pages/Main/list/list';
+//Account
 import { LoginPage } from '../pages/Account/login/login';
+//Product
+import { CategoriesPage } from '../pages/Products/categories/categories';
 
 @Component({
   templateUrl: 'app.html'
@@ -25,6 +28,7 @@ export class MyApp {
       { title: 'Home', component: HomePage },
       { title: 'List', component: ListPage },
       { title: 'Login', component: LoginPage },
+      { title: 'Category', component: CategoriesPage },
     ];
 
   }

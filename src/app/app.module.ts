@@ -6,10 +6,15 @@ import { MyApp } from './app.component';
 import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { ScrollHideDirective } from '../directives/scroll-hide/scroll-hide';
+import { Ionic2RatingModule } from 'ionic2-rating';
 
 //Main
 import { HomePage } from '../pages/Main/home/home';
 import { ListPage } from '../pages/Main/list/list';
+
+//Orders
+import { CartPage } from '../pages/Orders/cart/cart';
 
 //Account
 import { ChangePasswordPage } from '../pages/Account/change-password/change-password';
@@ -18,7 +23,18 @@ import { ForgotPasswordPage } from '../pages/Account/forgot-password/forgot-pass
 import { LoginPage } from '../pages/Account/login/login';
 import { ProfilePage } from '../pages/Account/profile/profile';
 import { RegistrationPage } from '../pages/Account/registration/registration';
+import { WishlistPage } from '../pages/Account/wishlist/wishlist';
 
+//Products
+import { CategoriesPage } from '../pages/Products/categories/categories';
+import { ProductListPage } from '../pages/Products/product-list/product-list';
+import { ProductDetailsPage } from '../pages/Products/product-details/product-details';
+
+//Component
+import { CartInfoComponent } from '../components/cart-info/cart-info';
+import { ProductReviewComponent } from '../components/product-review/product-review';
+
+//providers
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { LoadingProvider } from '../providers/loading/loading';
@@ -26,6 +42,10 @@ import { ToastProvider } from '../providers/toast/toast';
 import { AlertProvider } from '../providers/alert/alert';
 import { LanguageProvider } from '../providers/language/language';
 import { ConfigProvider } from '../providers/config/config';
+import { LoginProvider } from '../providers/login/login';
+import { CategoryProvider } from '../providers/category/category';
+import { CartProvider } from '../providers/cart/cart';
+import { WishlistProvider } from '../providers/wishlist/wishlist';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/language/', '.json');
@@ -36,16 +56,25 @@ export function createTranslateLoader(http: HttpClient) {
     MyApp,
     HomePage,
     ListPage,
+    ScrollHideDirective,
     ChangePasswordPage,
     EditProfilePage,
     ForgotPasswordPage,
     LoginPage,
     ProfilePage,
     RegistrationPage,
+    CategoriesPage,
+    ProductListPage,
+    ProductDetailsPage,
+    CartPage,
+    WishlistPage,
+    CartInfoComponent,
+    ProductReviewComponent,
   ],
   imports: [
-    HttpClientModule,,
+    HttpClientModule,
     BrowserModule,
+    Ionic2RatingModule,
     IonicModule.forRoot(MyApp),
     TranslateModule.forRoot({
       loader: {
@@ -69,6 +98,13 @@ export function createTranslateLoader(http: HttpClient) {
     LoginPage,
     ProfilePage,
     RegistrationPage,
+    CategoriesPage,
+    ProductListPage,
+    ProductDetailsPage,
+    CartPage,
+    WishlistPage,
+    CartInfoComponent,
+    ProductReviewComponent,
   ],
   providers: [
     StatusBar,
@@ -78,7 +114,11 @@ export function createTranslateLoader(http: HttpClient) {
     ToastProvider,
     AlertProvider,
     LanguageProvider,
-    ConfigProvider
+    ConfigProvider,
+    LoginProvider,
+    CategoryProvider,
+    CartProvider,
+    WishlistProvider
   ]
 })
 export class AppModule { }

@@ -50,6 +50,7 @@ export class AlertProvider {
       this.ok = text;
     });
   }
+  
   showAlert() {
     let alert = this.alertCtrl.create({
       title: this.title,

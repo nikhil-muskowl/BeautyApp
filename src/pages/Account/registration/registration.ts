@@ -10,6 +10,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { LanguageProvider } from '../../../providers/language/language';
 import { LoginProvider } from '../../../providers/login/login';
 import { ProfilePage } from '../profile/profile';
+import { TermsAndConditionPage } from '../../Terms/terms-and-condition/terms-and-condition';
+import { PrivacyPolicyPage } from '../../Terms/privacy-policy/privacy-policy';
+import { ModalProvider } from '../../../providers/modal/modal';
 
 @IonicPage()
 @Component({
@@ -50,15 +53,14 @@ export class RegistrationPage {
   private maxDate: string;
 
   //warning msg
-  private error_fullname = 'field is required';
-  private error_firstname = 'field is required';
-  private error_lastname = 'field is required';
-  private error_username = 'field is required';
-  private error_email = 'field is required';
-  private error_telephone = 'field is required';
-  private error_password = 'field is required';
-  private error_confirm = 'field is required';
-  private error_policy = 'You must agree to the Privacy Policy!';
+  private error_fullname;
+  private error_firstname;
+  private error_lastname;
+  private error_username;
+  private error_email;
+  private error_telephone;
+  private error_password;
+  private error_confirm;
 
   private error_dob = 'please select date of birth';
   private error_gender = 'field is required';
@@ -70,6 +72,7 @@ export class RegistrationPage {
     public alertProvider: AlertProvider,
     public loadingProvider: LoadingProvider,
     public loginProvider: LoginProvider,
+    public modalProvider: ModalProvider,
     public translate: TranslateService,
     public languageProvider: LanguageProvider, ) {
     this.setText();
@@ -200,10 +203,6 @@ export class RegistrationPage {
     });
   }
 
-  public goToTermCondition() {
-
-  }
-
   save() {
     this.submitAttempt = true;
     if (this.registerForm.valid) {
@@ -299,9 +298,22 @@ export class RegistrationPage {
 
   }
 
-  public goToPrivacyPolicy() {
 
+  public goToTermCondition() {
+    this.modalProvider.showConditionsAndPolicy(TermsAndConditionPage);
+    this.modalProvider.modal.onDidDismiss(data => {
+
+    });
   }
+
+  public goToPrivacyPolicy() {
+    this.modalProvider.showConditionsAndPolicy(PrivacyPolicyPage);
+    this.modalProvider.modal.onDidDismiss(data => {
+      // This is added to refresh page.
+      // this.navCtrl.setRoot(this.navCtrl.getActive().component);
+    });
+  }
+
 
   public goToLogin() {
     this.navCtrl.setRoot(LoginPage);

@@ -15,6 +15,8 @@ import { ListPage } from '../pages/Main/list/list';
 
 //Orders
 import { CartPage } from '../pages/Orders/cart/cart';
+import { PaymentAddressPage } from '../pages/Orders/payment-address/payment-address';
+import { ShippingAddressPage } from '../pages/Orders/shipping-address/shipping-address';
 
 //Account
 import { ChangePasswordPage } from '../pages/Account/change-password/change-password';
@@ -29,6 +31,10 @@ import { WishlistPage } from '../pages/Account/wishlist/wishlist';
 import { CategoriesPage } from '../pages/Products/categories/categories';
 import { ProductListPage } from '../pages/Products/product-list/product-list';
 import { ProductDetailsPage } from '../pages/Products/product-details/product-details';
+
+//Component
+import { PrivacyPolicyPage } from '../pages/Terms/privacy-policy/privacy-policy';
+import { TermsAndConditionPage } from '../pages/Terms/terms-and-condition/terms-and-condition';
 
 //Component
 import { CartInfoComponent } from '../components/cart-info/cart-info';
@@ -46,6 +52,8 @@ import { LoginProvider } from '../providers/login/login';
 import { CategoryProvider } from '../providers/category/category';
 import { CartProvider } from '../providers/cart/cart';
 import { WishlistProvider } from '../providers/wishlist/wishlist';
+import { ModalProvider } from '../providers/modal/modal';
+import { OrderProvider } from '../providers/order/order';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/language/', '.json');
@@ -70,6 +78,10 @@ export function createTranslateLoader(http: HttpClient) {
     WishlistPage,
     CartInfoComponent,
     ProductReviewComponent,
+    PrivacyPolicyPage,
+    TermsAndConditionPage,
+    PaymentAddressPage,
+    ShippingAddressPage,
   ],
   imports: [
     HttpClientModule,
@@ -105,6 +117,10 @@ export function createTranslateLoader(http: HttpClient) {
     WishlistPage,
     CartInfoComponent,
     ProductReviewComponent,
+    PrivacyPolicyPage,
+    TermsAndConditionPage,
+    PaymentAddressPage,
+    ShippingAddressPage,
   ],
   providers: [
     StatusBar,
@@ -118,7 +134,9 @@ export function createTranslateLoader(http: HttpClient) {
     LoginProvider,
     CategoryProvider,
     CartProvider,
-    WishlistProvider
+    WishlistProvider,
+    ModalProvider,
+    OrderProvider
   ]
 })
 export class AppModule { }

@@ -15,13 +15,15 @@ export class LoginProvider {
   public responseData: any;
   private URL;
   private agree = 1;
-
+  public customer_id;
   constructor(public http: HttpClient,
     public platform: Platform,
     public app: App) {
 
     this.headers.set('Access-Control-Allow-Origin ', '*');
     this.headers.set('Content-Type', 'application/json; charset=utf-8');
+
+    this.customer_id = Number(this.getData());
   }
 
   apiRegister(data: any) {
@@ -60,7 +62,7 @@ export class LoginProvider {
   }
 
   setData(data) {
-    // this.customer_id = data.customer_id;
+    this.customer_id = data.customer_id;
     window.localStorage.setItem('myData', data.customer_id);
   }
 

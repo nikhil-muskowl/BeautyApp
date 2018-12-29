@@ -5,7 +5,6 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { LoginProvider } from '../providers/login/login';
 //Main
 import { HomePage } from '../pages/Main/home/home';
-import { ListPage } from '../pages/Main/list/list';
 //Account
 import { LoginPage } from '../pages/Account/login/login';
 //Product
@@ -13,6 +12,17 @@ import { CategoriesPage } from '../pages/Products/categories/categories';
 import { ProfilePage } from '../pages/Account/profile/profile';
 import { WishlistPage } from '../pages/Account/wishlist/wishlist';
 import { OrderPage } from '../pages/Orders/order/order';
+import { SettingsPage } from '../pages/Main/settings/settings';
+
+export interface PageInterface {
+  title: string;
+  name: string;
+  component: any;
+  icon: string;
+  index?: number;
+  tabName?: string;
+  tabComponent?: any;
+}
 
 @Component({
   templateUrl: 'app.html'
@@ -22,13 +32,14 @@ export class MyApp {
 
   rootPage: any = HomePage;
 
-  pages: Array<{ title: string, component: any }>;
+  public pages: PageInterface[] = [];
 
   constructor(public platform: Platform,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
     public loginProvider: LoginProvider) {
-
+    this.bindMenu();
+    this.splashScreen.hide();
     this.initializeApp();
 
     // used for an example of ngFor and navigation
@@ -42,17 +53,17 @@ export class MyApp {
   }
 
   public bindMenu() {
-    this.pages.push({ title: 'Home', component: HomePage });
-    this.pages.push({ title: 'List', component: ListPage });
+    this.pages.push({ title: 'Home', name: 'TabsPage', component: HomePage, icon: 'assets/icon/Contact.png' });
     if (this.loginProvider.customer_id) {
-      this.pages.push({ title: 'profile', component: ProfilePage });
-      this.pages.push({ title: 'my wishlist', component: WishlistPage });
-      this.pages.push({ title: 'my orders', component: OrderPage, });
+      this.pages.push({ title: 'Profile', name: 'ProfilePage', component: ProfilePage, icon: 'assets/icon/Contact.png' });
+      this.pages.push({ title: 'My Wishlist', name: 'WishlistPage', component: WishlistPage, icon: 'assets/icon/Contact.png' });
+      this.pages.push({ title: 'My Orders', name: 'OrderPage', component: OrderPage, icon: 'assets/icon/Contact.png' });
     }
     else {
-      this.pages.push({ title: 'Login', component: LoginPage });
+      this.pages.push({ title: 'Login', name: 'LoginPage', component: LoginPage, icon: 'assets/icon/Contact.png' });
     }
-    this.pages.push({ title: 'Category', component: CategoriesPage });
+    this.pages.push({ title: 'Category', name: 'CategoryPage', component: CategoriesPage, icon: 'assets/icon/Contact.png' });
+    this.pages.push({ title: 'Settings', name: 'SettingsPage', component: SettingsPage, icon: 'assets/icon/Contact.png' });
 
   }
 
@@ -61,9 +72,6 @@ export class MyApp {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
-      this.splashScreen.hide();
-
-      this.bindMenu();
     });
   }
 

@@ -5,22 +5,26 @@
         <ion-icon name="arrow-back"></ion-icon>
       </button>
     </ion-buttons>
+    <ion-title text-center>
+      {{heading_title}}
+    </ion-title>
 
-    <!-- <ion-buttons end>
-      <button ion-button icon-only (click)="goToSearch()">
+    <ion-buttons end>
+      <!-- <button ion-button icon-only (click)="goToSearch()">
         <ion-icon name="search"></ion-icon>
-      </button>
+      </button> -->
       <span class="cart-info">
         <button ion-button icon-only (click)="goTocart()">
           <ion-badge item-end *ngIf="totalQty != 0">{{totalQty}}</ion-badge>
           <ion-icon name="cart"></ion-icon>
         </button>
       </span>
-      Commented this on 21/09/2018 because of new changes -->
-    <!-- <button ion-button icon-only (click)="presentActionSheet($event)">
+      <!-- Commented this on 21/09/2018 because of new changes -->
+      <!-- <button ion-button icon-only (click)="presentActionSheet($event)">
               <ion-icon name="share"></ion-icon>
-          </button>
-    </ion-buttons> -->
+          </button> -->
+    </ion-buttons>
+
   </ion-navbar>
 </ion-header>
 
@@ -119,7 +123,7 @@
                       <p class="invalid-message" *ngIf="!cartForm.controls.detail_id.valid  && (cartForm.controls.detail_id.dirty || submitAttempt)">{{field_error}}</p>
                     </ion-col>
                   </ion-row>-->
-                  <ion-row> 
+                  <ion-row>
                     <ion-col>
                       <ion-item>
                         <ion-label floating>{{quantity}}</ion-label>

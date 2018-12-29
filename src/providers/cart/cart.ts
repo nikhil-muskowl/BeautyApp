@@ -22,9 +22,12 @@ export class CartProvider {
   }
 
   products(data: any): any {
-    // this.URL = ConfigProvider.BASE_URL + 'cart?customer_id=' + data.user_id + '&postcode=' + data.postcode;
+    this.formData = new FormData();
+    this.formData.append('customer_id', data.customer_id);
+
     this.URL = ConfigProvider.BASE_URL + '?route=restapi/checkout/cart';
-    return this.http.get(this.URL,
+    return this.http.post<any>(this.URL,
+      this.formData,
       {
         headers: this.headers,
       }
@@ -35,7 +38,7 @@ export class CartProvider {
     this.formData = new FormData();
     console.log(data);
     this.URL = ConfigProvider.BASE_URL + '?route=restapi/checkout/cart/add';
-    this.formData.append('customer_id', data.user_id);
+    this.formData.append('customer_id', data.customer_id);
     this.formData.append('product_id', data.product_id);
     // this.formData.append('detail_id', data.detail_id);
     this.formData.append('quantity', data.quantity);
@@ -54,7 +57,7 @@ export class CartProvider {
     this.formData.append('key', data.cart_id);
     this.formData.append('quantity', data.quantity);
 
-    return this.http.post(this.URL,
+    return this.http.post<any>(this.URL,
       this.formData,
       {
         headers: this.headers,
@@ -67,7 +70,7 @@ export class CartProvider {
     this.URL = ConfigProvider.BASE_URL + '?route=restapi/checkout/cart/remove';
     this.formData.append('key', data.cart_id);
 
-    return this.http.post(this.URL,
+    return this.http.post<any>(this.URL,
       this.formData,
       {
         headers: this.headers,

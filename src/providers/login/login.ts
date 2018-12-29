@@ -100,4 +100,21 @@ export class LoginProvider {
     );
   }
 
+  forgotPassword(data: any) {
+    this.formData = new FormData();
+    this.URL = ConfigProvider.BASE_URL + '?route=restapi/account/forgotten';
+
+    this.formData.append('email', data.email);
+    return this.http.post<any>(this.URL,
+      this.formData,
+      {
+        headers: this.headers,
+      }
+    );
+  }
+
+  logout() {
+    this.unSetData();
+    window.localStorage.clear();
+  }
 }

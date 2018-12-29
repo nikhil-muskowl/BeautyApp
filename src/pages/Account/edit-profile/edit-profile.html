@@ -25,9 +25,9 @@
           <ion-col>
             <ion-item>
               <ion-label floating>{{firstname_txt}}</ion-label>
-              <ion-input formControlName="fullname" [(ngModel)]="fullname" type="text" [class.invalid]="!accountForm.controls.fullname.valid && (accountForm.controls.fullname.dirty || submitAttempt)"></ion-input>
+              <ion-input formControlName="firstname" [(ngModel)]="firstname" type="text" [class.invalid]="!accountForm.controls.firstname.valid && (accountForm.controls.firstname.dirty || submitAttempt)"></ion-input>
             </ion-item>
-            <p class="invalid-message" *ngIf="!accountForm.controls.fullname.valid  && (accountForm.controls.fullname.dirty || submitAttempt)">{{error_firstname}}</p>
+            <p class="invalid-message" *ngIf="!accountForm.controls.firstname.valid  && (accountForm.controls.firstname.dirty || submitAttempt)">{{error_firstname}}</p>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -36,7 +36,7 @@
           <ion-col>
             <ion-item>
               <ion-label floating>{{lastname_txt}}</ion-label>
-              <ion-input formControlName="lastname" [(ngModel)]="lastname" type="text" [class.invalid]="!accountForm.controls.lastname.valid && (accountForm.controls.fullname.dirty || submitAttempt)"></ion-input>
+              <ion-input formControlName="lastname" [(ngModel)]="lastname" type="text" [class.invalid]="!accountForm.controls.lastname.valid && (accountForm.controls.lastname.dirty || submitAttempt)"></ion-input>
             </ion-item>
             <p class="invalid-message" *ngIf="!accountForm.controls.lastname.valid  && (accountForm.controls.lastname.dirty || submitAttempt)">{{error_lastname}}</p>
           </ion-col>
@@ -62,7 +62,8 @@
             <p class="invalid-message" *ngIf="!accountForm.controls.telephone.valid  && (accountForm.controls.telephone.dirty || submitAttempt)">{{error_telephone}}</p>
           </ion-col>
         </ion-row>
-        <ion-row>
+
+        <!-- <ion-row>
           <ion-col>
             <ion-item>
               <ion-label floating>{{dob_txt}}</ion-label>
@@ -76,6 +77,7 @@
             <p class="invalid-message" *ngIf="!accountForm.controls.dob.valid  && (accountForm.controls.dob.dirty || submitAttempt)">{{error_dob}}</p>
           </ion-col>
         </ion-row>
+
         <ion-row>
           <ion-col>
             <ion-item>
@@ -88,6 +90,7 @@
             <p class="invalid-message" *ngIf="!accountForm.controls.gender.valid  && (accountForm.controls.gender.dirty || submitAttempt)">{{error_gender}}</p>
           </ion-col>
         </ion-row>
+
         <ion-row>
           <ion-col>
             <ion-item>
@@ -100,6 +103,7 @@
             <p class="invalid-message" *ngIf="!accountForm.controls.country_id.valid  && (accountForm.controls.country_id.dirty || submitAttempt)">{{error_country_id}}</p>
           </ion-col>
         </ion-row>
+
         <ion-row>
           <ion-col>
             <ion-item>
@@ -124,6 +128,7 @@
             <p class="invalid-message" *ngIf="!accountForm.controls.district_id.valid  && (accountForm.controls.district_id.dirty || submitAttempt)">{{error_district_id}}</p>
           </ion-col>
         </ion-row>
+
         <ion-row>
           <ion-col>
             <ion-item>
@@ -133,6 +138,7 @@
             <p class="invalid-message" *ngIf="!accountForm.controls.postcode.valid  && (accountForm.controls.postcode.dirty || submitAttempt)">{{error_postcode}}</p>
           </ion-col>
         </ion-row>
+
         <ion-row>
           <ion-col>
             <ion-item>
@@ -142,6 +148,7 @@
             <p class="invalid-message" *ngIf="!accountForm.controls.city.valid  && (accountForm.controls.city.dirty || submitAttempt)">{{error_city}}</p>
           </ion-col>
         </ion-row>
+
         <ion-row>
           <ion-col>
             <ion-item>
@@ -150,7 +157,7 @@
             </ion-item>
             <p class="invalid-message" *ngIf="!accountForm.controls.address.valid  && (accountForm.controls.address.dirty || submitAttempt)">{{error_address}}</p>
           </ion-col>
-        </ion-row>
+        </ion-row> -->
       </ion-grid>
     </form>
 

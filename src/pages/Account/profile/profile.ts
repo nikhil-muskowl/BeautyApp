@@ -8,6 +8,11 @@ import { TranslateService } from '@ngx-translate/core';
 import { LanguageProvider } from '../../../providers/language/language';
 import { LoginProvider } from '../../../providers/login/login';
 import { LoginPage } from '../login/login';
+import { HomePage } from '../../Main/home/home';
+import { WishlistPage } from '../wishlist/wishlist';
+import { OrderPage } from '../../Orders/order/order';
+import { EditProfilePage } from '../edit-profile/edit-profile';
+import { ChangePasswordPage } from '../change-password/change-password';
 
 @IonicPage()
 @Component({
@@ -16,6 +21,7 @@ import { LoginPage } from '../login/login';
 })
 export class ProfilePage {
   headerScrollConfig: ScrollHideConfig = { cssProperty: 'margin-top', maxValue: 60 };
+
   public heading_title;
   public customer;
   public email;
@@ -34,12 +40,19 @@ export class ProfilePage {
   public edit_acc_txt;
   public chang_pass_txt;
   public logout_txt;
+  public cancel_txt;
+  public ok_txt;
+  public yes_txt;
+  public continue_txt;
+  public confirm_logout;
+  public want_to_logout;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public platform: Platform,
     public alertProvider: AlertProvider,
     public loadingProvider: LoadingProvider,
+    public alertCtrl: AlertController,
     public loginProvider: LoginProvider,
     public translate: TranslateService,
     public languageProvider: LanguageProvider, ) {
@@ -85,6 +98,24 @@ export class ProfilePage {
     });
     this.translate.get('logout').subscribe((text: string) => {
       this.logout_txt = text;
+    });
+    this.translate.get('ok').subscribe((text: string) => {
+      this.ok_txt = text;
+    });
+    this.translate.get('cancel').subscribe((text: string) => {
+      this.cancel_txt = text;
+    });
+    this.translate.get('continue').subscribe((text: string) => {
+      this.continue_txt = text;
+    });
+    this.translate.get('confirm_logout').subscribe((text: string) => {
+      this.confirm_logout = text;
+    });
+    this.translate.get('want_to_logout').subscribe((text: string) => {
+      this.want_to_logout = text;
+    });
+    this.translate.get('yes').subscribe((text: string) => {
+      this.yes_txt = text;
     });
 
   }
@@ -166,5 +197,46 @@ export class ProfilePage {
       // );
       // return event;
     }
+  }
+
+  logout() {
+    let alert = this.alertCtrl.create({
+      title: this.confirm_logout,
+      message: this.want_to_logout,
+      buttons: [
+        {
+          text: this.cancel_txt,
+          role: 'cancel',
+          handler: () => {
+
+          }
+        },
+        {
+          text: this.yes_txt,
+          handler: () => {
+            this.loginProvider.logout();
+            this.navCtrl.setRoot(HomePage);
+          }
+        }
+      ]
+    });
+    alert.present();
+
+  }
+
+  gotoWishlist() {
+    this.navCtrl.push(WishlistPage, {from: 'profile'});
+  }
+
+  gotoOrders() {
+    this.navCtrl.push(OrderPage);
+  }
+
+  gotoEditAccount() {
+    this.navCtrl.push(EditProfilePage);
+  }
+
+  gotoChangePassword() {
+    this.navCtrl.push(ChangePasswordPage);
   }
 }

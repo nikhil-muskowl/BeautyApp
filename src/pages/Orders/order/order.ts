@@ -32,6 +32,7 @@ export class OrderPage {
   public order;
   public limit;
   public page = 1;
+  public finalPage = 1;
   public isInfinite = true;
   public orderModel: any[] = [];
   public alert: Alert;
@@ -42,6 +43,8 @@ export class OrderPage {
   public continue;
   public ok;
   public smthng_wrong;
+  public exit_app;
+  public server_slow;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -93,6 +96,15 @@ export class OrderPage {
     this.translate.get('smthng_wrong').subscribe((text: string) => {
       this.smthng_wrong = text;
     });
+    this.translate.get('continue').subscribe((text: string) => {
+      this.continue = text;
+    });
+    this.translate.get('exit_app').subscribe((text: string) => {
+      this.exit_app = text;
+    });
+    this.translate.get('server_slow').subscribe((text: string) => {
+      this.server_slow = text;
+    });
   }
 
   public getServerData() {
@@ -117,16 +129,16 @@ export class OrderPage {
         if (err.name == 'TimeoutError') {
           this.alert = this.alertCtrl.create({
             title: this.oops,
-            message: 'Server response is too slow! Do you want to continue?',
+            message: this.server_slow,
             buttons: [
               {
-                text: "Exit App",
+                text: this.exit_app,
                 handler: () => {
                   this.platform.exitApp();
                 }
               },
               {
-                text: "Continue",
+                text: this.continue,
                 handler: () => {
                   this.getServerData();
                 }
@@ -161,32 +173,43 @@ export class OrderPage {
     for (let index = 0; index < this.orders.length; index++) {
       this.orderModel.push({
         order_id: this.orders[index].order_id,
-        order_no: this.orders[index].order_no,
         name: this.orders[index].name,
         status: this.orders[index].status,
         date_added: this.orders[index].date_added,
         products: this.orders[index].products,
         total: this.orders[index].total,
-        paymenturl: this.orders[index].paymenturl,
-        trackurl: this.orders[index].trackurl,
-        iscancel: this.orders[index].iscancel,
-        isrefund: this.orders[index].isrefund,
-        reorder: this.orders[index].reorder
       });
     }
   }
 
   doInfinite(infiniteScroll) {
-    if (this.orders.length > 0 && this.pagination.length != this.page) {
+    // if (this.orders.length > 0 && this.pagination.length != this.page) {
+    //   this.page++;
+    //   this.getServerData();
+    //   this.isInfinite = true;
+    // } else {
+    //   this.isInfinite = false;
+    // }
+    // setTimeout(() => {
+    //   infiniteScroll.complete();
+    // }, 500);
+
+    if (this.pagination.length > 0) {
+      this.pagination.forEach(element => {
+        this.finalPage = element;
+      });
+    }
+
+    if (this.page != this.finalPage) {
       this.page++;
       this.getServerData();
       this.isInfinite = true;
+      setTimeout(() => {
+        infiniteScroll.complete();
+      }, 500);
     } else {
       this.isInfinite = false;
     }
-    setTimeout(() => {
-      infiniteScroll.complete();
-    }, 500);
   }
 
   viewDetail(data: any) {

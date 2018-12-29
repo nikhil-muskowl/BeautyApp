@@ -8,19 +8,6 @@
     <ion-title text-center>
       <img src="assets/imgs/logo.png" width="60" height="50" style="margin-top: 6px;">
     </ion-title>
-
-    <!-- <ion-buttons end>
-      <button ion-button icon-only (click)="goToSearch()">
-        <ion-icon name="search"></ion-icon>
-      </button>
-      <span class="cart-info">
-        <button ion-button icon-only (click)="goTocart()">
-          <ion-badge item-end *ngIf="totalQty != 0">{{totalQty}}</ion-badge>
-          <ion-icon name="cart"></ion-icon>
-        </button>
-      </span>
-    </ion-buttons> -->
-
   </ion-navbar>
 
 </ion-header>
@@ -38,7 +25,6 @@
     </ion-list-header>
     <ion-item (click)="gotoWishlist()">{{wishlist_txt}}</ion-item>
     <ion-item (click)="gotoOrders()">{{my_orders_txt}}</ion-item>
-    <ion-item (click)="gotoCustomerRequestsPage()">{{my_requests_txt}}</ion-item>
     <ion-item (click)="gotoEditAccount()">{{edit_acc_txt}}</ion-item>
     <ion-item (click)="gotoChangePassword()">{{chang_pass_txt}}</ion-item>
     <ion-item (click)="logout()">

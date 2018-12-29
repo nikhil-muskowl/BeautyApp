@@ -11,7 +11,8 @@ export class CategoryProvider {
 
   constructor(public http: HttpClient) {
     console.log('Hello CategoryProvider Provider');
-    this.headers.set('Access-Control-Allow-Origin ', '*');
+    this.headers.set('Access-Control-Allow-Origin', '*');
+    this.headers.set('Cookie', 'currency=INR');
     this.headers.set('Content-Type', 'application/json; charset=utf-8');
   }
 
@@ -59,6 +60,7 @@ export class CategoryProvider {
       this.URL += '&pr=' + data.price_filter;
     }
 
+    
     return this.http.get(this.URL,
       {
         headers: this.headers,
@@ -70,7 +72,7 @@ export class CategoryProvider {
 
     this.URL = ConfigProvider.BASE_URL + '?route=restapi/product&product_id=' + id;
 
-    return this.http.get(this.URL,
+    return this.http.get<any>(this.URL,
       {
         headers: this.headers,
       }

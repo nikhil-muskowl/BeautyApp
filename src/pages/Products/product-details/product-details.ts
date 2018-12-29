@@ -22,13 +22,14 @@ import { LoginPage } from '../../Account/login/login';
 })
 export class ProductDetailsPage {
 
-  public user_id;
+  public customer_id;
   public product_id;
   public responseData;
   public success;
   public error_warning;
   public totalQty;
   public review_tab;
+  public cart_quantity = 1;
 
   //response
   public heading_title;
@@ -87,11 +88,13 @@ export class ProductDetailsPage {
     public languageProvider: LanguageProvider,
   ) {
 
-    this.user_id = this.loginProvider.getData();
+    this.customer_id = this.loginProvider.getData();
     this.product_id = this.navParams.get("id");
+    console.log("Product id : " + this.product_id);
     this.createForm();
     this.setText();
     this.getProductDetails();
+
     this.platform.registerBackButtonAction(() => {
       this.goBack();
     });
@@ -159,14 +162,14 @@ export class ProductDetailsPage {
   ionViewWillEnter() {
     this.review_tab = 'description';
     this.platform.ready().then(() => {
-      // this.getProducts();
+      this.getProducts();
     })
   }
 
   createForm() {
     this.cartForm = this.formBuilder.group({
-      detail_id: ['', Validators.required],
-      quantity: ['', Validators.required]
+      // detail_id: ['', Validators.required],
+      quantity: ['', Validators.required],
     });
   }
 
@@ -204,7 +207,7 @@ export class ProductDetailsPage {
   }
 
   save() {
-    if (!this.user_id) {
+    if (!this.customer_id) {
       // this.error_login = "Please login first";
       this.alertProvider.title = this.warning;
       this.alertProvider.message = this.error_login;
@@ -216,13 +219,13 @@ export class ProductDetailsPage {
       if (this.cartForm.valid) {
         this.formData = {
           quantity: this.cartForm.value.quantity,
-          detail_id: this.cartForm.value.detail_id,
+          customer_id: this.customer_id,
+          // detail_id: this.cartForm.value.detail_id,
           product_id: Number(this.product_id)
         };
         this.loadingProvider.present();
         this.cartProvider.add(this.formData).subscribe(
           response => {
-            //console.log(response);
             this.responseData = response;
             this.submitAttempt = true;
 
@@ -253,7 +256,7 @@ export class ProductDetailsPage {
   }
 
   addWishlist() {
-    if (!this.user_id) {
+    if (!this.customer_id) {
       // this.error_login = "Please login first";
       this.alertProvider.title = this.warning;
       this.alertProvider.message = this.error_login;
@@ -264,8 +267,9 @@ export class ProductDetailsPage {
 
       if (this.cartForm.valid) {
         this.formData = {
-          quantity: this.cartForm.value.quantity,
-          detail_id: this.cartForm.value.detail_id,
+          // quantity: this.cartForm.value.quantity,
+          // detail_id: this.cartForm.value.detail_id,
+          customer_id: this.customer_id,
           product_id: Number(this.product_id)
         };
         this.loadingProvider.present();
@@ -302,15 +306,15 @@ export class ProductDetailsPage {
   getProducts() {
 
     let param = {
-      user_id: this.user_id
+      customer_id: this.customer_id
     };
 
     this.loadingProvider.present();
     this.cartProvider.products(param).subscribe(
       response => {
         if (response) {
-          if (response.totals[0].text) {
-            this.totalQty = response.totals[0].text;
+          if (response.total_quantity) {
+            this.totalQty = response.total_quantity;
           }
         }
       },
@@ -322,9 +326,13 @@ export class ProductDetailsPage {
     return event;
   }
 
+  goTocart() {
+    this.navCtrl.push(CartPage);
+  }
+
   showConfirm() {
     let confirm = this.alertCtrl.create({
-      title: this.success,
+      title: this.success_txt,
       message: this.success,
       buttons: [
         {

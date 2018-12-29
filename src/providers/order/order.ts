@@ -2,6 +2,7 @@ import { HttpClient, HttpRequest, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ConfigProvider } from '../config/config';
+import { LoginProvider } from '../login/login';
 
 @Injectable()
 export class OrderProvider {
@@ -32,10 +33,11 @@ export class OrderProvider {
   public sort;
   public order;
 
-  constructor(public http: HttpClient) {
+  constructor(public http: HttpClient,
+    public loginProvider: LoginProvider) {
     this.headers.set('Access-Control-Allow-Origin ', '*');
     this.headers.set('Content-Type', 'application/json; charset=utf-8');
-
+    this.customer_id = this.loginProvider.getData();
   }
 
   setPaymentData(data: any) {
@@ -88,27 +90,17 @@ export class OrderProvider {
 
     this.formData = new FormData();
     this.formData.append('customer_id', this.customer_id);
+
     this.page = data.page;
     this.limit = data.limit;
     this.sort = data.sort;
     this.order = data.order;
-    
+
     this.URL = ConfigProvider.BASE_URL + '?route=restapi/account/order';
 
-    // if (this.page) {
-    //   this.URL += '&pageid=' + this.page;
-    // }
-
-    // if (this.limit) {
-    //   this.URL += '&limit=' + this.limit;
-    // }
-
-    // if (this.sort) {
-    //   this.URL += '&sort=' + this.sort;
-    // }
-    // if (this.order) {
-    //   this.URL += '&order=' + this.order;
-    // }
+    if (this.page) {
+      this.URL += '&pageid=' + this.page;
+    }
     return this.http.post(this.URL,
       this.formData,
       {
@@ -117,13 +109,13 @@ export class OrderProvider {
     ).timeout(9000);
   }
 
-  getOrderDetail(data: any) {
+  getOrderDetail(order_id: any) {
 
     this.formData = new FormData();
     this.formData.append('customer_id', this.customer_id);
 
-    this.URL = ConfigProvider.BASE_URL + '?route=restapi/account/order/info&order_id=' + data.order_id
-    return this.http.post(this.URL,
+    this.URL = ConfigProvider.BASE_URL + '?route=restapi/account/order/info&order_id=' + order_id
+    return this.http.post<any>(this.URL,
       this.formData,
       {
         headers: this.headers,
@@ -153,5 +145,14 @@ export class OrderProvider {
         headers: this.headers,
       }
     ).timeout(9000);
+  }
+
+  public decodeEntities(encodedString) {
+    var parser = new DOMParser;
+    var dom = parser.parseFromString(
+      '<!doctype html><body>' + encodedString,
+      'text/html');
+    var decodedString = dom.body.textContent;
+    return decodedString;
   }
 }

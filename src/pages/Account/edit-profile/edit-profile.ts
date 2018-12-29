@@ -99,14 +99,14 @@ export class EditProfilePage {
       lastname: [this.lastname, Validators.compose([Validators.maxLength(32), Validators.pattern('[a-zA-Z ]*'), Validators.required])],
       email: [this.email, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')])],
       telephone: [this.telephone, ContactValidator.isValid],
-      dob: [this.dob, Validators.required],
-      gender: [this.gender, Validators.required],
-      country_id: [this.country_id, Validators.required],
-      zone_id: [this.zone_id, Validators.required],
-      district_id: [this.district_id, Validators.required],
-      postcode: [this.postcode, Validators.required],
-      city: [this.city, Validators.required],
-      address: [this.address, Validators.required],
+      // dob: [this.dob, Validators.required],
+      // gender: [this.gender, Validators.required],
+      // country_id: [this.country_id, Validators.required],
+      // zone_id: [this.zone_id, Validators.required],
+      // district_id: [this.district_id, Validators.required],
+      // postcode: [this.postcode, Validators.required],
+      // city: [this.city, Validators.required],
+      // address: [this.address, Validators.required],
     });
   }
 

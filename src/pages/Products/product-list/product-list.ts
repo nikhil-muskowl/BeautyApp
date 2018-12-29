@@ -26,7 +26,7 @@ export class ProductListPage {
   public order;
   public limit;
   public page = 1;
-  public finalPage = 0;
+  public finalPage = 1;
 
   public id;
   public heading_title;
@@ -64,7 +64,7 @@ export class ProductListPage {
     this.translate.get('sort_products').subscribe((text: string) => {
       this.sort_products = text;
     });
-  
+
   }
 
   goBack() {

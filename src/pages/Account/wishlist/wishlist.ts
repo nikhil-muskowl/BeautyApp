@@ -8,6 +8,7 @@ import { LoginProvider } from '../../../providers/login/login';
 import { ProfilePage } from '../profile/profile';
 import { LoginPage } from '../login/login';
 import { AlertController, Alert } from 'ionic-angular';
+import { HomePage } from '../../Main/home/home';
 
 @IonicPage()
 @Component({
@@ -16,10 +17,11 @@ import { AlertController, Alert } from 'ionic-angular';
 })
 export class WishlistPage {
 
-  public user_id;
+  public customer_id;
   public responseData;
   public success;
   public products;
+  public fromPage;
   public alert: Alert;
 
   public wish_empty_txt;
@@ -41,13 +43,14 @@ export class WishlistPage {
     public wishlistProvider: WishlistProvider,
     public alertCtrl: AlertController,
   ) {
-
+    this.customer_id = this.loginProvider.customer_id;
     this.setText();
     this.isLogin();
     this.getServerData();
 
+    this.fromPage = this.navParams.get('from');
     this.platform.registerBackButtonAction(() => {
-      this.navCtrl.setRoot(ProfilePage);
+      this.goBack();
     });
   }
 
@@ -84,21 +87,39 @@ export class WishlistPage {
   }
 
   isLogin() {
-    this.user_id = this.loginProvider.getData();
-    if (!this.user_id) {
+    this.customer_id = this.loginProvider.customer_id;
+    if (!this.customer_id) {
       this.navCtrl.push(LoginPage);
     }
   }
 
+  goBack() {
+    if (this.fromPage == 'profile')
+      this.navCtrl.pop();
+    else
+      this.navCtrl.setRoot(HomePage);
+  }
+
+  viewProductDetail(data: any) {
+
+  }
+
+  remove(data: any) {
+
+  }
+
   getServerData() {
     this.loadingProvider.present();
-    this.wishlistProvider.getWishlist(this.user_id).subscribe(
+    this.wishlistProvider.getWishlist(this.customer_id).subscribe(
       response => {
         this.responseData = response;
         this.success = this.responseData.success;
         this.products = this.responseData.products;
+        this.loadingProvider.dismiss();
       },
       err => {
+        this.loadingProvider.dismiss();
+
         if (err.name == 'TimeoutError') {
           this.alert = this.alertCtrl.create({
             title: this.oops_txt,

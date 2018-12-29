@@ -121,7 +121,7 @@ export class LoginPage {
 
             this.loginForm.reset();
             this.submitAttempt = false;
-
+            console.log("Login data : " + JSON.stringify(this.responseData));
             this.loginProvider.setData(this.responseData);
 
             this.success = this.responseData.success;

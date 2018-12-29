@@ -5,6 +5,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertProvider } from '../../../providers/alert/alert';
 import { TranslateService } from '@ngx-translate/core';
 import { LanguageProvider } from '../../../providers/language/language';
+import { LoginProvider } from '../../../providers/login/login';
+import { AlertController, Alert } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -25,19 +27,24 @@ export class ForgotPasswordPage {
   private error_email;
   private success;
   private error;
-
+  public alert: Alert;
   //txt
   public update_txt;
   public email_txt;
   public send_txt;
+  public ok_txt;
+  public error_txt;
+  public success_txt;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public platform: Platform,
     public formBuilder: FormBuilder,
+    public loginProvider: LoginProvider,
     public translate: TranslateService,
     public alertProvider: AlertProvider,
     public languageProvider: LanguageProvider,
+    public alertCtrl: AlertController,
   ) {
 
     platform.registerBackButtonAction(() => {
@@ -64,6 +71,15 @@ export class ForgotPasswordPage {
     this.translate.get('send').subscribe((text: string) => {
       this.send_txt = text;
     });
+    this.translate.get('ok').subscribe((text: string) => {
+      this.ok_txt = text;
+    });
+    this.translate.get('error').subscribe((text: string) => {
+      this.error_txt = text;
+    });
+    this.translate.get('success').subscribe((text: string) => {
+      this.success_txt = text;
+    });
   }
 
   createForm() {
@@ -74,64 +90,65 @@ export class ForgotPasswordPage {
   goBack() {
     this.navCtrl.pop();
   }
+
   send() {
 
     this.submitAttempt = true;
-    // if (this.forgPasswordForm.valid) {
-    //   // this.loadingProvider.present();
+    if (this.forgPasswordForm.valid) {
+      // this.loadingProvider.present();
 
-    //   this.formData = this.registerForm.valid;
+      this.formData = this.forgPasswordForm.valid;
 
-    //   this.customerProvider.apiRegister(this.registerForm.value).subscribe(
-    //     response => {
-    //       this.responseData = response;
+      this.loginProvider.forgotPassword(this.forgPasswordForm.value).subscribe(
+        response => {
+          this.responseData = response;
 
-    //       this.submitAttempt = true;
+          this.submitAttempt = true;
 
-    //       if (this.responseData.customer_id) {
-    //         this.customer_id = this.responseData.customer_id;
-    //         this.registerForm.reset();
-    //         this.submitAttempt = false;
+          if (this.responseData.status) {
+            this.forgPasswordForm.reset();
+            this.submitAttempt = false;
 
-    //         var data = {
-    //           customer_id: this.responseData.customer_id,
-    //         };
+            this.alert = this.alertCtrl.create({
+              title: this.success_txt,
+              message: this.responseData.success,
+              buttons: [
+                {
+                  text: this.ok_txt,
+                  handler: () => {
+                    this.platform.exitApp();
+                  }
+                },
+              ]
+            });
+            this.alert.present();
+          }
+          else {
 
-    //         this.customerProvider.setData(data);
-    //         //this.navCtrl.push(CustomerLoginPage);
-    //         this.navCtrl.push(CustomerAccountPage);
-    //       }
-
-    //       if (this.responseData.text_message != '') {
-    //         this.text_message = this.responseData.text_message;
-    //         this.alertProvider.title = 'Success';
-    //         this.alertProvider.message = this.text_message;
-    //         this.alertProvider.showAlert();
-    //       }
-
-    //       if (this.responseData.error_email != '') {
-    //         this.registerForm.controls['email'].setErrors({ 'incorrect': true });
-    //         this.error_email = this.responseData.error_email;
-    //       }
-
-    //       if (this.responseData.error_warning && this.responseData.error_warning != '') {
-    //         this.error_warning = this.responseData.error_warning;
-
-    //         this.alertProvider.title = 'Warning';
-    //         this.alertProvider.message = this.error_warning;
-    //         this.alertProvider.showAlert();
-    //       }
-
-    //     },
-    //     err => {
-    //       console.error(err);
-    //       //this.loadingProvider.dismiss();
-    //     },
-    //     () => {
-    //       // this.loadingProvider.dismiss();
-    //     }
-    //   );
-    // }
+            this.alert = this.alertCtrl.create({
+              title: this.error_txt,
+              message: this.responseData.error_warning,
+              buttons: [
+                {
+                  text: this.ok_txt,
+                  handler: () => {
+                    this.platform.exitApp();
+                  }
+                },
+              ]
+            });
+            this.alert.present();
+          }
+        },
+        err => {
+          console.error(err);
+          //this.loadingProvider.dismiss();
+        },
+        () => {
+          // this.loadingProvider.dismiss();
+        }
+      );
+    }
 
   }
 }

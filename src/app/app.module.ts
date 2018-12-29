@@ -11,12 +11,17 @@ import { Ionic2RatingModule } from 'ionic2-rating';
 
 //Main
 import { HomePage } from '../pages/Main/home/home';
-import { ListPage } from '../pages/Main/list/list';
+import { NotificationsPage } from '../pages/Main/notifications/notifications';
+import { SettingsPage } from '../pages/Main/settings/settings';
 
 //Orders
 import { CartPage } from '../pages/Orders/cart/cart';
 import { PaymentAddressPage } from '../pages/Orders/payment-address/payment-address';
 import { ShippingAddressPage } from '../pages/Orders/shipping-address/shipping-address';
+import { OrderPage } from '../pages/Orders/order/order';
+import { OrderDetailsPage } from '../pages/Orders/order-details/order-details';
+import { CartCheckoutPage } from '../pages/Orders/cart-checkout/cart-checkout';
+import { CartEditPage } from '../pages/Orders/cart-edit/cart-edit';
 
 //Account
 import { ChangePasswordPage } from '../pages/Account/change-password/change-password';
@@ -31,6 +36,7 @@ import { WishlistPage } from '../pages/Account/wishlist/wishlist';
 import { CategoriesPage } from '../pages/Products/categories/categories';
 import { ProductListPage } from '../pages/Products/product-list/product-list';
 import { ProductDetailsPage } from '../pages/Products/product-details/product-details';
+import { FiltersPage } from '../pages/Products/filters/filters';
 
 //Component
 import { PrivacyPolicyPage } from '../pages/Terms/privacy-policy/privacy-policy';
@@ -54,6 +60,8 @@ import { CartProvider } from '../providers/cart/cart';
 import { WishlistProvider } from '../providers/wishlist/wishlist';
 import { ModalProvider } from '../providers/modal/modal';
 import { OrderProvider } from '../providers/order/order';
+import { SettingsProvider } from '../providers/settings/settings';
+import { FiltersProvider } from '../providers/filters/filters';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/language/', '.json');
@@ -63,7 +71,7 @@ export function createTranslateLoader(http: HttpClient) {
   declarations: [
     MyApp,
     HomePage,
-    ListPage,
+    NotificationsPage,
     ScrollHideDirective,
     ChangePasswordPage,
     EditProfilePage,
@@ -82,6 +90,12 @@ export function createTranslateLoader(http: HttpClient) {
     TermsAndConditionPage,
     PaymentAddressPage,
     ShippingAddressPage,
+    OrderPage,
+    OrderDetailsPage,
+    FiltersPage,
+    SettingsPage,
+    CartCheckoutPage,
+    CartEditPage,
   ],
   imports: [
     HttpClientModule,
@@ -103,7 +117,7 @@ export function createTranslateLoader(http: HttpClient) {
   entryComponents: [
     MyApp,
     HomePage,
-    ListPage,
+    NotificationsPage,
     ChangePasswordPage,
     EditProfilePage,
     ForgotPasswordPage,
@@ -121,6 +135,12 @@ export function createTranslateLoader(http: HttpClient) {
     TermsAndConditionPage,
     PaymentAddressPage,
     ShippingAddressPage,
+    OrderPage,
+    OrderDetailsPage,
+    FiltersPage,
+    SettingsPage,
+    CartCheckoutPage,
+    CartEditPage,
   ],
   providers: [
     StatusBar,
@@ -136,7 +156,9 @@ export function createTranslateLoader(http: HttpClient) {
     CartProvider,
     WishlistProvider,
     ModalProvider,
-    OrderProvider
+    OrderProvider,
+    SettingsProvider,
+    FiltersProvider
   ]
 })
 export class AppModule { }

@@ -1,15 +1,34 @@
 page-home {
+    .home-page {
+        [col-2] {
+            padding: 0 !important;
+        }
+        [col-10] {
+            padding: 0 !important;
+        }
+        .grid {
+            padding: 0 !important;
+        }
+    }
     .sidebar {
-        //@at-root background: #800505;
         background: #cc1818;
         color: #fff;
-        width: 20%;
+        height: -webkit-fill-available;
     }
+    .side-menu-toggle {
+        z-index: 1000;
+        ion-fab[bottom][edge] {
+            bottom: 10px;
+        }
+    } // .sidebar {
+    //     //@at-root background: #800505;
+    //     background: #cc1818;
+    //     color: #fff;
+    //     width: 20%;
+    // }
     .sidebar .logo-img {
-        width: 100%;
-        z-index: -1;
-        padding-right: 6px;
-        margin-top: 8px;
+        margin-top: 15px !important;
+        margin-left: 18px !important;
     }
     .sidebar .side-bar {
         margin-top: -50px;
@@ -20,6 +39,9 @@ page-home {
     .sidebar .menu-icons {
         width: 100%;
         z-index: -1;
+        width: 25px !important;
+        height: 25px !important;
+        
     }
     .sidebar .arrow-btn {
         background-color: transparent;
@@ -115,7 +137,6 @@ page-home {
         height: 20%;
         margin-top: 132%;
         right: auto;
-        margin-left: -3px;
     }
     .outer-div .inlay-2 #inlay-2-offer {
         width: 100%;

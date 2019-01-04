@@ -10,6 +10,7 @@ import { LoginPage } from '../../Account/login/login';
 import { AlertController, Alert } from 'ionic-angular';
 import { CategoriesPage } from '../../Products/categories/categories';
 import { CartPage } from '../../Orders/cart/cart';
+import { ProductListPage } from '../../Products/product-list/product-list';
 
 @Component({
   selector: 'page-home',
@@ -60,7 +61,28 @@ export class HomePage {
     this.navCtrl.setRoot(CategoriesPage);
   }
 
+  gotoSearch() {
+    this.navCtrl.push(ProductListPage, { from: 'home' });
+  }
+
   gotoOffers() {
 
+  }
+
+  public getProducts() {
+
+      // this.cartProvider.products().subscribe(
+      //   response => {
+      //     if (response) {
+      //       if (response.totals[0].text) {
+      //         this.totalQty = response.totals[0].text;
+      //       }
+      //     }
+      //   },
+      //   err => console.error(err),
+      //   () => {
+      //   }
+      // );
+    
   }
 }

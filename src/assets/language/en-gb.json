@@ -158,9 +158,19 @@
   "write_review_here": "Write review here",
   "sort_products": "Sort Products",
   "products": "Products",
+  "products_list": "Products List",
+  "search_products": "Search Products",
   "confirm_logout": "Confirm logout",
   "want_to_logout": "Do you want to logout from this app?",
   "order_no_": "Order no: ",
   "date_": "Date: ",
-  "order_details": "Order Details"
+  "order_details": "Order Details",
+  "filters": "Filters",
+  "filter": "Filter",
+  "sort": "Sort",
+  "country_origin": "Country Origin",
+  "price": "Price",
+  "apply": "Apply",
+  "special_offers": "Special Offers",
+  "clear": "Clear"
 }

@@ -23,9 +23,11 @@ export class ProfilePage {
   headerScrollConfig: ScrollHideConfig = { cssProperty: 'margin-top', maxValue: 60 };
 
   public heading_title;
-  public customer;
+  public customerFname;
+  public customerLname;
   public email;
   public telephone;
+  public success;
   public responseData;
 
   public totalQty = 0;
@@ -46,6 +48,10 @@ export class ProfilePage {
   public continue_txt;
   public confirm_logout;
   public want_to_logout;
+  public server_slow_txt;
+  public oops_txt;
+  public exit_app_txt;
+  public smthng_wrong;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -58,17 +64,14 @@ export class ProfilePage {
     public languageProvider: LanguageProvider, ) {
 
     this.setText();
-    this.isLogin();
+    // this.isLogin();
     platform.registerBackButtonAction(() => {
       // this.navCtrl.setRoot(HomePage);
     });
   }
 
-
   ionViewWillEnter() {
-    this.platform.ready().then(() => {
-      this.getProducts();
-    })
+    this.isLogin();
   }
 
   setText() {
@@ -117,6 +120,18 @@ export class ProfilePage {
     this.translate.get('yes').subscribe((text: string) => {
       this.yes_txt = text;
     });
+    this.translate.get('server_slow').subscribe((text: string) => {
+      this.server_slow_txt = text;
+    });
+    this.translate.get('oops').subscribe((text: string) => {
+      this.oops_txt = text;
+    });
+    this.translate.get('exit_app').subscribe((text: string) => {
+      this.exit_app_txt = text;
+    });
+    this.translate.get('smthng_wrong').subscribe((text: string) => {
+      this.smthng_wrong = text;
+    });
 
   }
 
@@ -125,80 +140,66 @@ export class ProfilePage {
     if (!this.user_id) {
       this.navCtrl.setRoot(LoginPage);
     } else {
-      // this.loginProvider.getCustomerData(this.loginProvider.customer_id).subscribe(
-      //   response => {
-      //     if (response) {
-      //       this.responseData = response;
-      //       this.customer = this.responseData.fullname;
-      //       this.email = this.responseData.email;
-      //       this.telephone = this.responseData.telephone;
-      //     }
-      //   },
-      //   err => {
-      //     if (err.name == 'TimeoutError') {
-      //       this.alert = this.alertCtrl.create({
-      //         title: 'Oops!',
-      //         message: 'Server response is too slow! Do you want to continue?',
-      //         buttons: [
-      //           {
-      //             text: "Exit App",
-      //             handler: () => {
-      //               this.platform.exitApp();
-      //             }
-      //           },
-      //           {
-      //             text: "Continue",
-      //             handler: () => {
-      //               this.isLogin();
-      //             }
-      //           }
-      //         ]
-      //       });
-      //       this.alert.present();
-      //     } else {
-      //       this.alert = this.alertCtrl.create({
-      //         title: 'Oops!',
-      //         message: 'Something went wrong! Exiting..',
-      //         buttons: [
-      //           {
-      //             text: "Okay",
-      //             handler: () => {
-      //               this.platform.exitApp();
-      //             }
-      //           },
-      //         ]
-      //       });
-      //       this.alert.present();
-      //     }
-      //   },
-      //   () => {
-      //   }
-      // );
+      this.getProfile();
     }
   }
 
-  public getProducts() {
+  getProfile() {
+    this.loginProvider.apiProfile().subscribe(response => {
+      if (response) {
+        this.responseData = response;
 
-    this.user_id = this.loginProvider.getData();
-    if (!this.user_id) {
-      this.navCtrl.setRoot(LoginPage);
-    } else {
-      // this.cartProvider.products().subscribe(
-      //   response => {
-      //     if (response) {
-      //       if (response.totals[0].text) {
-      //         this.totalQty = response.totals[0].text;
-      //       }
-      //     }
-      //   },
-      //   err => console.error(err),
-      //   () => {
-      //   }
-      // );
-      // return event;
-    }
+        this.success = this.responseData.success;
+        if (this.success == 'Success') {
+          this.customerFname = this.responseData.firstname;
+          this.customerLname = this.responseData.lastname;
+          this.email = this.responseData.email;
+          this.telephone = this.responseData.telephone;
+        }
+      }
+    },
+      err => {
+        if (err.name == 'TimeoutError') {
+          this.alert = this.alertCtrl.create({
+            title: this.oops_txt,
+            message: this.server_slow_txt,
+            buttons: [
+              {
+                text: this.exit_app_txt,
+                handler: () => {
+                  this.platform.exitApp();
+                }
+              },
+              {
+                text: this.continue_txt,
+                handler: () => {
+                  this.getProfile();
+                }
+              }
+            ]
+          });
+          this.alert.present();
+        } else {
+          this.alert = this.alertCtrl.create({
+            title: this.oops_txt,
+            message: this.smthng_wrong,
+            buttons: [
+              {
+                text: this.ok_txt,
+                handler: () => {
+                  this.platform.exitApp();
+                }
+              },
+            ]
+          });
+          this.alert.present();
+        }
+      },
+      () => {
+      }
+    );
   }
-
+  
   logout() {
     let alert = this.alertCtrl.create({
       title: this.confirm_logout,
@@ -225,7 +226,7 @@ export class ProfilePage {
   }
 
   gotoWishlist() {
-    this.navCtrl.push(WishlistPage, {from: 'profile'});
+    this.navCtrl.push(WishlistPage, { from: 'profile' });
   }
 
   gotoOrders() {
@@ -233,7 +234,13 @@ export class ProfilePage {
   }
 
   gotoEditAccount() {
-    this.navCtrl.push(EditProfilePage);
+    let param = {
+      firstname: this.customerFname,
+      lastname: this.customerLname,
+      email: this.email,
+      telephone: this.telephone,
+    };
+    this.navCtrl.push(EditProfilePage, param);
   }
 
   gotoChangePassword() {

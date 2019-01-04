@@ -2,6 +2,7 @@ import { HttpClient, HttpRequest, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ConfigProvider } from '../config/config';
+import { LoginProvider } from '../login/login';
 
 // Set timeout for response
 import 'rxjs/add/operator/timeout';
@@ -15,19 +16,21 @@ export class WishlistProvider {
   public responseData: any;
   private URL;
 
-  constructor(public http: HttpClient) {
+  constructor(public http: HttpClient,
+    public loginProvider: LoginProvider, ) {
+
     this.headers.set('Access-Control-Allow-Origin ', '*');
     this.headers.set('Content-Type', 'application/json; charset=utf-8');
   }
 
-  getWishlist(customer_id) {
-    
-    this.formData = new FormData();
-    this.formData.append('customer_id', customer_id);
+  getWishlist() {
 
-    // this.URL = ConfigProvider.BASE_URL_ + 'wishlist?customer_id=' + ConfigProvider.CUSTOMER_ID;
+    this.formData = new FormData();
+    this.formData.append('customer_id', this.loginProvider.customer_id);
+
     this.URL = ConfigProvider.BASE_URL + '?route=restapi/account/wishlist';
-    return this.http.get(this.URL,
+    return this.http.post<any>(this.URL,
+      this.formData,
       {
         headers: this.headers,
       }
@@ -35,12 +38,14 @@ export class WishlistProvider {
   }
 
   addWishlist(data: any): any {
+
     this.formData = new FormData();
     this.URL = ConfigProvider.BASE_URL + '?route=restapi/account/wishlist/add';
-    // this.formData.append('customer_id', ConfigProvider.CUSTOMER_ID.toString());
+
     this.formData.append('customer_id', data.customer_id);
     this.formData.append('product_id', data.product_id);
-    return this.http.post(this.URL,
+
+    return this.http.post<any>(this.URL,
       this.formData,
       {
         headers: this.headers,
@@ -50,9 +55,14 @@ export class WishlistProvider {
 
   removeWishlist(data: any): any {
 
-    //  this.URL = ConfigProvider.BASE_URL + '?route=restapi/account/wishlist/remove&product_id=' + product_id + '&customer_id=' + this.customerProvider.customer_id;
-    this.URL = ConfigProvider.BASE_URL + '?route=restapi/account/wishlist/remove&product_id=' + data.product_id + '&customer_id=' + data.user_id;
-    return this.http.get(this.URL,
+    this.formData = new FormData();
+    this.URL = ConfigProvider.BASE_URL + '?route=restapi/account/wishlist/remove';
+
+    this.formData.append('customer_id', this.loginProvider.customer_id);
+    this.formData.append('product_id', data.product_id);
+
+    return this.http.post<any>(this.URL,
+      this.formData,
       {
         headers: this.headers,
       }

@@ -42,6 +42,7 @@ export class SettingsPage {
     this.setText();
     this.getCurrency();
     this.currency = this.settingsProvider.getCurrData();
+    console.log("this.currency  : " + this.currency);
 
     platform.registerBackButtonAction(() => {
       this.goBack();
@@ -88,8 +89,10 @@ export class SettingsPage {
 
   onCurrChange(data: any) {
     console.log('selected language : ' + JSON.stringify(data));
+
     this.changeCurrency(data.code);
     this.settingsProvider.setCurrency(data.code);
+    console.log(" Changed : " + this.settingsProvider.getCurrData());
   }
 
   changeCurrency(code) {

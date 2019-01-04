@@ -12,15 +12,19 @@ export class CategoryProvider {
   constructor(public http: HttpClient) {
     console.log('Hello CategoryProvider Provider');
     this.headers.set('Access-Control-Allow-Origin', '*');
-    this.headers.set('Cookie', 'currency=INR');
     this.headers.set('Content-Type', 'application/json; charset=utf-8');
   }
 
-  apiCategory() {
+  apiCategory(data) {
 
+    this.formData = new FormData();
     this.URL = ConfigProvider.BASE_URL + '?route=restapi/category';
 
-    return this.http.get(this.URL,
+    this.formData.append('language_id', data.language_id);
+    this.formData.append('currency_id', data.currency_id);
+
+    return this.http.post<any>(this.URL,
+      this.formData,
       {
         headers: this.headers,
       }
@@ -28,8 +32,12 @@ export class CategoryProvider {
   }
 
   apiProductList(data: any) {
+
     this.formData = new FormData();
     this.URL = ConfigProvider.BASE_URL + '?route=restapi/product/search'
+
+    this.formData.append('language_id', data.language_id);
+    this.formData.append('currency_id', data.currency_id);
 
     if (data.page) {
       this.URL += '&page=' + data.page;
@@ -43,25 +51,21 @@ export class CategoryProvider {
     if (data.search) {
       this.URL += '&search=' + data.search;
     }
-
     if (data.category_filter) {
       this.URL += '&category_filter=' + data.category_filter;
     }
-
     if (data.brand_filter) {
       this.URL += '&brand_filter=' + data.brand_filter;
     }
-
     if (data.country_origin_filter) {
       this.URL += '&country_origin_filter=' + data.country_origin_filter;
     }
-
     if (data.price_filter) {
       this.URL += '&pr=' + data.price_filter;
     }
 
-    
-    return this.http.get(this.URL,
+    return this.http.post<any>(this.URL,
+      this.formData,
       {
         headers: this.headers,
       }
@@ -100,6 +104,48 @@ export class CategoryProvider {
     this.URL = ConfigProvider.BASE_URL + '?route=restapi/product/product/write&product_id=' + product_id;
 
     return this.http.post(this.URL,
+      this.formData,
+      {
+        headers: this.headers,
+      }
+    );
+  }
+
+  public apispecialOffer(data: any) {
+
+    this.formData = new FormData();
+    this.URL = ConfigProvider.BASE_URL + '?route=restapi/product/special';
+
+    this.formData.append('language_id', data.language_id);
+    this.formData.append('currency_id', data.currency_id);
+    this.formData.append('customer_id', data.customer_id);
+
+    if (data.page) {
+      this.URL += '&page=' + data.page;
+    }
+    if (data.sort) {
+      this.URL += '&sort=' + data.sort;
+    }
+    if (data.order) {
+      this.URL += '&order=' + data.order;
+    }
+    if (data.search) {
+      this.URL += '&search=' + data.search;
+    }
+    if (data.category_filter) {
+      this.URL += '&category_filter=' + data.category_filter;
+    }
+    if (data.brand_filter) {
+      this.URL += '&brand_filter=' + data.brand_filter;
+    }
+    if (data.country_origin_filter) {
+      this.URL += '&country_origin_filter=' + data.country_origin_filter;
+    }
+    if (data.price_filter) {
+      this.URL += '&pr=' + data.price_filter;
+    }
+
+    return this.http.post<any>(this.URL,
       this.formData,
       {
         headers: this.headers,

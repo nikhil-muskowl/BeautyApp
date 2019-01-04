@@ -38,7 +38,7 @@ export class LoginProvider {
     this.formData.append('confirm', data.confirm);
     this.formData.append('agree', this.agree.toString());
 
-    return this.http.post(this.URL,
+    return this.http.post<any>(this.URL,
       this.formData,
       {
         headers: this.headers,
@@ -53,7 +53,40 @@ export class LoginProvider {
     this.formData.append('email', data.email);
     this.formData.append('password', data.password);
 
-    return this.http.post(this.URL,
+    return this.http.post<any>(this.URL,
+      this.formData,
+      {
+        headers: this.headers,
+      }
+    );
+  }
+
+  apiProfile() {
+    this.formData = new FormData();
+    this.URL = ConfigProvider.BASE_URL + '?route=restapi/account/profile';
+
+    this.formData.append('customer_id', this.customer_id);
+
+    return this.http.post<any>(this.URL,
+      this.formData,
+      {
+        headers: this.headers,
+      }
+    );
+  }
+
+  apiProfileUpdate(data: any) {
+    
+    this.formData = new FormData();
+    this.URL = ConfigProvider.BASE_URL + '?route=restapi/account/edit';
+
+    this.formData.append('firstname', data.firstname);
+    this.formData.append('lastname', data.lastname);
+    this.formData.append('email', data.email);
+    this.formData.append('telephone', data.telephone);
+    this.formData.append('customer_id', this.customer_id);
+
+    return this.http.post<any>(this.URL,
       this.formData,
       {
         headers: this.headers,

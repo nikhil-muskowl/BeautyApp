@@ -4,9 +4,8 @@
     <button start ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-
     <ion-title text-center>
-      <img src="assets/imgs/logo.png" width="60" height="50" style="margin-top: 6px;">
+      {{heading_title}}
     </ion-title>
   </ion-navbar>
 
@@ -14,7 +13,7 @@
 
 <ion-content fullscreen>
   <div text-center>
-    <h1>{{customer}}</h1>
+    <h1>{{customerFname}} {{customerLname}}</h1>
     <p>{{telephone}}</p>
     <p>{{email}}</p>
   </div>

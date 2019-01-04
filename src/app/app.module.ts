@@ -37,6 +37,7 @@ import { CategoriesPage } from '../pages/Products/categories/categories';
 import { ProductListPage } from '../pages/Products/product-list/product-list';
 import { ProductDetailsPage } from '../pages/Products/product-details/product-details';
 import { FiltersPage } from '../pages/Products/filters/filters';
+import { SpecialOffersPage } from '../pages/Products/special-offers/special-offers';
 
 //Component
 import { PrivacyPolicyPage } from '../pages/Terms/privacy-policy/privacy-policy';
@@ -96,6 +97,7 @@ export function createTranslateLoader(http: HttpClient) {
     SettingsPage,
     CartCheckoutPage,
     CartEditPage,
+    SpecialOffersPage,
   ],
   imports: [
     HttpClientModule,
@@ -141,6 +143,7 @@ export function createTranslateLoader(http: HttpClient) {
     SettingsPage,
     CartCheckoutPage,
     CartEditPage,
+    SpecialOffersPage,
   ],
   providers: [
     StatusBar,

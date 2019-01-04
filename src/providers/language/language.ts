@@ -13,7 +13,7 @@ export class LanguageProvider {
   public language_id;
 
   constructor(public http: HttpClient) {
-    this.language = 'english';
+    this.language = 'en-gb';
     this.language_id = 1;
 
     this.language = this.getLanguage();
@@ -22,7 +22,7 @@ export class LanguageProvider {
 
   public getLanguages() {
     this.formData = new FormData();
-    this.URL = ConfigProvider.BASE_URL + 'settings/api/languages_api';
+    this.URL = ConfigProvider.BASE_URL + '?route=restapi/product/language';
     return this.http.post(this.URL,
       this.formData,
       {
@@ -41,14 +41,14 @@ export class LanguageProvider {
 
   public getLanguage() {
     try {
-      if(window.localStorage.getItem('language')){
+      if (window.localStorage.getItem('language')) {
         return window.localStorage.getItem('language');
-      }else{
-        return 'english';  
+      } else {
+        return 'en-gb';
       }
-      
+
     } catch (error) {
-      return 'english';
+      return 'en-gb';
     }
   }
 

@@ -5,6 +5,10 @@ import { ContactValidator } from '../../../validators/contact';
 
 import { TranslateService } from '@ngx-translate/core';
 import { LanguageProvider } from '../../../providers/language/language';
+import { LoadingProvider } from '../../../providers/loading/loading';
+import { LoginProvider } from '../../../providers/login/login';
+import { AlertProvider } from '../../../providers/alert/alert';
+import { ProfilePage } from '../profile/profile';
 
 @IonicPage()
 @Component({
@@ -17,6 +21,7 @@ export class EditProfilePage {
   accountForm: FormGroup;
   private formData: any;
   private status;
+  private success;
   private message;
   private responseData;
   private responseDbData;
@@ -39,6 +44,7 @@ export class EditProfilePage {
   public city_txt;
   public address_txt;
   public update_txt;
+  public success_txt;
 
   // form fields  
   public firstname = '';
@@ -73,9 +79,19 @@ export class EditProfilePage {
     public navParams: NavParams,
     public platform: Platform,
     public formBuilder: FormBuilder,
+    public loadingProvider: LoadingProvider,
+    public loginProvider: LoginProvider,
     public translate: TranslateService,
+    public alertProvider: AlertProvider,
     public languageProvider: LanguageProvider, ) {
 
+    this.firstname = this.navParams.data.firstname;
+    this.lastname = this.navParams.data.lastname;
+    this.email = this.navParams.data.email;
+    this.telephone = this.navParams.data.telephone;
+    platform.registerBackButtonAction(() => {
+      this.goBack();
+    });
     this.setText();
     this.createForm();
   }
@@ -98,7 +114,7 @@ export class EditProfilePage {
       firstname: [this.firstname, Validators.compose([Validators.maxLength(32), Validators.pattern('[a-zA-Z ]*'), Validators.required])],
       lastname: [this.lastname, Validators.compose([Validators.maxLength(32), Validators.pattern('[a-zA-Z ]*'), Validators.required])],
       email: [this.email, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')])],
-      telephone: [this.telephone, ContactValidator.isValid],
+      telephone: ['', Validators.required],
       // dob: [this.dob, Validators.required],
       // gender: [this.gender, Validators.required],
       // country_id: [this.country_id, Validators.required],
@@ -205,102 +221,40 @@ export class EditProfilePage {
     this.translate.get('error_email').subscribe((text: string) => {
       this.error_email = text;
     });
+    this.translate.get('success').subscribe((text: string) => {
+      this.success_txt = text;
+    });
   }
 
   save() {
     this.submitAttempt = true;
     if (this.accountForm.valid) {
-      //this.loadingProvider.present();
+      this.loadingProvider.present();
 
       this.formData = this.accountForm.valid;
 
-      // this.customerProvider.changeAccountData(this.accountForm.value).subscribe(
-      //   response => {
-      //     this.responseData = response;
-      //     this.submitAttempt = true;
-      //     if (this.responseData.success && this.responseData.success != '') {
-      //       this.success = this.responseData.success;
-      //       this.alertProvider.title = 'Success';
-      //       this.alertProvider.message = this.success;
-      //       this.alertProvider.showAlert();
-      //       //this.logout();
-      //       this.navCtrl.setRoot(CustomerAccountPage);
-      //     }
+      this.loginProvider.apiProfileUpdate(this.accountForm.value).subscribe(
+        response => {
+          this.responseData = response;
+          this.submitAttempt = true;
+          if (this.responseData.success && this.responseData.success != '') {
+            this.success = this.responseData.success;
+            this.alertProvider.title = this.success_txt;
+            this.alertProvider.message = this.success;
+            this.alertProvider.showAlert();
 
-      //     if (this.responseData.error_fullname != '') {
-      //       this.accountForm.controls['fullname'].setErrors({ 'incorrect': true });
-      //       this.error_fullname = this.responseData.error_fullname;
-      //     }
-
-      //     if (this.responseData.error_email != '') {
-      //       this.accountForm.controls['email'].setErrors({ 'incorrect': true });
-      //       this.error_email = this.responseData.error_email;
-      //     }
-
-      //     if (this.responseData.error_telephone != '') {
-      //       this.accountForm.controls['telephone'].setErrors({ 'incorrect': true });
-      //       this.error_telephone = this.responseData.error_telephone;
-      //     }
-
-      //     if (this.responseData.error_dob != '') {
-      //       this.accountForm.controls['dob'].setErrors({ 'incorrect': true });
-      //       this.error_dob = this.responseData.error_dob;
-      //     }
-
-      //     if (this.responseData.error_gender != '') {
-      //       this.accountForm.controls['gender'].setErrors({ 'incorrect': true });
-      //       this.error_gender = this.responseData.error_gender;
-      //     }
-
-      //     if (this.responseData.error_country_id != '') {
-      //       this.accountForm.controls['country_id'].setErrors({ 'incorrect': true });
-      //       this.error_country_id = this.responseData.error_country_id;
-      //     }
-
-      //     if (this.responseData.error_zone_id != '') {
-      //       this.accountForm.controls['zone_id'].setErrors({ 'incorrect': true });
-      //       this.error_zone_id = this.responseData.error_zone_id;
-      //     }
-
-      //     if (this.responseData.error_district_id != '') {
-      //       this.accountForm.controls['district_id'].setErrors({ 'incorrect': true });
-      //       this.error_district_id = this.responseData.error_district_id;
-      //     }
-
-      //     if (this.responseData.error_postcode != '') {
-      //       this.accountForm.controls['postcode'].setErrors({ 'incorrect': true });
-      //       this.error_postcode = this.responseData.error_postcode;
-      //     }
-
-      //     if (this.responseData.error_city != '') {
-      //       this.accountForm.controls['city'].setErrors({ 'incorrect': true });
-      //       this.error_city = this.responseData.error_city;
-      //     }
-
-      //     if (this.responseData.error_address != '') {
-      //       this.accountForm.controls['address'].setErrors({ 'incorrect': true });
-      //       this.error_address = this.responseData.error_address;
-      //     }
-
-
-      //     if (this.responseData.error_warning && this.responseData.error_warning != '') {
-      //       this.error = this.responseData.error_warning;
-
-      //       this.alertProvider.title = 'Warning';
-      //       this.alertProvider.message = this.error;
-      //       this.alertProvider.showAlert();
-      //     }
-
-      //   },
-      //   err => {
-      //     console.error(err);
-      //     // this.loadingProvider.dismiss();
-      //   },
-      //   () => {
-      //     // this.loadingProvider.dismiss();
-      //   }
-      // );
+            this.navCtrl.setRoot(ProfilePage);
+            this.loadingProvider.dismiss();
+          }
+        },
+        err => {
+          console.error(err);
+          this.loadingProvider.dismiss();
+        },
+        () => {
+          this.loadingProvider.dismiss();
+        }
+      );
     }
-
   }
 }

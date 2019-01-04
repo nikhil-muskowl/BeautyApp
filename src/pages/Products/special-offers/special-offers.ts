@@ -8,27 +8,27 @@ import { TranslateService } from '@ngx-translate/core';
 import { LanguageProvider } from '../../../providers/language/language';
 import { FiltersPage } from '../filters/filters';
 import { SettingsProvider } from '../../../providers/settings/settings';
+import { LoginProvider } from '../../../providers/login/login';
 import { HomePage } from '../../Main/home/home';
-import { CategoriesPage } from '../categories/categories';
+
 
 @IonicPage()
 @Component({
-  selector: 'page-product-list',
-  templateUrl: 'product-list.html',
+  selector: 'page-special-offers',
+  templateUrl: 'special-offers.html',
 })
-export class ProductListPage {
+export class SpecialOffersPage {
 
   public rateValue;
   public filterData;
 
   language_id;
   currency_id;
-  fromPage;
+
   public sorts;
   public limits;
   public pagination;
   public results;
-  public search;
   public sort;
   public order;
   public limit;
@@ -42,9 +42,6 @@ export class ProductListPage {
   public productModel: any[] = [];
   public isInfinite = true;
 
-  isSearch = 0;
-  searchInput;
-
   //for params
   public country_origin_filter: any[] = [];;
   public brands: any[] = [];;
@@ -57,13 +54,13 @@ export class ProductListPage {
   filter_txt;
   search_place;
 
-  constructor(public navCtrl: NavController,
-    public navParams: NavParams,
+  constructor(public navCtrl: NavController, public navParams: NavParams,
     public categoryProvider: CategoryProvider,
     public platform: Platform,
     public settingsProvider: SettingsProvider,
     public actionSheetCtrl: ActionSheetController,
     public loadingProvider: LoadingProvider,
+    public loginProvider: LoginProvider,
     public translate: TranslateService,
     public languageProvider: LanguageProvider,
   ) {
@@ -76,10 +73,12 @@ export class ProductListPage {
     this.language_id = this.languageProvider.getLanguage();
     this.currency_id = this.settingsProvider.getCurrData();
 
-    this.fromPage = this.navParams.data.from;
     this.country_origin_filter = this.navParams.data.countryOrigin;
     this.brands = this.navParams.data.brand;
     this.price = this.navParams.data.price;
+    console.log(" this.country_origin_filter : " + this.country_origin_filter);
+    console.log(" this.brands : " + this.brands);
+    console.log(" this.price : " + this.price);
 
     this.setText();
     this.getServerData();
@@ -90,7 +89,7 @@ export class ProductListPage {
     console.log("getLanguage() : " + this.languageProvider.getLanguage());
     this.translate.use(this.languageProvider.getLanguage());
 
-    this.translate.get('products_list').subscribe((text: string) => {
+    this.translate.get('special_offers').subscribe((text: string) => {
       this.heading_title = text;
     });
     this.translate.get('search_products').subscribe((text: string) => {
@@ -107,56 +106,8 @@ export class ProductListPage {
     });
   }
 
-  getSearch() {
-    if (this.isSearch == 0) {
-      this.isSearch = 1;
-    }
-    else {
-      this.isSearch = 0;
-      this.searchInput = '';
-    }
-  }
-
   goBack() {
-    if (this.fromPage == 'home' || this.fromPage == undefined) {
-      this.navCtrl.setRoot(HomePage);
-    }
-    else {
-      this.navCtrl.setRoot(CategoriesPage);
-    }
-  }
-
-  getServerData() {
-    this.filterData = {
-      'search': this.search,
-      'page': this.page,
-      'sort': this.sort,
-      'order': this.order,
-      'category_filter': this.id,
-      'language_id': this.language_id,
-      'currency_id': this.currency_id,
-      'country_origin_filter': this.country_origin_filter,
-      'brand_filter': this.brands,
-      'price_filter': this.price,
-    };
-
-    this.loadingProvider.show();
-    this.categoryProvider.apiProductList(this.filterData).subscribe(
-      response => {
-        this.responseData = response;
-        this.products = this.responseData.products;
-        this.pagination = this.responseData.pagination;
-        this.sorts = this.responseData.sorts;
-        this.limits = this.responseData.limits;
-        this.binddata();
-        console.log("catList : " + JSON.stringify(this.products));
-        this.loadingProvider.dismiss();
-      },
-      err => console.error(err),
-      () => {
-        this.loadingProvider.dismiss();
-      }
-    );
+    this.navCtrl.setRoot(HomePage);
   }
 
   presentSortActionSheet() {
@@ -184,34 +135,47 @@ export class ProductListPage {
   }
 
   openFilter() {
-    let psrams = {
+    let params = {
       countryOrigin: this.country_origin_filter,
       brand: this.brands,
       price: this.price,
-      fromPage: "productList",
+      fromPage: "special",
     };
-    this.navCtrl.push(FiltersPage, psrams);
+    this.navCtrl.push(FiltersPage, params);
   }
 
-  // presentLimitActionSheet() {
-  //   let actionSheet = this.actionSheetCtrl.create({
-  //     title: 'Limit of Products',
-  //   });
+  getServerData() {
+    this.filterData = {
+      'page': this.page,
+      'sort': this.sort,
+      'order': this.order,
+      'category_filter': this.id,
+      'language_id': this.language_id,
+      'currency_id': this.currency_id,
+      'customer_id': this.loginProvider.customer_id,
+      'country_origin_filter': this.country_origin_filter,
+      'brand_filter': this.brands,
+      'price_filter': this.price,
+    };
 
-  //   for (let index = 0; index < this.limits.length; index++) {
-  //     var limitButtons = {
-  //       text: this.limits[index].text,
-  //       handler: () => {
-  //         this.limit = this.limits[index].value;
-  //         this.page = 1;
-  //         this.productModel = [];
-  //         this.getServerData();
-  //       }
-  //     };
-  //     actionSheet.addButton(limitButtons);
-  //   }
-  //   actionSheet.present();
-  // }
+    this.loadingProvider.show();
+    this.categoryProvider.apispecialOffer(this.filterData).subscribe(
+      response => {
+        this.responseData = response;
+        this.products = this.responseData.products;
+        this.pagination = this.responseData.pagination;
+        this.sorts = this.responseData.sorts;
+        this.limits = this.responseData.limits;
+        this.binddata();
+        console.log("catList : " + JSON.stringify(this.products));
+        this.loadingProvider.dismiss();
+      },
+      err => console.error(err),
+      () => {
+        this.loadingProvider.dismiss();
+      }
+    );
+  }
 
   binddata() {
     for (let index = 0; index < this.products.length; index++) {
@@ -259,15 +223,5 @@ export class ProductListPage {
     } else {
       this.isInfinite = false;
     }
-  }
-
-  public onSearch(ev: any) {
-    this.search = ev.target.value;
-    this.productModel = [];
-    this.getServerData();
-  }
-
-  public onSearchCancel() {
-    this.search = '';
   }
 }

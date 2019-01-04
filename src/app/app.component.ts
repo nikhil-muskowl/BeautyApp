@@ -13,6 +13,7 @@ import { ProfilePage } from '../pages/Account/profile/profile';
 import { WishlistPage } from '../pages/Account/wishlist/wishlist';
 import { OrderPage } from '../pages/Orders/order/order';
 import { SettingsPage } from '../pages/Main/settings/settings';
+import { SpecialOffersPage } from '../pages/Products/special-offers/special-offers';
 
 export interface PageInterface {
   title: string;
@@ -58,6 +59,7 @@ export class MyApp {
       this.pages.push({ title: 'Profile', name: 'ProfilePage', component: ProfilePage, icon: 'assets/icon/Contact.png' });
       this.pages.push({ title: 'My Wishlist', name: 'WishlistPage', component: WishlistPage, icon: 'assets/icon/Contact.png' });
       this.pages.push({ title: 'My Orders', name: 'OrderPage', component: OrderPage, icon: 'assets/icon/Contact.png' });
+      this.pages.push({ title: 'Special Offers', name: 'SpecialOffersPage', component: SpecialOffersPage, icon: 'assets/icon/Contact.png' });
     }
     else {
       this.pages.push({ title: 'Login', name: 'LoginPage', component: LoginPage, icon: 'assets/icon/Contact.png' });

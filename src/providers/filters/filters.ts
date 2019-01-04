@@ -1,17 +1,57 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpRequest, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { ConfigProvider } from '../config/config';
 
-/*
-  Generated class for the FiltersProvider provider.
 
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
 @Injectable()
 export class FiltersProvider {
 
+  URL;
+  public headers = new HttpHeaders();
+  public formData: FormData = new FormData();
+
   constructor(public http: HttpClient) {
-    console.log('Hello FiltersProvider Provider');
+    console.log('Hello CategoryProvider Provider');
+    this.headers.set('Access-Control-Allow-Origin', '*');
+    this.headers.set('Cookie', 'currency=INR');
+    this.headers.set('Content-Type', 'application/json; charset=utf-8');
   }
 
+  apiCountryOrigins() {
+    this.formData = new FormData();
+    this.URL = ConfigProvider.BASE_URL + '?route=restapi/product/country_origin';
+
+    return this.http.get<any>(this.URL,
+      {
+        headers: this.headers,
+      }
+    );
+  }
+
+  apiBrands(data: any) {
+    this.formData = new FormData();
+    this.URL = ConfigProvider.BASE_URL + '?route=restapi/product/manufacturer';
+
+    this.formData.append('language', data.language_id);
+    this.formData.append('currency', data.currency_id);
+
+    return this.http.post<any>(this.URL,
+      this.formData,
+      {
+        headers: this.headers,
+      }
+    );
+  }
+
+  apiprices() {
+
+    this.formData = new FormData();
+    this.URL = ConfigProvider.BASE_URL + '?route=restapi/product/price_slider';
+
+    return this.http.get<any>(this.URL,
+      {
+        headers: this.headers,
+      }
+    );
+  }
 }

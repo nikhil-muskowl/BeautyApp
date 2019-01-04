@@ -59,6 +59,7 @@ export class SettingsProvider {
   }
 
   public setCurrency(code) {
+    console.log("Set currency : " + code);
     try {
       window.localStorage.setItem('currency', code);
     } catch (error) {

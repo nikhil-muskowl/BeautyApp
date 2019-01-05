@@ -13,6 +13,7 @@ import { WishlistPage } from '../wishlist/wishlist';
 import { OrderPage } from '../../Orders/order/order';
 import { EditProfilePage } from '../edit-profile/edit-profile';
 import { ChangePasswordPage } from '../change-password/change-password';
+import { AddressesPage } from '../addresses/addresses';
 
 @IonicPage()
 @Component({
@@ -52,6 +53,7 @@ export class ProfilePage {
   public oops_txt;
   public exit_app_txt;
   public smthng_wrong;
+  public address_book_txt;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -66,7 +68,7 @@ export class ProfilePage {
     this.setText();
     // this.isLogin();
     platform.registerBackButtonAction(() => {
-      // this.navCtrl.setRoot(HomePage);
+      this.navCtrl.setRoot(HomePage);
     });
   }
 
@@ -131,6 +133,9 @@ export class ProfilePage {
     });
     this.translate.get('smthng_wrong').subscribe((text: string) => {
       this.smthng_wrong = text;
+    });
+    this.translate.get('address_book').subscribe((text: string) => {
+      this.address_book_txt = text;
     });
 
   }
@@ -199,7 +204,7 @@ export class ProfilePage {
       }
     );
   }
-  
+
   logout() {
     let alert = this.alertCtrl.create({
       title: this.confirm_logout,
@@ -227,6 +232,10 @@ export class ProfilePage {
 
   gotoWishlist() {
     this.navCtrl.push(WishlistPage, { from: 'profile' });
+  }
+
+  gotoAddress() {
+    this.navCtrl.push(AddressesPage);
   }
 
   gotoOrders() {

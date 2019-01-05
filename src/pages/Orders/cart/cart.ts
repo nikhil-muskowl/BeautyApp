@@ -15,6 +15,8 @@ import { LoginPage } from '../../Account/login/login';
 import { ModalProvider } from '../../../providers/modal/modal';
 import { CartEditPage } from '../cart-edit/cart-edit';
 import { CartCheckoutPage } from '../cart-checkout/cart-checkout';
+import { PaymentAddressPage } from '../payment-address/payment-address';
+import { SettingsProvider } from '../../../providers/settings/settings';
 
 @IonicPage()
 @Component({
@@ -24,7 +26,9 @@ import { CartCheckoutPage } from '../cart-checkout/cart-checkout';
 export class CartPage {
 
   public terms;
-  public products;
+  language_id;
+  currency_id;
+  public products: any = [];
   public totals;
   submitAttempt;
 
@@ -40,6 +44,7 @@ export class CartPage {
   private cart_quantity = 1;
   private field_error;
   public alert: Alert;
+  from;
 
   //txt
   public heading_title;
@@ -57,10 +62,12 @@ export class CartPage {
   public warning_txt;
   public confirm_txt;
   public yes_txt;
+  public place_order_txt;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public platform: Platform,
+    public settingsProvider: SettingsProvider,
     public formBuilder: FormBuilder,
     public modalProvider: ModalProvider,
     public categoryProvider: CategoryProvider,
@@ -73,6 +80,10 @@ export class CartPage {
     public languageProvider: LanguageProvider,
   ) {
 
+    this.language_id = this.languageProvider.getLanguage();
+    this.currency_id = this.settingsProvider.getCurrData();
+
+    this.from = this.navParams.get('from');
     this.setText();
     this.isLogin();
     this.getProducts();
@@ -82,7 +93,12 @@ export class CartPage {
   }
 
   goBack() {
-    this.navCtrl.pop();
+    if (this.from == 'home') {
+      this.navCtrl.setRoot(HomePage);
+    }
+    else {
+      this.navCtrl.pop();
+    }
   }
 
   setText() {
@@ -135,6 +151,9 @@ export class CartPage {
     this.translate.get('yes').subscribe((text: string) => {
       this.yes_txt = text;
     });
+    this.translate.get('place_order').subscribe((text: string) => {
+      this.place_order_txt = text;
+    });
   }
 
   isLogin() {
@@ -146,8 +165,10 @@ export class CartPage {
   }
 
   public getProducts() {
+    this.products = [];
     let param = {
-      customer_id: this.loginProvider.customer_id
+      language_id: this.language_id,
+      currency_id: this.currency_id
     };
     //this.loadingProvider.present();
     this.cartProvider.products(param).subscribe(
@@ -208,7 +229,7 @@ export class CartPage {
 
   public remove(data) {
     this.loadingProvider.present();
-    this.cartProvider.remove(data).subscribe(
+    this.cartProvider.remove(data, this.language_id, this.currency_id).subscribe(
       response => {
         this.getProducts();
       },
@@ -281,13 +302,13 @@ export class CartPage {
           text: this.cancel_txt,
           role: 'cancel',
           handler: () => {
-
           }
         },
         {
           text: this.yes_txt,
           handler: () => {
-            this.navCtrl.push(CartCheckoutPage);
+            // this.navCtrl.push(CartCheckoutPage);
+            this.navCtrl.push(PaymentAddressPage);
           }
         }
       ]
@@ -297,12 +318,13 @@ export class CartPage {
   }
 
   public edit(data) {
-    let param = { cart_id: data.cart_id };
+    let param = { cart_id: data.cart_id,
+      quantity : data.quantity };
     this.modalProvider.presentProfileModal(CartEditPage, param);
 
     this.modalProvider.modal.onDidDismiss(data => {
       // This is added to refresh page.
-      this.navCtrl.setRoot(this.navCtrl.getActive().component);
+      // this.navCtrl.push(this.navCtrl.getActive().component);
       this.getProducts();
     });
   }

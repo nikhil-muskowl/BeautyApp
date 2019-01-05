@@ -268,3 +268,17 @@ ion-searchbar {
     -webkit-line-clamp: 3 !important;
     -webkit-box-orient: vertical !important;
 }
+
+.alert-md {
+    .alert-title {
+        font-size: 22px;
+        color: #cc1818;
+        font-weight: 500 !important;
+    }
+
+    .alert-message {
+        max-height: 240px;
+        font-size: 15px;
+        color: #000;
+    }
+}

@@ -46,6 +46,7 @@
   "done": "DONE",
   "load_more": "Loading more data...",
   "post": "Post",
+  "save": "Save",
   "saved": "Saved",
   "story_saved": "Story saved successfully.",
   "category": "Category",
@@ -172,5 +173,11 @@
   "price": "Price",
   "apply": "Apply",
   "special_offers": "Special Offers",
-  "clear": "Clear"
+  "clear": "Clear",
+  "place_order": "Place Order",
+  "edit_cart": "Cart Edit",
+  "address_book": "Address Book",
+  "addresses_empty": "Address Book is Empty",
+  "add_new_address": "Add New Address",
+  "add_address": "Add Address"
 }

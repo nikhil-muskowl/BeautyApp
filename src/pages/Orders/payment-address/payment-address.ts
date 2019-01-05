@@ -48,6 +48,7 @@ export class PaymentAddressPage {
 
   private success;
   private error_warning;
+  
   // form data
   submitAttempt;
   addressForm: FormGroup;
@@ -129,7 +130,6 @@ export class PaymentAddressPage {
     });
   }
 
-
   createForm() {
     this.addressForm = this.formBuilder.group({
       firstname: [this.fname, Validators.required],
@@ -141,7 +141,6 @@ export class PaymentAddressPage {
       zone_id: ['', Validators.required],
     });
   }
-
 
   goBack() {
     this.navCtrl.pop();

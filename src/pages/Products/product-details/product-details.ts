@@ -14,14 +14,17 @@ import { AlertController, Alert } from 'ionic-angular';
 import { CartPage } from '../../Orders/cart/cart';
 import { WishlistPage } from '../../Account/wishlist/wishlist';
 import { LoginPage } from '../../Account/login/login';
+import { SettingsProvider } from '../../../providers/settings/settings';
 
 @IonicPage()
 @Component({
   selector: 'page-product-details',
   templateUrl: 'product-details.html',
 })
-export class ProductDetailsPage {
 
+export class ProductDetailsPage {
+  public language_id;
+  public currency_id;
   public customer_id;
   public product_id;
   public responseData;
@@ -76,6 +79,7 @@ export class ProductDetailsPage {
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public platform: Platform,
+    public settingsProvider: SettingsProvider,
     public formBuilder: FormBuilder,
     public categoryProvider: CategoryProvider,
     public alertProvider: AlertProvider,
@@ -88,6 +92,8 @@ export class ProductDetailsPage {
     public languageProvider: LanguageProvider,
   ) {
 
+    this.language_id = this.languageProvider.getLanguage();
+    this.currency_id = this.settingsProvider.getCurrData();
     this.customer_id = this.loginProvider.getData();
     this.product_id = this.navParams.get("id");
     console.log("Product id : " + this.product_id);
@@ -304,11 +310,10 @@ export class ProductDetailsPage {
   }
 
   getProducts() {
-
     let param = {
-      customer_id: this.customer_id
+      language_id: this.language_id,
+      currency_id: this.currency_id
     };
-
     this.loadingProvider.present();
     this.cartProvider.products(param).subscribe(
       response => {

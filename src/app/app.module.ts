@@ -31,6 +31,9 @@ import { LoginPage } from '../pages/Account/login/login';
 import { ProfilePage } from '../pages/Account/profile/profile';
 import { RegistrationPage } from '../pages/Account/registration/registration';
 import { WishlistPage } from '../pages/Account/wishlist/wishlist';
+import { AddressesPage } from '../pages/Account/addresses/addresses';
+import { EditAddressPage } from '../pages/Account/edit-address/edit-address';
+import { AddAddressPage } from '../pages/Account/add-address/add-address';
 
 //Products
 import { CategoriesPage } from '../pages/Products/categories/categories';
@@ -63,6 +66,7 @@ import { ModalProvider } from '../providers/modal/modal';
 import { OrderProvider } from '../providers/order/order';
 import { SettingsProvider } from '../providers/settings/settings';
 import { FiltersProvider } from '../providers/filters/filters';
+import { AddressProvider } from '../providers/address/address';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/language/', '.json');
@@ -98,6 +102,9 @@ export function createTranslateLoader(http: HttpClient) {
     CartCheckoutPage,
     CartEditPage,
     SpecialOffersPage,
+    AddressesPage,
+    EditAddressPage,
+    AddAddressPage,
   ],
   imports: [
     HttpClientModule,
@@ -144,6 +151,9 @@ export function createTranslateLoader(http: HttpClient) {
     CartCheckoutPage,
     CartEditPage,
     SpecialOffersPage,
+    AddressesPage,
+    EditAddressPage,
+    AddAddressPage,
   ],
   providers: [
     StatusBar,
@@ -161,7 +171,8 @@ export function createTranslateLoader(http: HttpClient) {
     ModalProvider,
     OrderProvider,
     SettingsProvider,
-    FiltersProvider
+    FiltersProvider,
+    AddressProvider
   ]
 })
 export class AppModule { }

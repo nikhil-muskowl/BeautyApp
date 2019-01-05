@@ -2,6 +2,7 @@ import { HttpClient, HttpRequest, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ConfigProvider } from '../config/config';
+import { LoginProvider } from '../login/login';
 // Set timeout for response
 import 'rxjs/add/operator/timeout';
 
@@ -15,16 +16,18 @@ export class CartProvider {
   private URL;
 
   constructor(
-    public http: HttpClient, ) {
+    public http: HttpClient,
+    public loginProvider: LoginProvider) {
 
     this.headers.set('Access-Control-Allow-Origin ', '*');
     this.headers.set('Content-Type', 'application/json; charset=utf-8');
   }
 
-  products(data: any): any {
+  products(data: any) {
     this.formData = new FormData();
-    this.formData.append('customer_id', data.customer_id);
-
+    this.formData.append('customer_id', this.loginProvider.customer_id);
+    this.formData.append('language_id', data.language_id);
+    this.formData.append('currency_id', data.currency_id);
     this.URL = ConfigProvider.BASE_URL + '?route=restapi/checkout/cart';
     return this.http.post<any>(this.URL,
       this.formData,
@@ -54,10 +57,14 @@ export class CartProvider {
   edit(data: any): any {
     this.formData = new FormData();
     this.URL = ConfigProvider.BASE_URL + '?route=restapi/checkout/cart/edit';
+
     this.formData.append('key', data.cart_id);
     this.formData.append('quantity', data.quantity);
+    this.formData.append('customer_id', this.loginProvider.customer_id);
+    this.formData.append('language_id', data.language_id);
+    this.formData.append('currency_id', data.currency_id);
 
-    return this.http.post<any>(this.URL,
+    return this.http.post(this.URL,
       this.formData,
       {
         headers: this.headers,
@@ -65,12 +72,14 @@ export class CartProvider {
     );
   }
 
-  remove(data: any): any {
+  remove(data: any, language_id, currency_id): any {
     this.formData = new FormData();
     this.URL = ConfigProvider.BASE_URL + '?route=restapi/checkout/cart/remove';
     this.formData.append('key', data.cart_id);
-
-    return this.http.post<any>(this.URL,
+    this.formData.append('customer_id', this.loginProvider.customer_id);
+    this.formData.append('language_id', language_id);
+    this.formData.append('currency_id', currency_id);
+    return this.http.post(this.URL,
       this.formData,
       {
         headers: this.headers,

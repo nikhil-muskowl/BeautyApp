@@ -11,6 +11,9 @@ import { AlertController, Alert } from 'ionic-angular';
 import { CategoriesPage } from '../../Products/categories/categories';
 import { CartPage } from '../../Orders/cart/cart';
 import { ProductListPage } from '../../Products/product-list/product-list';
+import { SpecialOffersPage } from '../../Products/special-offers/special-offers';
+import { SettingsProvider } from '../../../providers/settings/settings';
+import { CartProvider } from '../../../providers/cart/cart';
 
 @Component({
   selector: 'page-home',
@@ -19,10 +22,15 @@ import { ProductListPage } from '../../Products/product-list/product-list';
 export class HomePage {
 
   heading_title;
+  public language_id;
+  public currency_id;
+  public totalQty;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public platform: Platform,
+    public cartProvider: CartProvider,
+    public settingsProvider: SettingsProvider,
     public alertProvider: AlertProvider,
     public loadingProvider: LoadingProvider,
     public loginProvider: LoginProvider,
@@ -30,6 +38,9 @@ export class HomePage {
     public languageProvider: LanguageProvider,
     public alertCtrl: AlertController, ) {
 
+    this.setText();
+    this.language_id = this.languageProvider.getLanguage();
+    this.currency_id = this.settingsProvider.getCurrData();
   }
 
   setText() {
@@ -42,7 +53,7 @@ export class HomePage {
   }
 
   gotoCart() {
-    this.navCtrl.push(CartPage);
+    this.navCtrl.push(CartPage, { from: 'home' });
   }
 
   gotoHome() {
@@ -66,23 +77,27 @@ export class HomePage {
   }
 
   gotoOffers() {
-
+    this.navCtrl.push(SpecialOffersPage);
   }
 
   public getProducts() {
+    let param = {
+      language_id: this.language_id,
+      currency_id: this.currency_id
+    };
+    this.cartProvider.products(param).subscribe(
+      response => {
+        if (response) {
+          if (response.total_quantity) {
+            this.totalQty = response.total_quantity;
+          }
+        }
+      },
+      err => console.error(err),
+      () => {
+      }
+    );
+    return event;
 
-      // this.cartProvider.products().subscribe(
-      //   response => {
-      //     if (response) {
-      //       if (response.totals[0].text) {
-      //         this.totalQty = response.totals[0].text;
-      //       }
-      //     }
-      //   },
-      //   err => console.error(err),
-      //   () => {
-      //   }
-      // );
-    
   }
 }

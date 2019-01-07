@@ -5,6 +5,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertProvider } from '../../../providers/alert/alert';
 import { TranslateService } from '@ngx-translate/core';
 import { LanguageProvider } from '../../../providers/language/language';
+import { LoginProvider } from '../../../providers/login/login';
+import { LoadingProvider } from '../../../providers/loading/loading';
+import { LoginPage } from '../login/login';
 
 @IonicPage()
 @Component({
@@ -35,11 +38,15 @@ export class ChangePasswordPage {
   public pass_txt;
   public conf_pass_txt;
   public curr_pass_txt;
+  public success_txt;
+  public warning_txt;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public platform: Platform,
     public formBuilder: FormBuilder,
+    public loginProvider: LoginProvider,
+    public loadingProvider: LoadingProvider,
     public translate: TranslateService,
     public alertProvider: AlertProvider,
     public languageProvider: LanguageProvider, ) {
@@ -56,9 +63,6 @@ export class ChangePasswordPage {
     this.translate.setDefaultLang(this.languageProvider.getLanguage());
     this.translate.use(this.languageProvider.getLanguage());
 
-    this.translate.get('edit_profile').subscribe((text: string) => {
-      this.heading_title = text;
-    });
     this.translate.get('error_password').subscribe((text: string) => {
       this.error_password = text;
     });
@@ -83,6 +87,12 @@ export class ChangePasswordPage {
     this.translate.get('curr_password').subscribe((text: string) => {
       this.curr_pass_txt = text;
     });
+    this.translate.get('success').subscribe((text: string) => {
+      this.success_txt = text;
+    });
+    this.translate.get('warning').subscribe((text: string) => {
+      this.warning_txt = text;
+    });
   }
 
   goBack() {
@@ -102,60 +112,51 @@ export class ChangePasswordPage {
     this.formData = this.passwordForm.valid;
 
     if (this.passwordForm.valid) {
-      //this.loadingProvider.present();
-      // this.customerProvider.changePassword(this.passwordForm.value).subscribe(
-      //   response => {
-      //     this.responseData = response;
-      //     this.submitAttempt = true;
+      if (this.passwordForm.value.password == this.passwordForm.value.password.confirm) {
+        this.loadingProvider.present();
 
-      //     if (this.responseData.success && this.responseData.success != '' && this.responseData.success != null) {
-      //       this.success = this.responseData.success;
-      //       this.alertProvider.title = 'Success';
-      //       this.alertProvider.message = this.success;
-      //       this.alertProvider.showAlert();
-      //       this.passwordForm.reset();
-      //       this.submitAttempt = false;
-      //       //this.logout();
-      //       this.navCtrl.push(CustomerAccountPage);
-      //     }
+        this.loginProvider.changePassword(this.passwordForm.value).subscribe(
+          response => {
+            this.responseData = response;
+            this.submitAttempt = true;
 
-      //     if (this.responseData.error && this.responseData.error != '' && this.responseData.error == null) {
-      //       this.error = this.responseData.error;
-      //       this.alertProvider.title = 'Warning';
-      //       this.alertProvider.message = this.error;
-      //       this.alertProvider.showAlert();
-      //     }
+            if (this.responseData.success && this.responseData.success != '' && this.responseData.success != null) {
+              this.success = this.responseData.success;
+              this.alertProvider.title = this.success;
+              this.alertProvider.message = this.success;
+              this.alertProvider.showAlert();
+              this.passwordForm.reset();
+              this.submitAttempt = false;
+              this.loginProvider.logout();
+              this.navCtrl.push(LoginPage);
+            }
 
-      //     // if (this.responseData.error_currentpassword != '') {
-      //     //   this.passwordForm.controls['currentpassword'].setErrors({ 'incorrect': true });
-      //     //   this.error_currentpassword = this.responseData.error_currentpassword;
-      //     // }
+            if (this.responseData.error && this.responseData.error != '' && this.responseData.error == null) {
+              this.error = this.responseData.error;
+              this.alertProvider.title = this.warning_txt;
+              this.alertProvider.message = this.error;
+              this.alertProvider.showAlert();
+            }
 
-      //     if (this.responseData.error != '') {
-      //       if (this.responseData.error != 'null') {
-      //         this.passwordForm.controls['currentpassword'].setErrors({ 'incorrect': true });
-      //         this.error_currentpassword = 'Error : Current password is not valid!';
-      //       }
-      //     }
+            if (this.responseData.error_currentpassword != '') {
+              this.passwordForm.controls['currentpassword'].setErrors({ 'incorrect': true });
+              this.error_currentpassword = this.responseData.error_currentpassword;
+            }
 
-      //     if (this.responseData.error_password != '') {
-      //       this.error_currentpassword = '';
-      //       this.passwordForm.controls['password'].setErrors({ 'incorrect': true });
-      //       this.error_password = this.responseData.error_password;
-      //     }
-
-      //     if (this.responseData.error_confirm != '') {
-      //       this.error_currentpassword = '';
-      //       this.passwordForm.controls['confirm'].setErrors({ 'incorrect': true });
-      //       this.error_confirm = this.responseData.error_confirm;
-      //     }
-
-      //   },
-      //   err => console.error(err),
-      //   () => {
-      //     // this.loadingProvider.dismiss();
-      //   }
-      // );
+            if (this.responseData.error != '') {
+              if (this.responseData.error != 'null') {
+                this.passwordForm.controls['currentpassword'].setErrors({ 'incorrect': true });
+                this.error_currentpassword = 'Error : Current password is not valid!';
+              }
+            }
+            this.loadingProvider.dismiss();
+          },
+          err => console.error(err),
+          () => {
+            this.loadingProvider.dismiss();
+          }
+        );
+      }
     }
 
   }

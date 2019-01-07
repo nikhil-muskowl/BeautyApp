@@ -14,7 +14,6 @@ import { HomePage } from '../../Main/home/home';
 import { LoginPage } from '../../Account/login/login';
 import { ModalProvider } from '../../../providers/modal/modal';
 import { CartEditPage } from '../cart-edit/cart-edit';
-import { CartCheckoutPage } from '../cart-checkout/cart-checkout';
 import { PaymentAddressPage } from '../payment-address/payment-address';
 import { SettingsProvider } from '../../../providers/settings/settings';
 

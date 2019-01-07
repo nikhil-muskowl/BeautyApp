@@ -238,7 +238,6 @@ export class EditAddressPage {
         // this.loadingProvider.dismiss();
       }
     );
-    return event;
   }
 
   goBack() {

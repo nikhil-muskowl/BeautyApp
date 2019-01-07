@@ -41,7 +41,6 @@ page-home {
         z-index: -1;
         width: 25px !important;
         height: 25px !important;
-        
     }
     .sidebar .arrow-btn {
         background-color: transparent;
@@ -160,5 +159,14 @@ page-home {
     }
     .bottm-btn {
         background: transparent !important;
+    }
+    .cart-span {
+        margin: 3px 0px !important;
+        position: fixed !important;
+        color: #cc1818 !important;
+        p {
+            font-size: 12px;
+            font-weight: 600;
+        }
     }
 }

@@ -95,6 +95,7 @@
   "error_rate": "Rating is required",
   "change": "Change",
   "select_language": "Select language",
+  "select_currency": "Select Currency",
   "select_city": "Select city",
   "fullname": "Full Name",
   "firstname": "First Name",
@@ -179,5 +180,7 @@
   "address_book": "Address Book",
   "addresses_empty": "Address Book is Empty",
   "add_new_address": "Add New Address",
-  "add_address": "Add Address"
+  "add_address": "Add Address",
+  "use_exist_address": "I want to use an existing Address",
+  "use_new_address": "I want to use a new Address"
 }

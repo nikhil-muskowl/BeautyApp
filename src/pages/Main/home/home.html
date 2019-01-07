@@ -1,10 +1,10 @@
-<ion-content>
+<ion-content no-scroll>
   <div class="home-page">
     <ion-grid>
       <ion-row>
         <ion-col class="sidebar" col-2>
           <div>
-            <img class="logo-img" src="assets/images/nav-bar-icon/Logo.png" alt="Beauty Shop">
+            <img class="logo-img" src="assets/images/nav-bar-icon/logo.png" alt="Beauty Shop">
           </div>
 
           <ion-fab middle>
@@ -15,7 +15,9 @@
               <img class="menu-icons" src="assets/images/nav-bar-icon/search.png" alt="">
             </button>
             <button ion-fab clear (click)="gotoCart()">
-              <img class="menu-icons" src="assets/images/nav-bar-icon/shopping-bag.png" alt="">
+              <img class="menu-icons" src="assets/images/nav-bar-icon/shopping-bag.png" alt=""><span class="cart-span">
+                <p>{{totalQty}}</p>
+              </span>
             </button>
           </ion-fab>
 
@@ -66,8 +68,8 @@
               <img id="body-care-vm" src="assets/images/small/view-more-w-1.png" alt="">
             </div>
             <div class="main-img" style="height: 15%;">
-
             </div>
+
             <div class="main-img" style="height: 20%;">
               <img id="hair-care-l" src="assets/images/hair-care.jpg" alt="">
               <img id="hair-care-s" src="assets/images/small/hair-care.png" alt="">

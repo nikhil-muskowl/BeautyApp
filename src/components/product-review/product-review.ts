@@ -5,6 +5,7 @@ import { AlertProvider } from '../../providers/alert/alert';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { LanguageProvider } from '../../providers/language/language';
+import { SettingsProvider } from '../../providers/settings/settings';
 
 @Component({
   selector: 'product-review',
@@ -17,6 +18,8 @@ export class ProductReviewComponent {
   public reviews;
   public pagination;
   public results;
+  public language_id;
+  public currency_id;
 
   public rateValue;
 
@@ -38,16 +41,20 @@ export class ProductReviewComponent {
   public name_txt;
   public write_review_here;
   public post;
+  public warning_txt;
+  public success_txt;
 
   constructor(public formBuilder: FormBuilder,
     public categoryProvider: CategoryProvider,
     public loadingProvider: LoadingProvider,
     public alertProvider: AlertProvider,
-
+    public settingsProvider: SettingsProvider,
     public translate: TranslateService,
     public languageProvider: LanguageProvider, ) {
-    console.log('Hello ProductReviewComponent Component');
-    this.text = 'Hello World';
+
+    this.language_id = this.languageProvider.getLanguage();
+    this.currency_id = this.settingsProvider.getCurrData();
+
     this.setText();
   }
 
@@ -76,6 +83,9 @@ export class ProductReviewComponent {
     });
     this.translate.get('write_review_here').subscribe((text: string) => {
       this.write_review_here = text;
+    });
+    this.translate.get('warning').subscribe((text: string) => {
+      this.warning_txt = text;
     });
     this.translate.get('post').subscribe((text: string) => {
       this.post = text;
@@ -123,54 +133,41 @@ export class ProductReviewComponent {
     this.submitAttempt = true;
     this.formData = this.reviewForm.valid;
 
-    // if (this.reviewForm.valid) {
-    //   this.loadingProvider.present();
-    //   this.categoryProvider.postReviews(this.product_id, this.reviewForm.value).subscribe(
-    //     response => {
-    //       this.responseData = response;
+    if (this.reviewForm.valid) {
 
-    //       this.submitAttempt = true;
+      this.loadingProvider.present();
 
-    //       if (this.responseData.success && this.responseData.success != '') {
-    //         this.success = this.responseData.success;
-    //         this.alertProvider.title = 'Success';
-    //         this.alertProvider.message = this.success;
-    //         this.alertProvider.showAlert();
-    //         this.reviewForm.reset();
-    //         this.submitAttempt = false;
-    //       }
+      this.categoryProvider.postReviews(this.product_id, this.reviewForm.value).subscribe(
+        response => {
+          this.responseData = response;
+          console.log(JSON.stringify(this.responseData));
+          this.submitAttempt = true;
 
-    //       if (this.responseData.error && this.responseData.error != '') {
-    //         this.error = this.responseData.error;
+          if (this.responseData.success && this.responseData.success != '') {
+            this.success = this.responseData.success;
+            this.alertProvider.title = this.success_txt;
+            this.alertProvider.message = this.success;
+            this.alertProvider.showAlert();
+            this.reviewForm.reset();
+            this.submitAttempt = false;
+            this.getServerData(this.product_id);
+          }
 
-    //         this.alertProvider.title = 'Warning';
-    //         this.alertProvider.message = this.error;
-    //         this.alertProvider.showAlert();
-    //       }
+          if (this.responseData.error && this.responseData.error != '') {
+            this.error = this.responseData.error;
 
+            this.alertProvider.title = this.warning_txt;
+            this.alertProvider.message = this.error;
+            this.alertProvider.showAlert();
+          }
 
-    //       if (this.responseData.error_name != '') {
-    //         this.reviewForm.controls['name'].setErrors({ 'incorrect': true });
-    //         this.error_name = this.responseData.error_name;
-    //       }
-
-    //       if (this.responseData.error_text != '') {
-    //         this.reviewForm.controls['text'].setErrors({ 'incorrect': true });
-    //         this.error_text = this.responseData.error_text;
-    //       }
-
-    //       if (this.responseData.error_rating != '') {
-    //         this.reviewForm.controls['rating'].setErrors({ 'incorrect': true });
-    //         this.error_rating = this.responseData.error_rating;
-    //       }
-
-    //     },
-    //     err => console.error(err),
-    //     () => {
-    //       this.loadingProvider.dismiss();
-    //     }
-    //   );
-    // }
+        },
+        err => console.error(err),
+        () => {
+          this.loadingProvider.dismiss();
+        }
+      );
+    }
 
   }
 }

@@ -30,7 +30,7 @@
           <ion-list class="child_list" no-lines *ngIf="items.children.length>0" [hidden]="selectedCat != i">
             <ion-item no-border *ngFor="let child of items.children; let i2=index" text-wrap (click)="openPage(child)">
               <ion-row>
-                <ion-col col-10><span ion-text>&nbsp;{{child.name}}</span></ion-col>
+                <ion-col col-10><span ion-text [innerHTML]="child.name"></span></ion-col>
               </ion-row>
             </ion-item>
           </ion-list>

@@ -20,7 +20,6 @@ import { PaymentAddressPage } from '../pages/Orders/payment-address/payment-addr
 import { ShippingAddressPage } from '../pages/Orders/shipping-address/shipping-address';
 import { OrderPage } from '../pages/Orders/order/order';
 import { OrderDetailsPage } from '../pages/Orders/order-details/order-details';
-import { CartCheckoutPage } from '../pages/Orders/cart-checkout/cart-checkout';
 import { CartEditPage } from '../pages/Orders/cart-edit/cart-edit';
 
 //Account
@@ -99,7 +98,6 @@ export function createTranslateLoader(http: HttpClient) {
     OrderDetailsPage,
     FiltersPage,
     SettingsPage,
-    CartCheckoutPage,
     CartEditPage,
     SpecialOffersPage,
     AddressesPage,
@@ -148,7 +146,6 @@ export function createTranslateLoader(http: HttpClient) {
     OrderDetailsPage,
     FiltersPage,
     SettingsPage,
-    CartCheckoutPage,
     CartEditPage,
     SpecialOffersPage,
     AddressesPage,

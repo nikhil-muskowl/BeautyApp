@@ -239,6 +239,8 @@ ion-searchbar {
             top: -0.2rem;
             right: -0.2rem;
             opacity: 0.9;
+            border: 1px solid;
+            border-radius: 50%;
             &~ion-icon {
                 margin-right: 1.2rem;
             }

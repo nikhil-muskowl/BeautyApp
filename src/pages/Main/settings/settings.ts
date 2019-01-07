@@ -21,9 +21,14 @@ export class SettingsPage {
   status;
   currency;
 
+  responseLangData;
+  languages;
+  language;
+
   //txt
   heading_title;
   select_currency_txt;
+  select_language_txt;
   ok_text;
   cancel_text;
 
@@ -38,10 +43,13 @@ export class SettingsPage {
     public languageProvider: LanguageProvider,
     public alertCtrl: AlertController,
   ) {
+    this.currency = this.settingsProvider.getCurrData();
+    this.language = this.languageProvider.getLanguage();
 
     this.setText();
     this.getCurrency();
-    this.currency = this.settingsProvider.getCurrData();
+    this.getLanguage();
+    
     console.log("this.currency  : " + this.currency);
 
     platform.registerBackButtonAction(() => {
@@ -59,6 +67,9 @@ export class SettingsPage {
     });
     this.translate.get('select_currency').subscribe((text: string) => {
       this.select_currency_txt = text;
+    });
+    this.translate.get('select_language').subscribe((text: string) => {
+      this.select_language_txt = text;
     });
     this.translate.get('ok').subscribe((text: string) => {
       this.ok_text = text;
@@ -83,19 +94,59 @@ export class SettingsPage {
     this.loadingProvider.dismiss();
   }
 
+  getLanguage() {
+    // this.loadingProvider.present();
+
+    this.languageProvider.apigetLanguages().subscribe(response => {
+      this.responseLangData = response;
+      this.languages = this.responseLangData.languages;
+      // this.loadingProvider.dismiss();
+    }, err => {
+      console.error(err);
+    }
+    );
+    // this.loadingProvider.dismiss();
+  }
+
   goBack() {
     this.navCtrl.setRoot(HomePage);
   }
 
   onCurrChange(data: any) {
-    console.log('selected language : ' + JSON.stringify(data));
+    console.log('selected currency : ' + JSON.stringify(data));
 
     this.changeCurrency(data.code);
     this.settingsProvider.setCurrency(data.code);
     console.log(" Changed : " + this.settingsProvider.getCurrData());
   }
 
+  onLangChange(data: any) {
+
+    console.log('selected language : ' + JSON.stringify(data));
+    this.changeLanguage(data.code);
+    this.languageProvider.apiUserSetCurrencies(data.code);
+    console.log(" Changed : " + this.settingsProvider.getCurrData());
+  }
+
   changeCurrency(code) {
+    this.loadingProvider.present();
+
+    this.settingsProvider.apiUserSetCurrencies(code).subscribe(response => {
+
+      this.responseData = response;
+      this.status = this.responseData.status;
+      if (status) {
+        console.log("Currency Changed successfully");
+      }
+      this.loadingProvider.dismiss();
+    }, err => {
+      console.error(err);
+    }
+    );
+    this.loadingProvider.dismiss();
+  }
+
+  changeLanguage(code) {
     this.loadingProvider.present();
 
     this.settingsProvider.apiUserSetCurrencies(code).subscribe(response => {

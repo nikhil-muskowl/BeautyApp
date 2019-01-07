@@ -38,9 +38,12 @@ export class HomePage {
     public languageProvider: LanguageProvider,
     public alertCtrl: AlertController, ) {
 
-    this.setText();
     this.language_id = this.languageProvider.getLanguage();
     this.currency_id = this.settingsProvider.getCurrData();
+
+    this.setText();
+    this.getProducts();
+
   }
 
   setText() {

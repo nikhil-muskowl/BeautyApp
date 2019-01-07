@@ -74,6 +74,54 @@ export class AddressProvider {
     );
   }
 
+  addPaymentAddress(data: any): any {
+
+    this.formData = new FormData();
+    this.URL = ConfigProvider.BASE_URL + '?route=restapi/checkout/payment/address';
+
+    this.formData.append('customer_id', this.loginProvider.customer_id);
+    this.formData.append('firstname', data.firstname);
+    this.formData.append('lastname', data.lastname);
+    this.formData.append('address_1', data.address);
+    this.formData.append('address_2', data.address2);
+    this.formData.append('city', data.city);
+    this.formData.append('company', '');
+    this.formData.append('postcode', data.postcode);
+    this.formData.append('country_id', data.country_id);
+    this.formData.append('zone_id', data.zone_id);
+
+    return this.http.post<any>(this.URL,
+      this.formData,
+      {
+        headers: this.headers,
+      }
+    );
+  }
+
+  addShippingAddress(data: any): any {
+
+    this.formData = new FormData();
+    this.URL = ConfigProvider.BASE_URL + '?route=restapi/checkout/shipping/address';
+
+    this.formData.append('customer_id', this.loginProvider.customer_id);
+    this.formData.append('firstname', data.firstname);
+    this.formData.append('lastname', data.lastname);
+    this.formData.append('address_1', data.address);
+    this.formData.append('address_2', data.address2);
+    this.formData.append('city', data.city);
+    this.formData.append('company', '');
+    this.formData.append('postcode', data.postcode);
+    this.formData.append('country_id', data.country_id);
+    this.formData.append('zone_id', data.zone_id);
+
+    return this.http.post<any>(this.URL,
+      this.formData,
+      {
+        headers: this.headers,
+      }
+    );
+  }
+
   editAddress(data: any, address_id: any): any {
 
     this.formData = new FormData();

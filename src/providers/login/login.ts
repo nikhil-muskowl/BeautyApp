@@ -76,7 +76,7 @@ export class LoginProvider {
   }
 
   apiProfileUpdate(data: any) {
-    
+
     this.formData = new FormData();
     this.URL = ConfigProvider.BASE_URL + '?route=restapi/account/edit';
 
@@ -120,12 +120,14 @@ export class LoginProvider {
 
   changePassword(data: any) {
     this.formData = new FormData();
-    //this.URL = ConfigProvider.BASE_URL_ + 'changepassword?customer_id=' + ConfigProvider.CUSTOMER_ID;
-    this.URL = ConfigProvider.BASE_URL + '?route=restapi/changepassword?customer_id=' + data.id;
-    this.formData.append('currentpassword', data.currentpassword);
+
+    this.URL = ConfigProvider.BASE_URL + '?route=restapi/account/password';
+
+    this.formData.append('customer_id', this.customer_id);
     this.formData.append('password', data.password);
     this.formData.append('confirm', data.confirm);
-    return this.http.post(this.URL,
+
+    return this.http.post<any>(this.URL,
       this.formData,
       {
         headers: this.headers,

@@ -1,12 +1,14 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertProvider } from '../../../providers/alert/alert';
 import { LoadingProvider } from '../../../providers/loading/loading';
 import { TranslateService } from '@ngx-translate/core';
 import { LanguageProvider } from '../../../providers/language/language';
+import { AddressProvider } from '../../../providers/address/address';
 import { LoginProvider } from '../../../providers/login/login';
-
+import { AlertController, Alert } from 'ionic-angular';
+import { AddAddressPage } from '../../Account/add-address/add-address';
+import { ModalProvider } from '../../../providers/modal/modal';
 
 @IonicPage()
 @Component({
@@ -16,63 +18,57 @@ import { LoginProvider } from '../../../providers/login/login';
 export class ShippingAddressPage {
 
   public customer_id;
-  public fname;
-  public lname;
+  public address_id;
+  public alert: Alert;
+
+  //address details to save
+  public responseAddData;
+  public params;
+  public responseshippingData;
+
+  //address field
+  responseAddrs;
+  addresses: any = [];
+  selectedAddress;
 
   //txt
   public heading_title;
-  public firstname_txt;
-  public lastname_txt;
-  public address_txt;
-  public address2_txt;
-  public zone_txt;
-  public postcode_txt;
-  public city_txt;
+  public use_exist_address;
+  public use_new_address;
   public continue_txt;
-
-  // form fields  
-  private address;
-  private postcode;
-  private city;
-  private country_id = 1;
-  private district_id = 1;
-  private zone_id = 1;
-
-  // errors
-  private error_firstname;
-  private error_lastname;
-  private field_error;
-  private error_address;
-  private error_zone;
-  private error_postcode;
-  private error_city;
+  public add_new_address_txt;
+  public server_slow_txt;
+  public oops_txt;
+  public exit_app_txt;
+  public smthng_wrong;
+  public ok_txt;
+  public success_txt;
 
   private success;
   private error_warning;
-  // form data
-  submitAttempt;
-  addressForm: FormGroup;
-  private formData: any;
-  private status;
-  private message;
-  private responseData;
+
+  public responseData;
+  public status;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
-    public formBuilder: FormBuilder,
     public platform: Platform,
     public alertProvider: AlertProvider,
+    public modalProvider: ModalProvider,
     public loadingProvider: LoadingProvider,
     public loginProvider: LoginProvider,
     public translate: TranslateService,
+    public addressProvider: AddressProvider,
+    public alertCtrl: AlertController,
     public languageProvider: LanguageProvider, ) {
 
-    this.createForm();
+    this.setText();
 
     platform.registerBackButtonAction(() => {
       this.goBack();
     });
-    this.setText();
+
+    this.getServerData();
   }
 
   setText() {
@@ -82,66 +78,156 @@ export class ShippingAddressPage {
     this.translate.get('shipping_address').subscribe((text: string) => {
       this.heading_title = text;
     });
-    this.translate.get('firstname').subscribe((text: string) => {
-      this.firstname_txt = text;
+    this.translate.get('use_exist_address').subscribe((text: string) => {
+      this.use_exist_address = text;
     });
-    this.translate.get('lastname').subscribe((text: string) => {
-      this.lastname_txt = text;
+    this.translate.get('use_new_address').subscribe((text: string) => {
+      this.use_new_address = text;
     });
-    this.translate.get('address').subscribe((text: string) => {
-      this.address_txt = text;
+    this.translate.get('add_new_address').subscribe((text: string) => {
+      this.add_new_address_txt = text;
     });
-    this.translate.get('address2').subscribe((text: string) => {
-      this.address2_txt = text;
+    this.translate.get('server_slow').subscribe((text: string) => {
+      this.server_slow_txt = text;
     });
-    this.translate.get('zone').subscribe((text: string) => {
-      this.zone_txt = text;
+    this.translate.get('oops').subscribe((text: string) => {
+      this.oops_txt = text;
     });
-    this.translate.get('postcode').subscribe((text: string) => {
-      this.postcode_txt = text;
-    });
-    this.translate.get('city').subscribe((text: string) => {
-      this.city_txt = text;
+    this.translate.get('exit_app').subscribe((text: string) => {
+      this.exit_app_txt = text;
     });
     this.translate.get('continue').subscribe((text: string) => {
       this.continue_txt = text;
     });
-    this.translate.get('error_firstname').subscribe((text: string) => {
-      this.error_firstname = text;
+    this.translate.get('smthng_wrong').subscribe((text: string) => {
+      this.smthng_wrong = text;
     });
-    this.translate.get('error_lastname').subscribe((text: string) => {
-      this.error_lastname = text;
-    });
-    this.translate.get('field_error').subscribe((text: string) => {
-      this.field_error = text;
-    });
-    this.translate.get('error_address').subscribe((text: string) => {
-      this.error_address = text;
-    });
-    this.translate.get('error_zone').subscribe((text: string) => {
-      this.error_zone = text;
-    });
-    this.translate.get('error_postcode').subscribe((text: string) => {
-      this.error_postcode = text;
-    });
-    this.translate.get('error_city').subscribe((text: string) => {
-      this.error_city = text;
+    this.translate.get('ok').subscribe((text: string) => {
+      this.ok_txt = text;
     });
   }
 
-  createForm() {
-    this.addressForm = this.formBuilder.group({
-      firstname: [this.fname, Validators.required],
-      lastname: [this.lname, Validators.required],
-      address: ['', Validators.required],
-      address2: ['', ''],
-      postcode: ['', Validators.required],
-      city: ['', Validators.required],
-      zone_id: ['', Validators.required],
+  getServerData() {
+    this.addresses = [];
+    this.loadingProvider.present();
+    this.addressProvider.getAddress().subscribe(
+      response => {
+        this.responseData = response;
+        this.status = this.responseData.status;
+
+        if (this.status) {
+          this.addresses = this.responseData.addresses;
+          this.selectedAddress = this.addresses[0];
+        }
+        this.loadingProvider.dismiss();
+      },
+      err => {
+        this.loadingProvider.dismiss();
+
+        if (err.name == 'TimeoutError') {
+          this.alert = this.alertCtrl.create({
+            title: this.oops_txt,
+            message: this.server_slow_txt,
+            buttons: [
+              {
+                text: this.exit_app_txt,
+                handler: () => {
+                  this.platform.exitApp();
+                }
+              },
+              {
+                text: this.continue_txt,
+                handler: () => {
+                  this.getServerData();
+                }
+              }
+            ]
+          });
+          this.alert.present();
+        } else {
+          this.alert = this.alertCtrl.create({
+            title: this.oops_txt,
+            message: this.smthng_wrong,
+            buttons: [
+              {
+                text: this.ok_txt,
+                handler: () => {
+                  this.platform.exitApp();
+                }
+              },
+            ]
+          });
+          this.alert.present();
+        }
+      },
+      () => {
+        this.loadingProvider.dismiss();
+      }
+    );
+    return event;
+  }
+
+  AddAddress() {
+    let param;
+    this.modalProvider.presentProfileModal(AddAddressPage, param);
+
+    this.modalProvider.modal.onDidDismiss(data => {
+      // This is added to refresh page.
+      // this.navCtrl.push(this.navCtrl.getActive().component);
+      this.getServerData();
     });
+  }
+
+  addressChange(address) {
+    console.log("Select address id : " + JSON.stringify(address.address_id));
+    this.address_id = address.address_id;
   }
 
   goBack() {
     this.navCtrl.pop();
+  }
+
+  save() {
+    if (this.address_id) {
+      this.loadingProvider.show();
+      this.addressProvider.apiViewAddress(this.address_id).subscribe(
+        response => {
+
+          this.responseAddData = response.data;
+
+          this.params = {
+            firstname: this.responseAddData.firstname,
+            lastname: this.responseAddData.lastname,
+            address_1: this.responseAddData.address_1,
+            address_2: this.responseAddData.address_2,
+            postcode: this.responseAddData.postcode,
+            city: this.responseAddData.city,
+            country_id: this.responseAddData.country_id,
+            zone_id: this.responseAddData.zone_id
+          }
+
+          //Now set the payment address
+          this.addressProvider.addShippingAddress(this.params).subscribe(
+            response => {
+
+              this.responseshippingData = response;
+
+              if (this.responseshippingData.status) {
+
+                // this.navCtrl.push(ShippingAddressPage);
+              }
+              this.loadingProvider.dismiss();
+            },
+            err => console.error(err),
+            () => {
+            }
+          );
+        },
+        err => console.error(err),
+        () => {
+          this.loadingProvider.dismiss();
+        }
+      );
+    }
   }
 }

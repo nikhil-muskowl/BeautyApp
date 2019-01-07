@@ -26,8 +26,8 @@ export class CartProvider {
   products(data: any) {
     this.formData = new FormData();
     this.formData.append('customer_id', this.loginProvider.customer_id);
-    this.formData.append('language_id', data.language_id);
-    this.formData.append('currency_id', data.currency_id);
+    this.formData.append('language', data.language_id);
+    this.formData.append('currency', data.currency_id);
     this.URL = ConfigProvider.BASE_URL + '?route=restapi/checkout/cart';
     return this.http.post<any>(this.URL,
       this.formData,
@@ -61,8 +61,8 @@ export class CartProvider {
     this.formData.append('key', data.cart_id);
     this.formData.append('quantity', data.quantity);
     this.formData.append('customer_id', this.loginProvider.customer_id);
-    this.formData.append('language_id', data.language_id);
-    this.formData.append('currency_id', data.currency_id);
+    this.formData.append('language', data.language_id);
+    this.formData.append('currency', data.currency_id);
 
     return this.http.post(this.URL,
       this.formData,
@@ -77,8 +77,8 @@ export class CartProvider {
     this.URL = ConfigProvider.BASE_URL + '?route=restapi/checkout/cart/remove';
     this.formData.append('key', data.cart_id);
     this.formData.append('customer_id', this.loginProvider.customer_id);
-    this.formData.append('language_id', language_id);
-    this.formData.append('currency_id', currency_id);
+    this.formData.append('language', language_id);
+    this.formData.append('currency', currency_id);
     return this.http.post(this.URL,
       this.formData,
       {

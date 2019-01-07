@@ -20,16 +20,32 @@ export class LanguageProvider {
     this.language_id = this.getLanguageId();
   }
 
-  public getLanguages() {
-    this.formData = new FormData();
+  apigetLanguages(): any {
+
     this.URL = ConfigProvider.BASE_URL + '?route=restapi/product/language';
-    return this.http.post(this.URL,
+
+    return this.http.get<any>(this.URL,
+      {
+        headers: this.headers,
+      }
+    ).timeout(9000);
+  }
+
+  apiUserSetCurrencies(code): any {
+
+    this.formData = new FormData();
+    this.formData.append('code', code);
+
+    this.URL = ConfigProvider.BASE_URL + '?route=restapi/product/language/change';
+
+    return this.http.post<any>(this.URL,
       this.formData,
       {
         headers: this.headers,
       }
-    );
+    ).timeout(9000);
   }
+
 
   public setLanguage(data) {
     try {

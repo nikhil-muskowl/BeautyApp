@@ -30,6 +30,7 @@ export class SettingsProvider {
     ).timeout(9000);
   }
 
+
   apiUserSetCurrencies(currency): any {
 
     this.formData = new FormData();

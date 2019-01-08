@@ -85,14 +85,18 @@ export class CategoryProvider {
     );
   }
 
-  public getReviews(product_id): any {
+  public getReviews(data, product_id): any {
+
     this.URL = ConfigProvider.BASE_URL + '?route=restapi/product/product/review&product_id=' + product_id;
+
     this.formData = new FormData();
-    this.formData.append('product_id', product_id);
+
     this.formData.append('customer_id', this.loginProvider.customer_id);
-    this.formData.append('language', this.loginProvider.customer_id);
-    this.formData.append('currency', this.loginProvider.customer_id);
+    this.formData.append('language', data.language_id);
+    this.formData.append('currency', data.currency_id);
+
     return this.http.post<any>(this.URL,
+      this.formData,
       {
         headers: this.headers,
       }
@@ -100,6 +104,7 @@ export class CategoryProvider {
   }
 
   public postReviews(product_id, data): any {
+    
     this.formData = new FormData();
     this.formData.append('product_id', product_id);
     this.formData.append('customer_id', this.loginProvider.customer_id);

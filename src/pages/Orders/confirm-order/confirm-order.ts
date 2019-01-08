@@ -17,14 +17,22 @@ import { CartEditPage } from '../cart-edit/cart-edit';
 import { PaymentAddressPage } from '../payment-address/payment-address';
 import { SettingsProvider } from '../../../providers/settings/settings';
 
+import { PayPal, PayPalPayment, PayPalConfiguration } from '@ionic-native/paypal';
+import { ConfigProvider } from '../../../providers/config/config';
+
 @IonicPage()
 @Component({
-  selector: 'page-cart',
-  templateUrl: 'cart.html',
+  selector: 'page-confirm-order',
+  templateUrl: 'confirm-order.html',
 })
-export class CartPage {
+export class ConfirmOrderPage {
 
   public terms;
+  public payment_address_id;
+  public shipping_address_id;
+  public shipping_method;
+  public payment_method;
+
   language_id;
   currency_id;
   public products: any = [];
@@ -32,16 +40,6 @@ export class CartPage {
   submitAttempt;
 
   public hasProducts: Boolean = false;
-
-  cartForm: FormGroup;
-  private formData: any;
-  private status;
-  private message;
-  private responseData;
-  private success;
-  private error_warning;
-  private cart_quantity = 1;
-  private field_error;
   public alert: Alert;
   from;
 
@@ -61,11 +59,12 @@ export class CartPage {
   public warning_txt;
   public confirm_txt;
   public yes_txt;
-  public place_order_txt;
+  public confirm_order_txt;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public platform: Platform,
+    private payPal: PayPal,
     public settingsProvider: SettingsProvider,
     public formBuilder: FormBuilder,
     public modalProvider: ModalProvider,
@@ -82,22 +81,23 @@ export class CartPage {
     this.language_id = this.languageProvider.getLanguage();
     this.currency_id = this.settingsProvider.getCurrData();
 
-    this.from = this.navParams.get('from');
     this.setText();
+
+    this.payment_address_id = this.navParams.get('payment_address_id');
+    this.shipping_address_id = this.navParams.get('shipping_address_id');
+    this.shipping_method = this.navParams.get('shipping_method');
+    this.payment_method = this.navParams.get('payment_method');
+
     this.isLogin();
     this.getProducts();
+
     this.platform.registerBackButtonAction(() => {
       this.goBack();
     });
   }
 
   goBack() {
-    if (this.from == 'home') {
-      this.navCtrl.setRoot(HomePage);
-    }
-    else {
-      this.navCtrl.pop();
-    }
+    this.navCtrl.pop();
   }
 
   setText() {
@@ -105,8 +105,11 @@ export class CartPage {
     console.log("getLanguage() : " + this.languageProvider.getLanguage());
     this.translate.use(this.languageProvider.getLanguage());
 
-    this.translate.get('my_cart').subscribe((text: string) => {
+    this.translate.get('confirm_order').subscribe((text: string) => {
       this.heading_title = text;
+    });
+    this.translate.get('confirm_order').subscribe((text: string) => {
+      this.confirm_order_txt = text;
     });
     this.translate.get('empty_cart').subscribe((text: string) => {
       this.empty_cart = text;
@@ -150,15 +153,11 @@ export class CartPage {
     this.translate.get('yes').subscribe((text: string) => {
       this.yes_txt = text;
     });
-    this.translate.get('place_order').subscribe((text: string) => {
-      this.place_order_txt = text;
-    });
   }
 
   isLogin() {
 
     if (!this.loginProvider.customer_id) {
-      //this.navCtrl.push(CustomerLoginPage);
       this.navCtrl.setRoot(LoginPage);
     }
   }
@@ -167,12 +166,15 @@ export class CartPage {
     this.products = [];
     let param = {
       language_id: this.language_id,
-      currency_id: this.currency_id
+      currency_id: this.currency_id,
+      payment_address_id: this.payment_address_id,
+      shipping_address_id: this.shipping_address_id,
+      shipping_method: this.shipping_method,
+      payment_method: this.payment_method,
     };
-    //this.loadingProvider.present();
+    this.loadingProvider.present();
     this.cartProvider.products(param).subscribe(
       response => {
-        console.log('Cart response : ' + JSON.stringify(response));
         if (response) {
           this.products = response.products;
           this.totals = response.totals;
@@ -182,6 +184,7 @@ export class CartPage {
             this.hasProducts = false;
           }
         }
+        this.loadingProvider.dismiss();
       },
       err => {
         if (err.name == 'TimeoutError') {
@@ -199,6 +202,73 @@ export class CartPage {
                 text: this.continue_txt,
                 handler: () => {
                   this.getProducts();
+                }
+              }
+            ]
+          });
+          this.alert.present();
+          this.loadingProvider.dismiss();
+        } else {
+          this.alert = this.alertCtrl.create({
+            title: this.oops_txt,
+            message: this.smthng_wrong,
+            buttons: [
+              {
+                text: this.ok_txt,
+                handler: () => {
+                  this.platform.exitApp();
+                }
+              },
+            ]
+          });
+          this.alert.present();
+        }
+      },
+      () => {
+        this.loadingProvider.dismiss();
+      }
+    );
+    return event;
+  }
+
+  goToCheckout() {
+
+    let param = {
+      language_id: this.language_id,
+      currency_id: this.currency_id,
+      payment_address_id: this.payment_address_id,
+      shipping_address_id: this.shipping_address_id,
+      shipping_method: this.shipping_method,
+      payment_method: this.payment_method,
+    };
+
+    this.loadingProvider.present();
+    this.cartProvider.orderCheckout(param).subscribe(
+      response => {
+        if (response) {
+          var order_id = response.order_id;
+          console.log("confirm payment order_id : " + order_id);
+          this.makePayment(order_id);
+        }
+        this.loadingProvider.dismiss();
+      },
+      err => {
+        this.loadingProvider.dismiss();
+        if (err.name == 'TimeoutError') {
+          this.alert = this.alertCtrl.create({
+            title: this.oops_txt,
+            message: this.server_slow_txt,
+            buttons: [
+              {
+                text: this.exit_app_txt,
+                handler: () => {
+                  this.platform.exitApp();
+                }
+              },
+              {
+                text: this.continue_txt,
+                handler: () => {
+                  this.goToCheckout();
                 }
               }
             ]
@@ -224,114 +294,54 @@ export class CartPage {
         this.loadingProvider.dismiss();
       }
     );
-    return event;
   }
 
-  public remove(data) {
-    this.loadingProvider.present();
-    this.cartProvider.remove(data, this.language_id, this.currency_id).subscribe(
-      response => {
-        this.getProducts();
-      },
-      err => console.error(err),
-      () => {
-        this.loadingProvider.dismiss();
-      }
-    );
-    return event;
-  }
+  makePayment(order_id) {
+    console.log('In payment');
+    this.payPal.init({
+      PayPalEnvironmentProduction: '',
+      PayPalEnvironmentSandbox: ConfigProvider.payPalEnvironmentSandbox
+    }).then(() => {
+      // Environments: PayPalEnvironmentNoNetwork, PayPalEnvironmentSandbox, PayPalEnvironmentProduction
+      this.payPal.prepareToRender('PayPalEnvironmentSandbox', new PayPalConfiguration({
+        // Only needed if you get an "Internal Service Error" after PayPal login!
+        //payPalShippingAddressOption: 2 // PayPalShippingAddressOptionPayPal
+      })).then(() => {
+        let payment = new PayPalPayment('1233.33', this.currency_id, order_id, '');
+        this.payPal.renderSinglePaymentUI(payment).then(() => {
 
-  createForm() {
-    this.cartForm = this.formBuilder.group({
-      quantity: ['', Validators.required]
-    });
-  }
+          console.log(JSON.stringify(payment));
+          // Successfully paid
 
-  save(data) {
-    this.submitAttempt = true;
-
-    if (this.cartForm.valid) {
-      this.formData = {
-        quantity: this.cartForm.value.quantity,
-        cart_id: Number(data.cart_id)
-      };
-
-      this.loadingProvider.present();
-      this.cartProvider.edit(this.formData).subscribe(
-        response => {
-
-          this.responseData = response;
-          this.submitAttempt = true;
-
-          if (this.responseData.success && this.responseData.success != '') {
-            this.success = this.responseData.success;
-            this.alertProvider.title = this.success_txt;
-            this.alertProvider.message = this.success;
-            this.alertProvider.showAlert();
-            this.cartForm.reset();
-            this.submitAttempt = false;
-          }
-
-          if (this.responseData.error && this.responseData.error != '') {
-
-            this.error_warning = this.responseData.error.store;
-
-            this.alertProvider.title = this.warning_txt;
-            this.alertProvider.message = this.error_warning;
-            this.alertProvider.showAlert();
-          }
-
-          this.getProducts();
-
-        },
-        err => console.error(err),
-        () => {
-          this.loadingProvider.dismiss();
-        }
-      );
-    }
-
-  }
-
-  goToCheckout() {
-    var alert = this.alertCtrl.create({
-      title: this.confirm_txt,
-      message: this.want_continue,
-      buttons: [
-        {
-          text: this.cancel_txt,
-          role: 'cancel',
-          handler: () => {
-          }
-        },
-        {
-          text: this.yes_txt,
-          handler: () => {
-            // this.navCtrl.push(CartCheckoutPage);
-            this.navCtrl.push(PaymentAddressPage);
-          }
-        }
-      ]
+          // Example sandbox response
+          //
+          // {
+          //   "client": {
+          //     "environment": "sandbox",
+          //     "product_name": "PayPal iOS SDK",
+          //     "paypal_sdk_version": "2.16.0",
+          //     "platform": "iOS"
+          //   },
+          //   "response_type": "payment",
+          //   "response": {
+          //     "id": "PAY-1AB23456CD789012EF34GHIJ",
+          //     "state": "approved",
+          //     "create_time": "2016-10-03T13:33:33Z",
+          //     "intent": "sale"
+          //   }
+          // }
+        }, () => {
+          // Error or render dialog closed without being successful
+          console.error('Error or render dialog closed without being successful');
+        });
+      }, () => {
+        // Error in configuration
+        console.error('Error in configuration');
+      });
+    }, () => {
+      // Error in initialization, maybe PayPal isn't supported or something else
+      console.error('Error in initialization, maybe PayPal isn\'t supported or something else');
     });
 
-    alert.present();
-  }
-
-  public edit(data) {
-    let param = {
-      cart_id: data.cart_id,
-      quantity: data.quantity
-    };
-    this.modalProvider.presentProfileModal(CartEditPage, param);
-
-    this.modalProvider.modal.onDidDismiss(data => {
-      // This is added to refresh page.
-      // this.navCtrl.push(this.navCtrl.getActive().component);
-      this.getProducts();
-    });
-  }
-
-  goToHome() {
-    this.navCtrl.setRoot(HomePage);
   }
 }

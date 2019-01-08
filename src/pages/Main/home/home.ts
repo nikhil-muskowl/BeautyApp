@@ -24,7 +24,7 @@ export class HomePage {
   heading_title;
   public language_id;
   public currency_id;
-  public totalQty;
+  public totalQty = 0;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,

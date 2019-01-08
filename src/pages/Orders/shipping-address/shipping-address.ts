@@ -9,6 +9,7 @@ import { LoginProvider } from '../../../providers/login/login';
 import { AlertController, Alert } from 'ionic-angular';
 import { AddAddressPage } from '../../Account/add-address/add-address';
 import { ModalProvider } from '../../../providers/modal/modal';
+import { DeliveryMethodsPage } from '../delivery-methods/delivery-methods';
 
 @IonicPage()
 @Component({
@@ -18,7 +19,8 @@ import { ModalProvider } from '../../../providers/modal/modal';
 export class ShippingAddressPage {
 
   public customer_id;
-  public address_id;
+  public payment_address_id;
+  public shipping_address_id;
   public alert: Alert;
 
   //address details to save
@@ -63,6 +65,7 @@ export class ShippingAddressPage {
     public languageProvider: LanguageProvider, ) {
 
     this.setText();
+    this.payment_address_id = this.navParams.get('payment_address_id');
 
     platform.registerBackButtonAction(() => {
       this.goBack();
@@ -179,8 +182,8 @@ export class ShippingAddressPage {
   }
 
   addressChange(address) {
-    console.log("Select address id : " + JSON.stringify(address.address_id));
-    this.address_id = address.address_id;
+    console.log("Select shipping address: " + JSON.stringify(address.address_id));
+    this.shipping_address_id = address.address_id;
   }
 
   goBack() {
@@ -188,46 +191,50 @@ export class ShippingAddressPage {
   }
 
   save() {
-    if (this.address_id) {
-      this.loadingProvider.show();
-      this.addressProvider.apiViewAddress(this.address_id).subscribe(
-        response => {
+    if (this.shipping_address_id) {
+      // this.loadingProvider.show();
+      // this.addressProvider.apiViewAddress(this.shipping_address_id).subscribe(
+      //   response => {
 
-          this.responseAddData = response.data;
+      //     this.responseAddData = response.data;
 
-          this.params = {
-            firstname: this.responseAddData.firstname,
-            lastname: this.responseAddData.lastname,
-            address_1: this.responseAddData.address_1,
-            address_2: this.responseAddData.address_2,
-            postcode: this.responseAddData.postcode,
-            city: this.responseAddData.city,
-            country_id: this.responseAddData.country_id,
-            zone_id: this.responseAddData.zone_id
-          }
+      //     this.params = {
+      //       firstname: this.responseAddData.firstname,
+      //       lastname: this.responseAddData.lastname,
+      //       address_1: this.responseAddData.address_1,
+      //       address_2: this.responseAddData.address_2,
+      //       postcode: this.responseAddData.postcode,
+      //       city: this.responseAddData.city,
+      //       country_id: this.responseAddData.country_id,
+      //       zone_id: this.responseAddData.zone_id
+      //     }
 
-          //Now set the payment address
-          this.addressProvider.addShippingAddress(this.params).subscribe(
-            response => {
+      //     //Now set the payment address
+      //     this.addressProvider.addShippingAddress(this.params).subscribe(
+      //       response => {
 
-              this.responseshippingData = response;
+      //         this.responseshippingData = response;
 
-              if (this.responseshippingData.status) {
+      //         if (this.responseshippingData.status) {
 
-                // this.navCtrl.push(ShippingAddressPage);
-              }
-              this.loadingProvider.dismiss();
-            },
-            err => console.error(err),
-            () => {
-            }
-          );
-        },
-        err => console.error(err),
-        () => {
-          this.loadingProvider.dismiss();
-        }
-      );
+      this.navCtrl.push(DeliveryMethodsPage, {
+        payment_address_id: this.payment_address_id,
+        shipping_address_id: this.shipping_address_id
+      });
+
+      //         }
+      //         this.loadingProvider.dismiss();
+      //       },
+      //       err => console.error(err),
+      //       () => {
+      //       }
+      //     );
+      //   },
+      //   err => console.error(err),
+      //   () => {
+      //     this.loadingProvider.dismiss();
+      //   }
+      // );
     }
   }
 }

@@ -24,17 +24,64 @@ export class CartProvider {
   }
 
   products(data: any) {
+
     this.formData = new FormData();
     this.formData.append('customer_id', this.loginProvider.customer_id);
     this.formData.append('language', data.language_id);
     this.formData.append('currency', data.currency_id);
+
+    if (data.payment_address_id) {
+      this.formData.append('payment_address_id', data.payment_address_id);
+    }
+    if (data.shipping_address_id) {
+      this.formData.append('shipping_address_id', data.shipping_address_id);
+    }
+    if (data.shipping_method) {
+      this.formData.append('shipping_method', data.shipping_method);
+    }
+    if (data.payment_method) {
+      this.formData.append('payment_method', data.payment_method);
+    }
+
     this.URL = ConfigProvider.BASE_URL + '?route=restapi/checkout/cart';
+
     return this.http.post<any>(this.URL,
       this.formData,
       {
         headers: this.headers,
       }
     ).timeout(9000);
+  }
+
+  orderCheckout(data: any) {
+
+    this.formData = new FormData();
+    this.formData.append('customer_id', this.loginProvider.customer_id);
+    this.formData.append('language', data.language_id);
+    this.formData.append('currency', data.currency_id);
+
+    if (data.payment_address_id) {
+      this.formData.append('payment_address_id', data.payment_address_id);
+    }
+    if (data.shipping_address_id) {
+      this.formData.append('shipping_address_id', data.shipping_address_id);
+    }
+    if (data.shipping_method) {
+      this.formData.append('shipping_method', data.shipping_method);
+    }
+    if (data.payment_method) {
+      this.formData.append('payment_method', data.payment_method);
+    }
+
+    this.URL = ConfigProvider.BASE_URL + '?route=restapi/checkout/order/add';
+
+    return this.http.post<any>(this.URL,
+      this.formData,
+      {
+        headers: this.headers,
+      }
+    ).timeout(9000);
+
   }
 
   add(data: any): any {

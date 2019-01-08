@@ -182,5 +182,8 @@
   "add_new_address": "Add New Address",
   "add_address": "Add Address",
   "use_exist_address": "I want to use an existing Address",
-  "use_new_address": "I want to use a new Address"
+  "use_new_address": "I want to use a new Address",
+  "payment_method": "Payment Method",
+  "delivery_method": "Delivery Method",
+  "confirm_order": "Confirm Order"
 }

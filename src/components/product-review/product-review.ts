@@ -52,8 +52,6 @@ export class ProductReviewComponent {
     public translate: TranslateService,
     public languageProvider: LanguageProvider, ) {
 
-    this.language_id = this.languageProvider.getLanguage();
-    this.currency_id = this.settingsProvider.getCurrData();
 
     this.setText();
   }
@@ -94,14 +92,21 @@ export class ProductReviewComponent {
 
   ngOnChanges() {
     // console.log(this.product_id);  
+
+    this.language_id = this.languageProvider.getLanguage();
+    this.currency_id = this.settingsProvider.getCurrData();
+
     this.getServerData(this.product_id);
     this.createForm();
   }
 
-
   public getServerData(product_id) {
     this.loadingProvider.present();
-    this.categoryProvider.getReviews(product_id).subscribe(
+    let param = {
+      language_id: this.language_id,
+      currency_id: this.currency_id,
+    }
+    this.categoryProvider.getReviews(param, product_id).subscribe(
       response => {
         // console.log(response);
         this.reviews = response.reviews;

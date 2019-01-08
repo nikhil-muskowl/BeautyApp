@@ -21,6 +21,9 @@ import { ShippingAddressPage } from '../pages/Orders/shipping-address/shipping-a
 import { OrderPage } from '../pages/Orders/order/order';
 import { OrderDetailsPage } from '../pages/Orders/order-details/order-details';
 import { CartEditPage } from '../pages/Orders/cart-edit/cart-edit';
+import { PaymentMethodsPage } from '../pages/Orders/payment-methods/payment-methods';
+import { DeliveryMethodsPage } from '../pages/Orders/delivery-methods/delivery-methods';
+import { ConfirmOrderPage } from '../pages/Orders/confirm-order/confirm-order';
 
 //Account
 import { ChangePasswordPage } from '../pages/Account/change-password/change-password';
@@ -66,6 +69,10 @@ import { OrderProvider } from '../providers/order/order';
 import { SettingsProvider } from '../providers/settings/settings';
 import { FiltersProvider } from '../providers/filters/filters';
 import { AddressProvider } from '../providers/address/address';
+import { PaymentsProvider } from '../providers/payments/payments';
+
+//Paypal
+import { PayPal, PayPalPayment, PayPalConfiguration } from '@ionic-native/paypal';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/language/', '.json');
@@ -103,6 +110,9 @@ export function createTranslateLoader(http: HttpClient) {
     AddressesPage,
     EditAddressPage,
     AddAddressPage,
+    PaymentMethodsPage,
+    DeliveryMethodsPage,
+    ConfirmOrderPage,
   ],
   imports: [
     HttpClientModule,
@@ -151,6 +161,9 @@ export function createTranslateLoader(http: HttpClient) {
     AddressesPage,
     EditAddressPage,
     AddAddressPage,
+    PaymentMethodsPage,
+    DeliveryMethodsPage,
+    ConfirmOrderPage,
   ],
   providers: [
     StatusBar,
@@ -169,7 +182,9 @@ export function createTranslateLoader(http: HttpClient) {
     OrderProvider,
     SettingsProvider,
     FiltersProvider,
-    AddressProvider
+    AddressProvider,
+    PaymentsProvider,
+    PayPal,
   ]
 })
 export class AppModule { }

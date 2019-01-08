@@ -1,36 +1,37 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
 import { AlertProvider } from '../../../providers/alert/alert';
 import { LoadingProvider } from '../../../providers/loading/loading';
 import { TranslateService } from '@ngx-translate/core';
 import { LanguageProvider } from '../../../providers/language/language';
-import { AddressProvider } from '../../../providers/address/address';
+import { PaymentsProvider } from '../../../providers/payments/payments';
 import { LoginProvider } from '../../../providers/login/login';
 import { AlertController, Alert } from 'ionic-angular';
-import { AddAddressPage } from '../../Account/add-address/add-address';
-import { ModalProvider } from '../../../providers/modal/modal';
-import { ShippingAddressPage } from '../shipping-address/shipping-address';
+import { ConfirmOrderPage } from '../confirm-order/confirm-order';
+import { SettingsProvider } from '../../../providers/settings/settings';
 
 @IonicPage()
 @Component({
-  selector: 'page-payment-address',
-  templateUrl: 'payment-address.html',
+  selector: 'page-payment-methods',
+  templateUrl: 'payment-methods.html',
 })
-export class PaymentAddressPage {
+export class PaymentMethodsPage {
 
   public customer_id;
+  language_id;
+  currency_id;
   public payment_address_id;
+  public shipping_address_id;
+  public shipping_method;
+
+  public payment_code;
   public alert: Alert;
 
   //address details to save
   public responseAddData;
   public params;
   public responsepaymentData;
-
-  //address field
-  responseAddrs;
-  addresses: any = [];
-  selectedAddress;
+  payment_methods: any = [];
 
   //txt
   public heading_title;
@@ -54,16 +55,21 @@ export class PaymentAddressPage {
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public platform: Platform,
+    public settingsProvider: SettingsProvider,
     public alertProvider: AlertProvider,
-    public modalProvider: ModalProvider,
     public loadingProvider: LoadingProvider,
     public loginProvider: LoginProvider,
     public translate: TranslateService,
-    public addressProvider: AddressProvider,
+    public paymentsProvider: PaymentsProvider,
     public alertCtrl: AlertController,
     public languageProvider: LanguageProvider, ) {
 
     this.setText();
+    this.language_id = this.languageProvider.getLanguage();
+    this.currency_id = this.settingsProvider.getCurrData();
+    this.payment_address_id = this.navParams.get('payment_address_id');
+    this.shipping_address_id = this.navParams.get('shipping_address_id');
+    this.shipping_method = this.navParams.get('shipping_method');
 
     platform.registerBackButtonAction(() => {
       this.goBack();
@@ -76,7 +82,7 @@ export class PaymentAddressPage {
     this.translate.setDefaultLang(this.languageProvider.getLanguage());
     this.translate.use(this.languageProvider.getLanguage());
 
-    this.translate.get('billing_address').subscribe((text: string) => {
+    this.translate.get('payment_method').subscribe((text: string) => {
       this.heading_title = text;
     });
     this.translate.get('use_exist_address').subscribe((text: string) => {
@@ -109,16 +115,20 @@ export class PaymentAddressPage {
   }
 
   getServerData() {
-    this.addresses = [];
+    this.payment_methods = [];
+    let params = {
+      language_id: this.language_id,
+      currency_id: this.currency_id,
+      address_id: this.payment_address_id,
+    };
     this.loadingProvider.present();
-    this.addressProvider.getAddress().subscribe(
+    this.paymentsProvider.getPaymentMethods(params).subscribe(
       response => {
         this.responseData = response;
         this.status = this.responseData.status;
 
         if (this.status) {
-          this.addresses = this.responseData.addresses;
-          this.selectedAddress = this.addresses[0];
+          this.payment_methods = this.responseData.payment_methods;
         }
         this.loadingProvider.dismiss();
       },
@@ -168,20 +178,9 @@ export class PaymentAddressPage {
     return event;
   }
 
-  AddAddress() {
-    let param;
-    this.modalProvider.presentProfileModal(AddAddressPage, param);
-
-    this.modalProvider.modal.onDidDismiss(data => {
-      // This is added to refresh page.
-      // this.navCtrl.push(this.navCtrl.getActive().component);
-      this.getServerData();
-    });
-  }
-
-  addressChange(address) {
-    console.log("Select address id : " + JSON.stringify(address.address_id));
-    this.payment_address_id = address.address_id;
+  paymentChange(payments) {
+    console.log("Selected payment_code : " + JSON.stringify(payments.code));
+    this.payment_code = payments.code;
   }
 
   goBack() {
@@ -189,47 +188,30 @@ export class PaymentAddressPage {
   }
 
   save() {
-    if (this.payment_address_id) {
+    if (this.payment_code) {
       // this.loadingProvider.show();
 
-      // this.addressProvider.apiViewAddress(this.payment_address_id).subscribe(
+      // this.paymentsProvider.apiSetPaymentMethods(this.payment_code).subscribe(
       //   response => {
 
-      //     this.responseAddData = response.data;
-
-      //     this.params = {
-      //       firstname: this.responseAddData.firstname,
-      //       lastname: this.responseAddData.lastname,
-      //       address_1: this.responseAddData.address_1,
-      //       address_2: this.responseAddData.address_2,
-      //       postcode: this.responseAddData.postcode,
-      //       city: this.responseAddData.city,
-      //       country_id: this.responseAddData.country_id,
-      //       zone_id: this.responseAddData.zone_id
+      //     this.responsepaymentData = response;
+      //     console.log("this.responsepaymentData : " + JSON.stringify(this.responsepaymentData));
+      //     if (this.responsepaymentData.status) {
+      let params = {
+        payment_address_id: this.payment_address_id,
+        shipping_address_id: this.shipping_address_id,
+        shipping_method: this.shipping_method,
+        payment_method: this.payment_code,
+      }
+      this.navCtrl.push(ConfirmOrderPage, params);
       //     }
-
-      //     //Now set the payment address
-      //     this.addressProvider.addPaymentAddress(this.params).subscribe(
-      //       response => {
-
-      //         this.responsepaymentData = response;
-      //         console.log("this.responsepaymentData : " + JSON.stringify(this.responsepaymentData));
-      //         if (this.responsepaymentData.status) {
-
-      this.navCtrl.push(ShippingAddressPage, { payment_address_id: this.payment_address_id });
-      //           }
-      //           this.loadingProvider.dismiss();
-      //         },
-      //         err => console.error(err),
-      //         () => {
-      //         }
-      //       );
-      //     },
-      //     err => console.error(err),
-      //     () => {
-      //       this.loadingProvider.dismiss();
-      //     }
-      //   );
+      //     this.loadingProvider.dismiss();
+      //   },
+      //   err => console.error(err),
+      //   () => {
+      //     this.loadingProvider.dismiss();
+      //   }
+      // );
     }
   }
 }

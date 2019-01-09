@@ -150,13 +150,16 @@ export class FiltersPage {
   }
 
   getapiPricesData() {
-
-    this.filtersProvider.apiprices().subscribe(
+    let param = {
+      language_id: this.language_id,
+      currency_id: this.currency_id
+    };
+    this.filtersProvider.apiprices(param).subscribe(
       response => {
 
         if (response.status) {
-          this.min_price = response.price_range_min;
-          this.max_price = response.price_range_max;
+          this.min_price = response.price_range_min.toFixed();
+          this.max_price = response.price_range_max.toFixed();
           if (this.selectedPriceArray.length > 0) {
             this.priceFilter = { lower: this.selectedPriceArray[0], upper: this.selectedPriceArray[1] };
           }
@@ -253,6 +256,7 @@ export class FiltersPage {
     this.getServerData();
     this.getapiPricesData();
     this.getBrandData();
+    this.selectedPriceArray = [];
   }
 
   selectMember(data, i) {

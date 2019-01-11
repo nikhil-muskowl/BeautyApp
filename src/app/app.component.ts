@@ -39,18 +39,10 @@ export class MyApp {
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
     public loginProvider: LoginProvider) {
+
     this.bindMenu();
     this.splashScreen.hide();
     this.initializeApp();
-
-    // used for an example of ngFor and navigation
-
-    // this.pages = [
-    //   { title: 'Home', component: HomePage },
-    //   { title: 'List', component: ListPage },
-    //   { title: 'Login', component: LoginPage },
-    //   { title: 'Category', component: CategoriesPage },
-    // ];
   }
 
   public bindMenu() {
@@ -66,7 +58,6 @@ export class MyApp {
     }
     this.pages.push({ title: 'Category', name: 'CategoryPage', component: CategoriesPage, icon: 'assets/icon/Contact.png' });
     this.pages.push({ title: 'Settings', name: 'SettingsPage', component: SettingsPage, icon: 'assets/icon/Contact.png' });
-
   }
 
   initializeApp() {

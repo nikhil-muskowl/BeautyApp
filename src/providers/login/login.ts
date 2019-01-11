@@ -16,6 +16,8 @@ export class LoginProvider {
   private URL;
   private agree = 1;
   public customer_id;
+  private isLoggedIn = false;
+
   constructor(public http: HttpClient,
     public platform: Platform,
     public app: App) {
@@ -96,12 +98,14 @@ export class LoginProvider {
 
   setData(data) {
     this.customer_id = data.customer_id;
+    this.isLoggedIn = true;
     window.localStorage.setItem('myData', data.customer_id);
   }
 
   unSetData() {
 
     try {
+      this.isLoggedIn = false;
       window.localStorage.removeItem('myData');
       return true;
     } catch (error) {
@@ -116,6 +120,10 @@ export class LoginProvider {
       return 0;
     }
 
+  }
+
+  authenticated(): boolean {
+    return this.isLoggedIn;
   }
 
   changePassword(data: any) {

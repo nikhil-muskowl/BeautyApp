@@ -22,6 +22,7 @@ import { CartProvider } from '../../../providers/cart/cart';
 export class HomePage {
 
   heading_title;
+  customer_id;
   public language_id;
   public currency_id;
   public totalQty = 0;
@@ -41,9 +42,16 @@ export class HomePage {
     this.language_id = this.languageProvider.getLanguage();
     this.currency_id = this.settingsProvider.getCurrData();
 
+    this.customer_id = this.loginProvider.customer_id;
     this.setText();
-    this.getProducts();
+    // this.getProducts();
 
+  }
+
+  ionViewWillEnter() {
+    if (!this.loginProvider.authenticated()) {
+      this.getProducts();
+    }
   }
 
   setText() {
@@ -56,7 +64,12 @@ export class HomePage {
   }
 
   gotoCart() {
-    this.navCtrl.push(CartPage, { from: 'home' });
+    if (!this.loginProvider.authenticated()) {
+      this.navCtrl.setRoot(LoginPage);
+    }
+    else {
+      this.navCtrl.push(CartPage, { from: 'home' });
+    }
   }
 
   gotoHome() {
@@ -68,11 +81,21 @@ export class HomePage {
   }
 
   gotoProfile() {
-    this.navCtrl.setRoot(ProfilePage);
+    if (!this.loginProvider.authenticated()) {
+      this.navCtrl.setRoot(LoginPage);
+    }
+    else {
+      this.navCtrl.setRoot(ProfilePage);
+    }
   }
 
   gotoNotifications() {
-    this.navCtrl.setRoot(CategoriesPage);
+    if (!this.loginProvider.authenticated()) {
+      this.navCtrl.setRoot(LoginPage);
+    }
+    else {
+      this.navCtrl.setRoot(CategoriesPage);
+    }
   }
 
   gotoSearch() {

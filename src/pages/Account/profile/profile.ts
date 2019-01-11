@@ -72,9 +72,18 @@ export class ProfilePage {
     });
   }
 
-  ionViewWillEnter() {
-    this.isLogin();
+  ionViewCanEnter() {
+    if (!this.loginProvider.authenticated()) {
+      this.navCtrl.setRoot(LoginPage);
+    }
+    else {
+      this.getProfile();
+    }
   }
+
+  // ionViewWillEnter() {
+  //   this.isLogin();
+  // }
 
   setText() {
     this.translate.setDefaultLang(this.languageProvider.getLanguage());

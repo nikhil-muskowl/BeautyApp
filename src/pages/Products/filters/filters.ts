@@ -254,7 +254,8 @@ export class FiltersPage {
     this.brandsModal = [];
 
     this.getServerData();
-    this.getapiPricesData();
+    // this.getapiPricesData();
+    this.priceFilter = { lower: this.min_price, upper: this.max_price };
     this.getBrandData();
     this.selectedPriceArray = [];
   }

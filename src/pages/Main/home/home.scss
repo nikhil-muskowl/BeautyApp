@@ -23,12 +23,7 @@ page-home {
         ion-fab[bottom][edge] {
             bottom: 10px;
         }
-    } // .sidebar {
-    //     //@at-root background: #800505;
-    //     background: #cc1818;
-    //     color: #fff;
-    //     width: 20%;
-    // }
+    } 
     .sidebar .logo-img {
         margin-top: 15px !important;
         margin-left: 18px !important;
@@ -581,33 +576,6 @@ page-home {
     /* Samsung Galaxy S5 ----------- */
     @media only screen and (min-device-width: 360px) and (max-device-height: 640px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 3) {
         /* Styles */
-    }
-    @media only screen and (-webkit-device-pixel-ratio: 3) and (max-device-height: 640px) and (min-device-width: 360px) and (orientation: portrait){
-        .outer-div .inlay-1 {
-            position: absolute;
-            top: 5px;
-            right: 0px;
-            width: 40%;
-            height: 30%;
-            margin-top: 46%;
-        }
-        .outer-div .inlay-1 #inlay-1-fragrance {
-            width: 100%;
-            height: 65%;
-        }
-        .inlay-2 {
-            position: absolute;
-            top: 5px;
-            right: 0px;
-            width: 49%;
-            height: 20%;
-            margin-top: 132%;
-            right: auto;
-        }
-        .outer-div .inlay-2 #inlay-2-offer {
-            width: 100%;
-            height: 100%;
-        }
     }
     @media only screen and (min-device-width: 360px) and (max-device-height: 640px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 3) {
         /* Styles */

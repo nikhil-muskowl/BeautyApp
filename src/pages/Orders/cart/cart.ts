@@ -84,13 +84,25 @@ export class CartPage {
 
     this.from = this.navParams.get('from');
     this.setText();
-    this.isLogin();
-    this.getProducts();
+    // this.getProducts();
     this.platform.registerBackButtonAction(() => {
       this.goBack();
     });
   }
 
+  // ionViewWillEnter() {
+  //   this.getProducts();
+  // }
+
+  ionViewCanEnter() {
+    if (!this.loginProvider.authenticated()) {
+      this.navCtrl.setRoot(LoginPage);
+    }
+    else {
+      this.getProducts();
+    }
+  }
+  
   goBack() {
     if (this.from == 'home') {
       this.navCtrl.setRoot(HomePage);
@@ -158,7 +170,6 @@ export class CartPage {
   isLogin() {
 
     if (!this.loginProvider.customer_id) {
-      //this.navCtrl.push(CustomerLoginPage);
       this.navCtrl.setRoot(LoginPage);
     }
   }

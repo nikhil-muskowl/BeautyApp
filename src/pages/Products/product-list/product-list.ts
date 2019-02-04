@@ -56,6 +56,7 @@ export class ProductListPage {
   sort_txt;
   filter_txt;
   search_place;
+  no_product_found;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -105,6 +106,9 @@ export class ProductListPage {
     this.translate.get('filter').subscribe((text: string) => {
       this.filter_txt = text;
     });
+    this.translate.get('no_product_found').subscribe((text: string) => {
+      this.no_product_found = text;
+    });
   }
 
   getSearch() {
@@ -140,6 +144,7 @@ export class ProductListPage {
       'price_filter': this.price,
     };
 
+    console.log("this.filterData : " + JSON.stringify(this.filterData));
     this.loadingProvider.show();
     this.categoryProvider.apiProductList(this.filterData).subscribe(
       response => {
@@ -149,7 +154,6 @@ export class ProductListPage {
         this.sorts = this.responseData.sorts;
         this.limits = this.responseData.limits;
         this.binddata();
-        console.log("catList : " + JSON.stringify(this.products));
         this.loadingProvider.dismiss();
       },
       err => console.error(err),

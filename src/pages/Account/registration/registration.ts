@@ -13,6 +13,7 @@ import { ProfilePage } from '../profile/profile';
 import { TermsAndConditionPage } from '../../Terms/terms-and-condition/terms-and-condition';
 import { PrivacyPolicyPage } from '../../Terms/privacy-policy/privacy-policy';
 import { ModalProvider } from '../../../providers/modal/modal';
+import { AlertController, Alert } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -28,6 +29,7 @@ export class RegistrationPage {
   private status;
   private message;
   private responseData;
+  public alert: Alert;
 
   //text
   public firstname_txt;
@@ -49,7 +51,10 @@ export class RegistrationPage {
   public already_account;
   public privacy_policy;
   public log_in;
+  public success_txt;
   private dob: any;
+  private warning_txt;
+  private ok_txt;
   private maxDate: string;
 
   //warning msg
@@ -61,6 +66,8 @@ export class RegistrationPage {
   private error_telephone;
   private error_password;
   private error_confirm;
+  private error_warning;
+  private text_message;
 
   private error_dob = 'please select date of birth';
   private error_gender = 'field is required';
@@ -74,6 +81,7 @@ export class RegistrationPage {
     public loginProvider: LoginProvider,
     public modalProvider: ModalProvider,
     public translate: TranslateService,
+    public alertCtrl: AlertController,
     public languageProvider: LanguageProvider, ) {
     this.setText();
 
@@ -165,6 +173,15 @@ export class RegistrationPage {
     this.translate.get('error_email').subscribe((text: string) => {
       this.error_email = text;
     });
+    this.translate.get('warning').subscribe((text: string) => {
+      this.warning_txt = text;
+    });
+    this.translate.get('success').subscribe((text: string) => {
+      this.success_txt = text;
+    });
+    this.translate.get('ok').subscribe((text: string) => {
+      this.ok_txt = text;
+    });
   }
 
   @ViewChild('datePicker') datePicker;
@@ -206,7 +223,7 @@ export class RegistrationPage {
   save() {
     this.submitAttempt = true;
     if (this.registerForm.valid) {
-      // this.loadingProvider.present();
+      this.loadingProvider.present();
 
       this.formData = this.registerForm.valid;
 
@@ -230,42 +247,55 @@ export class RegistrationPage {
           //   this.navCtrl.push(ProfilePage);
           // }
 
-          // if (this.responseData.text_message != '') {
-          //   this.text_message = this.responseData.text_message;
-          //   this.alertProvider.title = 'Success';
-          //   this.alertProvider.message = this.text_message;
-          //   this.alertProvider.showAlert();
-          // }
+          if (this.responseData.text_message != '') {
+            this.text_message = this.responseData.text_message;
 
-          // if (this.responseData.error_fullname != '') {
-          //   this.registerForm.controls['fullname'].setErrors({ 'incorrect': true });
-          //   this.error_fullname = this.responseData.error_fullname;
-          // }
+            this.registerForm.reset();
+            this.submitAttempt = false;
 
-          // if (this.responseData.error_username != '') {
-          //   this.registerForm.controls['username'].setErrors({ 'incorrect': true });
-          //   this.error_username = this.responseData.error_username;
-          // }
+            this.alert = this.alertCtrl.create({
+              title: this.success_txt,
+              message: this.text_message,
+              buttons: [
+                {
+                  text: this.ok_txt,
+                  handler: () => {
+                    this.goToLogin();
+                  }
+                }
+              ]
+            });
+            this.alert.present();
+          }
 
-          // if (this.responseData.error_email != '') {
-          //   this.registerForm.controls['email'].setErrors({ 'incorrect': true });
-          //   this.error_email = this.responseData.error_email;
-          // }
+          if (this.responseData.error_firstname != '') {
+            this.registerForm.controls['firstname'].setErrors({ 'incorrect': true });
+            this.error_firstname = this.responseData.error_firstname;
+          }
+          if (this.responseData.error_lastname != '') {
+            this.registerForm.controls['lastname'].setErrors({ 'incorrect': true });
+            this.error_lastname = this.responseData.error_lastname;
+          }
 
-          // if (this.responseData.error_telephone != '') {
-          //   this.registerForm.controls['telephone'].setErrors({ 'incorrect': true });
-          //   this.error_telephone = this.responseData.error_telephone;
-          // }
+          if (this.responseData.error_email != '') {
+            this.registerForm.controls['email'].setErrors({ 'incorrect': true });
+            this.error_email = this.responseData.error_email;
+          }
 
-          // if (this.responseData.error_password != '') {
-          //   this.registerForm.controls['password'].setErrors({ 'incorrect': true });
-          //   this.error_password = this.responseData.error_password;
-          // }
+          if (this.responseData.error_telephone != '') {
+            this.registerForm.controls['telephone'].setErrors({ 'incorrect': true });
+            this.error_telephone = this.responseData.error_telephone;
+          }
 
-          // if (this.responseData.error_confirm != '') {
-          //   this.registerForm.controls['confirm'].setErrors({ 'incorrect': true });
-          //   this.error_confirm = this.responseData.error_confirm;
-          // }
+          if (this.responseData.error_password != '') {
+            this.registerForm.controls['password'].setErrors({ 'incorrect': true });
+            this.error_password = this.responseData.error_password;
+          }
+
+          if (this.responseData.error_confirm != '') {
+            this.registerForm.controls['confirm'].setErrors({ 'incorrect': true });
+            this.error_confirm = this.responseData.error_confirm;
+          }
 
           // if (this.responseData.error_dob != '') {
           //   this.registerForm.controls['dob'].setErrors({ 'incorrect': true });
@@ -277,21 +307,21 @@ export class RegistrationPage {
           //   this.error_gender = this.responseData.error_gender;
           // }
 
-          // if (this.responseData.error_warning && this.responseData.error_warning != '') {
-          //   this.error_warning = this.responseData.error_warning;
+          if (this.responseData.error_warning && this.responseData.error_warning != '') {
+            this.error_warning = this.responseData.error_warning;
 
-          //   this.alertProvider.title = 'Warning';
-          //   this.alertProvider.message = this.error_warning;
-          //   this.alertProvider.showAlert();
-          // }
+            this.alertProvider.title = this.warning_txt;
+            this.alertProvider.message = this.error_warning;
+            this.alertProvider.showAlert();
+          }
 
         },
         err => {
           console.error(err);
-          //this.loadingProvider.dismiss();
+          this.loadingProvider.dismiss();
         },
         () => {
-          // this.loadingProvider.dismiss();
+          this.loadingProvider.dismiss();
         }
       );
     }

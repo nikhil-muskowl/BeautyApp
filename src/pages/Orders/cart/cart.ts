@@ -95,14 +95,14 @@ export class CartPage {
   // }
 
   ionViewCanEnter() {
-    if (!this.loginProvider.authenticated()) {
-      this.navCtrl.setRoot(LoginPage);
-    }
-    else {
+    if (this.loginProvider.customer_id) {
       this.getProducts();
     }
+    else {
+      this.navCtrl.setRoot(LoginPage);
+    }
   }
-  
+
   goBack() {
     if (this.from == 'home') {
       this.navCtrl.setRoot(HomePage);

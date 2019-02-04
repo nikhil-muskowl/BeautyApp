@@ -16,7 +16,6 @@ export class LoginProvider {
   private URL;
   private agree = 1;
   public customer_id;
-  private isLoggedIn = false;
 
   constructor(public http: HttpClient,
     public platform: Platform,
@@ -32,8 +31,8 @@ export class LoginProvider {
     this.formData = new FormData();
     this.URL = ConfigProvider.BASE_URL + '?route=restapi/register';
 
-    this.formData.append('firstname', data.fullname);
-    this.formData.append('lastname', data.fullname);
+    this.formData.append('firstname', data.firstname);
+    this.formData.append('lastname', data.lastname);
     this.formData.append('email', data.email);
     this.formData.append('telephone', data.telephone);
     this.formData.append('password', data.password);
@@ -98,32 +97,25 @@ export class LoginProvider {
 
   setData(data) {
     this.customer_id = data.customer_id;
-    this.isLoggedIn = true;
-    window.localStorage.setItem('myData', data.customer_id);
+    window.localStorage.setItem('beauty_login', data.customer_id);
   }
 
   unSetData() {
-
     try {
-      this.isLoggedIn = false;
-      window.localStorage.removeItem('myData');
-      return true;
+      this.customer_id = undefined;
+      return window.localStorage.removeItem('beauty_login');
     } catch (error) {
-      return false;
+      return 0;
     }
   }
 
   getData() {
     try {
-      return window.localStorage.getItem('myData');
+      return window.localStorage.getItem('beauty_login');
     } catch (error) {
       return 0;
     }
 
-  }
-
-  authenticated(): boolean {
-    return this.isLoggedIn;
   }
 
   changePassword(data: any) {

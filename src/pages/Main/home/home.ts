@@ -14,6 +14,7 @@ import { ProductListPage } from '../../Products/product-list/product-list';
 import { SpecialOffersPage } from '../../Products/special-offers/special-offers';
 import { SettingsProvider } from '../../../providers/settings/settings';
 import { CartProvider } from '../../../providers/cart/cart';
+import { CategoryProvider } from '../../../providers/category/category';
 
 @Component({
   selector: 'page-home',
@@ -27,6 +28,10 @@ export class HomePage {
   public currency_id;
   public totalQty = 0;
 
+  //categories
+  responseData;
+  catList: any = [];
+
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public platform: Platform,
@@ -34,23 +39,25 @@ export class HomePage {
     public settingsProvider: SettingsProvider,
     public alertProvider: AlertProvider,
     public loadingProvider: LoadingProvider,
+    public categoryProvider: CategoryProvider,
     public loginProvider: LoginProvider,
     public translate: TranslateService,
     public languageProvider: LanguageProvider,
     public alertCtrl: AlertController, ) {
 
-    this.language_id = this.languageProvider.getLanguage();
-    this.currency_id = this.settingsProvider.getCurrData();
-
-    this.customer_id = this.loginProvider.customer_id;
     this.setText();
     // this.getProducts();
-
   }
 
   ionViewWillEnter() {
-    if (!this.loginProvider.authenticated()) {
+    this.language_id = this.languageProvider.getLanguage();
+    this.currency_id = this.settingsProvider.getCurrData();
+    this.totalQty = 0;
+    this.customer_id = this.loginProvider.customer_id;
+    console.log("this.loginProvider.customer_id : " + this.loginProvider.customer_id);
+    if (this.loginProvider.customer_id) {
       this.getProducts();
+      this.getCategory();
     }
   }
 
@@ -63,17 +70,40 @@ export class HomePage {
     });
   }
 
+  getCategory() {
+    this.loadingProvider.show();
+    let param = {
+      language_id: this.language_id,
+      currency_id: this.currency_id,
+    }
+
+    this.categoryProvider.apiCategory(param).subscribe(
+      response => {
+        this.responseData = response;
+        this.catList = this.responseData.categories;
+        console.log("this.catList[0].title : " + this.catList[0].title);
+        // console.log("catList : " + JSON.stringify(this.catList));
+        this.loadingProvider.dismiss();
+      },
+      err => console.error(err),
+      () => {
+        this.loadingProvider.dismiss();
+      }
+    );
+  }
+
   gotoCart() {
-    if (!this.loginProvider.authenticated()) {
-      this.navCtrl.setRoot(LoginPage);
+    if (this.loginProvider.customer_id) {
+      this.navCtrl.push(CartPage, { from: 'home' });
+
     }
     else {
-      this.navCtrl.push(CartPage, { from: 'home' });
+      this.navCtrl.setRoot(LoginPage);
     }
   }
 
   gotoHome() {
-    this.navCtrl.setRoot(HomePage);
+    this.navCtrl.setRoot(this.navCtrl.getActive().component);
   }
 
   gotoCategory() {
@@ -81,21 +111,21 @@ export class HomePage {
   }
 
   gotoProfile() {
-    if (!this.loginProvider.authenticated()) {
-      this.navCtrl.setRoot(LoginPage);
+    if (this.loginProvider.customer_id) {
+      this.navCtrl.setRoot(ProfilePage);
     }
     else {
-      this.navCtrl.setRoot(ProfilePage);
+      this.navCtrl.setRoot(LoginPage);
     }
   }
 
   gotoNotifications() {
-    if (!this.loginProvider.authenticated()) {
-      this.navCtrl.setRoot(LoginPage);
-    }
-    else {
-      this.navCtrl.setRoot(CategoriesPage);
-    }
+    // if (!this.loginProvider.authenticated()) {
+    //   this.navCtrl.setRoot(LoginPage);
+    // }
+    // else {
+    //   this.navCtrl.setRoot(CategoriesPage);
+    // }
   }
 
   gotoSearch() {

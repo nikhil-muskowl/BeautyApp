@@ -73,17 +73,13 @@ export class ProfilePage {
   }
 
   ionViewCanEnter() {
-    if (!this.loginProvider.authenticated()) {
-      this.navCtrl.setRoot(LoginPage);
-    }
-    else {
+    if (this.loginProvider.customer_id) {
       this.getProfile();
     }
+    else {
+      this.navCtrl.setRoot(LoginPage);
+    }
   }
-
-  // ionViewWillEnter() {
-  //   this.isLogin();
-  // }
 
   setText() {
     this.translate.setDefaultLang(this.languageProvider.getLanguage());
@@ -147,15 +143,6 @@ export class ProfilePage {
       this.address_book_txt = text;
     });
 
-  }
-
-  isLogin() {
-    this.user_id = this.loginProvider.getData();
-    if (!this.user_id) {
-      this.navCtrl.setRoot(LoginPage);
-    } else {
-      this.getProfile();
-    }
   }
 
   getProfile() {
@@ -223,7 +210,6 @@ export class ProfilePage {
           text: this.cancel_txt,
           role: 'cancel',
           handler: () => {
-
           }
         },
         {

@@ -37,7 +37,7 @@
     <p [innerHTML]="description"></p>
   </div>
 
-  <ion-grid>
+  <ion-grid *ngIf="productModel?.length">
     <ion-row>
       <ion-col id="productdec" col-6 *ngFor="let product of productModel;">
         <ion-card class="product" (click)="getProductDetail(product)">
@@ -100,6 +100,10 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+
+  <div *ngIf="!productModel?.length" text-center>
+    <h2>{{no_product_found}}</h2>
+  </div>
 
   <div *ngIf="isInfinite">
     <ion-infinite-scroll (ionInfinite)="doInfinite($event)">

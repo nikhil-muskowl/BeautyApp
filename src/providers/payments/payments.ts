@@ -18,7 +18,8 @@ export class PaymentsProvider {
     this.headers.set('Content-Type', 'application/json; charset=utf-8');
   }
 
-  getPaymentMethods(data:any) {
+  //api get payment methods
+  getPaymentMethods(data: any) {
 
     this.formData = new FormData();
     this.formData = new FormData();
@@ -35,6 +36,7 @@ export class PaymentsProvider {
     ).timeout(9000);
   }
 
+  //api get delivery methods
   getDeliveryMethods(data: any) {
 
     this.formData = new FormData();
@@ -52,6 +54,7 @@ export class PaymentsProvider {
     ).timeout(9000);
   }
 
+  //api set payment method
   apiSetPaymentMethods(payment_code) {
     this.formData = new FormData();
     this.formData.append('customer_id', this.loginProvider.customer_id);
@@ -66,6 +69,7 @@ export class PaymentsProvider {
     ).timeout(9000);
   }
 
+  //api set delivery method
   apiSetDeliveryMethods(data: any) {
     this.formData = new FormData();
     this.formData.append('customer_id', this.loginProvider.customer_id);

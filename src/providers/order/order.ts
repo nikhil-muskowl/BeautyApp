@@ -40,6 +40,7 @@ export class OrderProvider {
     this.customer_id = this.loginProvider.getData();
   }
 
+  //set payment data
   setPaymentData(data: any) {
     this.bzone_id = data.zone_id;
     this.bdistrict_id = data.district_id;
@@ -48,6 +49,7 @@ export class OrderProvider {
     this.baddress = data.address;
   }
 
+  //set shipping data
   setShippingData(data: any) {
     this.szone_id = data.zone_id;
     this.sdistrict_id = data.district_id;
@@ -56,6 +58,7 @@ export class OrderProvider {
     this.saddress = data.address;
   }
 
+  //api add order of user to server
   addOrder(): any {
     this.formData = new FormData();
     this.URL = ConfigProvider.BASE_URL + 'checkoutcart';
@@ -86,6 +89,7 @@ export class OrderProvider {
     );
   }
 
+  //api get orders of user
   getOrders(data): any {
 
     this.formData = new FormData();
@@ -109,6 +113,7 @@ export class OrderProvider {
     ).timeout(9000);
   }
 
+  //api get order details
   getOrderDetail(order_id: any) {
 
     this.formData = new FormData();
@@ -123,6 +128,7 @@ export class OrderProvider {
     ).timeout(9000);
   }
 
+  //api to send request order
   setRequest(data: any) {
     this.formData = new FormData();
     this.URL = ConfigProvider.BASE_URL + 'submitrequest';
@@ -138,6 +144,7 @@ export class OrderProvider {
     );
   }
 
+  //api to get user requests regarding order
   getRequests() {
     this.URL = ConfigProvider.BASE_URL + 'myrequest?customer_id=' + this.customer_id;
     return this.http.get(this.URL,
@@ -147,6 +154,7 @@ export class OrderProvider {
     ).timeout(9000);
   }
 
+  //decode HTML content
   public decodeEntities(encodedString) {
     var parser = new DOMParser;
     var dom = parser.parseFromString(

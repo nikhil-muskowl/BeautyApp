@@ -91,6 +91,7 @@ export class RegistrationPage {
     });
   }
 
+  //setting text according to language
   setText() {
     this.translate.setDefaultLang(this.languageProvider.getLanguage());
     this.translate.use(this.languageProvider.getLanguage());
@@ -184,6 +185,7 @@ export class RegistrationPage {
     });
   }
 
+  //open date picker
   @ViewChild('datePicker') datePicker;
   open() {
     this.maxDate = new Date().toISOString().split('T')[0];
@@ -197,14 +199,17 @@ export class RegistrationPage {
     }
   }
 
+  //goto previous page
   goBack() {
     this.navCtrl.setRoot(LoginPage);
   }
 
+  //goto back
   backButtonClick() {
     this.navCtrl.pop();
   }
 
+  //create form and validations
   createForm() {
     this.registerForm = this.formBuilder.group({
       firstname: ['', Validators.compose([Validators.maxLength(32), Validators.pattern('[a-zA-Z ]*'), Validators.required])],
@@ -220,6 +225,7 @@ export class RegistrationPage {
     });
   }
 
+  //save user to server
   save() {
     this.submitAttempt = true;
     if (this.registerForm.valid) {
@@ -328,7 +334,7 @@ export class RegistrationPage {
 
   }
 
-
+  //goto terms and condition page
   public goToTermCondition() {
     this.modalProvider.showConditionsAndPolicy(TermsAndConditionPage);
     this.modalProvider.modal.onDidDismiss(data => {
@@ -336,6 +342,7 @@ export class RegistrationPage {
     });
   }
 
+  //goto PrivacyPolicy page
   public goToPrivacyPolicy() {
     this.modalProvider.showConditionsAndPolicy(PrivacyPolicyPage);
     this.modalProvider.modal.onDidDismiss(data => {
@@ -344,7 +351,7 @@ export class RegistrationPage {
     });
   }
 
-
+  //goto Login page
   public goToLogin() {
     this.navCtrl.setRoot(LoginPage);
   }

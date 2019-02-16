@@ -32,6 +32,7 @@ export class AlertProvider {
 
   }
 
+  //setting text according to language
   setText() {
     this.translate.setDefaultLang(this.languageProvider.getLanguage());
     console.log("getLanguage() : " + this.languageProvider.getLanguage());
@@ -50,7 +51,8 @@ export class AlertProvider {
       this.ok = text;
     });
   }
-  
+
+  //show alert with message and title
   showAlert() {
     let alert = this.alertCtrl.create({
       title: this.title,

@@ -19,6 +19,7 @@ export class SettingsProvider {
     this.customer_id = this.loginProvider.getData();
   }
 
+  //api to get currencuy
   apigetCurrencies(): any {
 
     this.URL = ConfigProvider.BASE_URL + '?route=restapi/checkout/currency';
@@ -30,7 +31,7 @@ export class SettingsProvider {
     ).timeout(9000);
   }
 
-
+  //api to set user currency
   apiUserSetCurrencies(currency): any {
 
     this.formData = new FormData();
@@ -46,6 +47,7 @@ export class SettingsProvider {
     ).timeout(9000);
   }
 
+  //get currency from storage
   getCurrData() {
     try {
       if (window.localStorage.getItem('currency')) {
@@ -59,6 +61,7 @@ export class SettingsProvider {
     }
   }
 
+  //set currency in storage
   public setCurrency(code) {
     console.log("Set currency : " + code);
     try {

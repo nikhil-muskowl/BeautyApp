@@ -38,6 +38,7 @@ export class TermsAndConditionPage {
     this.getTerms();
   }
 
+  //setting text according to language
   setText() {
     this.translate.setDefaultLang(this.languageProvider.getLanguage());
     this.translate.use(this.languageProvider.getLanguage());
@@ -50,6 +51,7 @@ export class TermsAndConditionPage {
     });
   }
 
+  //get terms from server
   public getTerms() {
     this.loadingProvider.present();
     this.cartProvider.getTermCondition().subscribe(
@@ -67,6 +69,7 @@ export class TermsAndConditionPage {
     return event;
   }
 
+  //on dismiss redirect to source page
   dismiss() {
     this.modalProvider.dismiss();
   }

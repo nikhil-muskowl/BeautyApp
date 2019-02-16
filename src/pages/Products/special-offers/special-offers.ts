@@ -84,6 +84,7 @@ export class SpecialOffersPage {
     this.getServerData();
   }
 
+  //setting text according to language
   setText() {
     this.translate.setDefaultLang(this.languageProvider.getLanguage());
     console.log("getLanguage() : " + this.languageProvider.getLanguage());
@@ -106,10 +107,12 @@ export class SpecialOffersPage {
     });
   }
 
+  //goto previous page
   goBack() {
     this.navCtrl.setRoot(HomePage);
   }
 
+  //show sort popover
   presentSortActionSheet() {
     let actionSheet = this.actionSheetCtrl.create({
       title: this.sort_products,
@@ -134,6 +137,7 @@ export class SpecialOffersPage {
     actionSheet.present();
   }
 
+  //open filter page
   openFilter() {
     let params = {
       countryOrigin: this.country_origin_filter,
@@ -144,6 +148,7 @@ export class SpecialOffersPage {
     this.navCtrl.push(FiltersPage, params);
   }
 
+  //get special offer products from server
   getServerData() {
     this.filterData = {
       'page': this.page,
@@ -177,6 +182,7 @@ export class SpecialOffersPage {
     );
   }
 
+  //bind  special offer products data OnScroll
   binddata() {
     for (let index = 0; index < this.products.length; index++) {
       this.productModel.push({
@@ -196,15 +202,18 @@ export class SpecialOffersPage {
     }
   }
 
+  //on rate change
   onRateChange(rate) {
     this.rateValue = 0;
     this.rateValue = parseFloat(rate);
   }
 
+  //goto product details page
   getProductDetail(product) {
     this.navCtrl.push(ProductDetailsPage, { id: product.product_id });
   }
 
+  //load more on Scroll Down 
   doInfinite(infiniteScroll) {
 
     if (this.pagination.length > 0) {

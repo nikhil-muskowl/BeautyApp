@@ -45,6 +45,7 @@ export class CategoriesPage {
 
   }
 
+  //setting text according to language
   setText() {
     this.translate.setDefaultLang(this.languageProvider.getLanguage());
     this.translate.use(this.languageProvider.getLanguage());
@@ -54,10 +55,12 @@ export class CategoriesPage {
     });
   }
 
+  //goto previous page
   goBack() {
     this.navCtrl.setRoot(HomePage);
   }
 
+  //get all categories from server
   getCategory() {
     this.loadingProvider.show();
     let param = {
@@ -79,6 +82,7 @@ export class CategoriesPage {
     );
   }
 
+  //expand sub categories
   ExpandChild(items, i) {
     console.log("click on head : " + items.name);
     if (this.selectedCat) {
@@ -88,6 +92,7 @@ export class CategoriesPage {
     }
   }
 
+  //open product list page
   openPage(data: any) {
     console.log("click on child : " + data.name);
     this.navCtrl.push(ProductListPage, { id: data.category_id, name: data.name });

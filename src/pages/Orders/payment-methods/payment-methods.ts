@@ -78,6 +78,7 @@ export class PaymentMethodsPage {
     this.getServerData();
   }
 
+  //setting text according to language
   setText() {
     this.translate.setDefaultLang(this.languageProvider.getLanguage());
     this.translate.use(this.languageProvider.getLanguage());
@@ -114,6 +115,7 @@ export class PaymentMethodsPage {
     });
   }
 
+  //get payment methods from server
   getServerData() {
     this.payment_methods = [];
     let params = {
@@ -178,15 +180,18 @@ export class PaymentMethodsPage {
     return event;
   }
 
+  //on payment method change
   paymentChange(payments) {
     console.log("Selected payment_code : " + JSON.stringify(payments.code));
     this.payment_code = payments.code;
   }
 
+  //goto previous page
   goBack() {
     this.navCtrl.pop();
   }
 
+  //save payment method for order
   save() {
     if (this.payment_code) {
       // this.loadingProvider.show();

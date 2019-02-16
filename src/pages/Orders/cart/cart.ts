@@ -94,6 +94,7 @@ export class CartPage {
   //   this.getProducts();
   // }
 
+  //when view will be enter in page
   ionViewCanEnter() {
     if (this.loginProvider.customer_id) {
       this.getProducts();
@@ -103,6 +104,7 @@ export class CartPage {
     }
   }
 
+  //goto previous page
   goBack() {
     if (this.from == 'home') {
       this.navCtrl.setRoot(HomePage);
@@ -112,6 +114,7 @@ export class CartPage {
     }
   }
 
+  //setting text according to language
   setText() {
     this.translate.setDefaultLang(this.languageProvider.getLanguage());
     console.log("getLanguage() : " + this.languageProvider.getLanguage());
@@ -167,6 +170,7 @@ export class CartPage {
     });
   }
 
+  //checking user is login
   isLogin() {
 
     if (!this.loginProvider.customer_id) {
@@ -174,6 +178,7 @@ export class CartPage {
     }
   }
 
+  //get number of cart product 
   public getProducts() {
     this.products = [];
     let param = {
@@ -238,6 +243,7 @@ export class CartPage {
     return event;
   }
 
+  //remove product from cart
   public remove(data) {
     this.loadingProvider.present();
     this.cartProvider.remove(data, this.language_id, this.currency_id).subscribe(
@@ -252,12 +258,14 @@ export class CartPage {
     return event;
   }
 
+  //create form and validation
   createForm() {
     this.cartForm = this.formBuilder.group({
       quantity: ['', Validators.required]
     });
   }
 
+  //edit cart item
   save(data) {
     this.submitAttempt = true;
 
@@ -304,6 +312,7 @@ export class CartPage {
 
   }
 
+  //goto checkout page
   goToCheckout() {
     var alert = this.alertCtrl.create({
       title: this.confirm_txt,
@@ -328,6 +337,7 @@ export class CartPage {
     alert.present();
   }
 
+  //open edit cart modal
   public edit(data) {
     let param = {
       cart_id: data.cart_id,
@@ -342,6 +352,7 @@ export class CartPage {
     });
   }
 
+  //goto home page
   goToHome() {
     this.navCtrl.setRoot(HomePage);
   }

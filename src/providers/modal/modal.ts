@@ -13,6 +13,7 @@ export class ModalProvider {
   ) {
   }
 
+  //create profile modal
   presentProfileModal(Page, Param) {
     if (!this.modal) {
       this.modal = this.modalCtrl.create(Page, Param);
@@ -23,6 +24,7 @@ export class ModalProvider {
     }
   }
 
+  //create condition and policy modal
   showConditionsAndPolicy(Page) {
     if (!this.modal) {
       this.modal = this.modalCtrl.create(Page);
@@ -33,6 +35,7 @@ export class ModalProvider {
     }
   }
 
+  //dismiss modal
   dismiss() {
     if (this.modal) {
       this.modal.dismiss().catch();

@@ -59,6 +59,7 @@ export class ChangePasswordPage {
     });
   }
 
+  //setting text according to language
   setText() {
     this.translate.setDefaultLang(this.languageProvider.getLanguage());
     this.translate.use(this.languageProvider.getLanguage());
@@ -95,10 +96,12 @@ export class ChangePasswordPage {
     });
   }
 
+  //goto previous page
   goBack() {
     this.navCtrl.pop();
   }
 
+  //create form and validations
   createForm() {
     this.passwordForm = this.formBuilder.group({
       currentpassword: ['', Validators.required],
@@ -107,6 +110,7 @@ export class ChangePasswordPage {
     });
   }
 
+  //save address
   save() {
     this.submitAttempt = true;
     this.formData = this.passwordForm.valid;

@@ -52,10 +52,10 @@ export class ProductReviewComponent {
     public translate: TranslateService,
     public languageProvider: LanguageProvider, ) {
 
-
     this.setText();
   }
 
+  //setting text according to language
   setText() {
     this.translate.setDefaultLang(this.languageProvider.getLanguage());
     console.log("getLanguage() : " + this.languageProvider.getLanguage());
@@ -90,8 +90,9 @@ export class ProductReviewComponent {
     });
   }
 
+  //on component change
   ngOnChanges() {
-    // console.log(this.product_id);  
+    console.log(this.product_id);  
 
     this.language_id = this.languageProvider.getLanguage();
     this.currency_id = this.settingsProvider.getCurrData();
@@ -100,6 +101,7 @@ export class ProductReviewComponent {
     this.createForm();
   }
 
+  //get reviews
   public getServerData(product_id) {
     this.loadingProvider.present();
     let param = {
@@ -121,6 +123,7 @@ export class ProductReviewComponent {
     return event;
   }
 
+  //create from and validation
   public createForm() {
     this.reviewForm = this.formBuilder.group({
       name: ['', Validators.compose([Validators.maxLength(32), Validators.pattern('[a-zA-Z ]*'), Validators.required])],
@@ -130,10 +133,12 @@ export class ProductReviewComponent {
 
   }
 
+  //on rating cahnge
   public onRateChange(rate) {
     this.rateValue = rate;
   }
 
+  //post the review on server
   public save() {
     this.submitAttempt = true;
     this.formData = this.reviewForm.valid;

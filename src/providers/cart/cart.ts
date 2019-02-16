@@ -23,6 +23,7 @@ export class CartProvider {
     this.headers.set('Content-Type', 'application/json; charset=utf-8');
   }
 
+  //setting text according to language
   products(data: any) {
 
     this.formData = new FormData();
@@ -53,6 +54,7 @@ export class CartProvider {
     ).timeout(9000);
   }
 
+  //checkout api of product
   orderCheckout(data: any) {
 
     this.formData = new FormData();
@@ -84,6 +86,7 @@ export class CartProvider {
 
   }
 
+  //aip add to cart
   add(data: any): any {
     this.formData = new FormData();
     console.log(data);
@@ -101,6 +104,7 @@ export class CartProvider {
     );
   }
 
+  //api edit product in cart
   edit(data: any): any {
     this.formData = new FormData();
     this.URL = ConfigProvider.BASE_URL + '?route=restapi/checkout/cart/edit';
@@ -119,6 +123,7 @@ export class CartProvider {
     );
   }
 
+  //api remove product from cart
   remove(data: any, language_id, currency_id): any {
     this.formData = new FormData();
     this.URL = ConfigProvider.BASE_URL + '?route=restapi/checkout/cart/remove';
@@ -134,6 +139,7 @@ export class CartProvider {
     );
   }
 
+  //get terms
   getTermCondition() {
     this.URL = ConfigProvider.BASE_URL + 'termandcondition';
     return this.http.get(this.URL,

@@ -100,6 +100,7 @@ export class ConfirmOrderPage {
     this.navCtrl.pop();
   }
 
+  //setting text according to language
   setText() {
     this.translate.setDefaultLang(this.languageProvider.getLanguage());
     console.log("getLanguage() : " + this.languageProvider.getLanguage());
@@ -155,6 +156,7 @@ export class ConfirmOrderPage {
     });
   }
 
+  //check if usr is logged in
   isLogin() {
 
     if (!this.loginProvider.customer_id) {
@@ -162,6 +164,7 @@ export class ConfirmOrderPage {
     }
   }
 
+  //get cart products
   public getProducts() {
     this.products = [];
     let param = {
@@ -231,6 +234,7 @@ export class ConfirmOrderPage {
     return event;
   }
 
+  //goto checkout page make payments
   goToCheckout() {
 
     let param = {
@@ -296,6 +300,7 @@ export class ConfirmOrderPage {
     );
   }
 
+  //make payment with PayPal
   makePayment(order_id) {
     console.log('In payment');
     this.payPal.init({

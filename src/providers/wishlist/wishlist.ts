@@ -23,6 +23,7 @@ export class WishlistProvider {
     this.headers.set('Content-Type', 'application/json; charset=utf-8');
   }
 
+  //api get user's wishlist
   getWishlist() {
 
     this.formData = new FormData();
@@ -37,6 +38,7 @@ export class WishlistProvider {
     ).timeout(9000);
   }
 
+  //api add product to user's wishlist
   addWishlist(data: any): any {
 
     this.formData = new FormData();
@@ -53,6 +55,7 @@ export class WishlistProvider {
     );
   }
 
+  //api remove product from user's wishlist
   removeWishlist(data: any): any {
 
     this.formData = new FormData();

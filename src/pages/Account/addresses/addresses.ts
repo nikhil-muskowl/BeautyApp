@@ -60,6 +60,7 @@ export class AddressesPage {
     });
   }
 
+  //setting text according to language
   setText() {
 
     this.translate.setDefaultLang(this.languageProvider.getLanguage());
@@ -101,10 +102,12 @@ export class AddressesPage {
     });
   }
 
+  //goto profile page
   goBack() {
     this.navCtrl.setRoot(ProfilePage);
   }
 
+  //remove address data from server
   remove(address) {
     this.loadingProvider.present();
     this.addressProvider.removeAddress(address).subscribe(
@@ -137,6 +140,7 @@ export class AddressesPage {
     );
   }
 
+  //edit address
   edit(address) {
     let param = { address_id: address.address_id };
     this.modalProvider.presentProfileModal(EditAddressPage, param);
@@ -148,6 +152,7 @@ export class AddressesPage {
     });
   }
 
+  //get list of addresses
   getServerData() {
     this.addresses = [];
     this.loadingProvider.present();
@@ -207,8 +212,8 @@ export class AddressesPage {
     return event;
   }
 
+  //add new address
   AddAddress() {
-
     let param;
     this.modalProvider.presentProfileModal(AddAddressPage, param);
 

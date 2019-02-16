@@ -49,6 +49,7 @@ export class HomePage {
     // this.getProducts();
   }
 
+  //when view will be enter in page
   ionViewWillEnter() {
     this.language_id = this.languageProvider.getLanguage();
     this.currency_id = this.settingsProvider.getCurrData();
@@ -61,6 +62,7 @@ export class HomePage {
     }
   }
 
+  //setting text according to language
   setText() {
     this.translate.setDefaultLang(this.languageProvider.getLanguage());
     this.translate.use(this.languageProvider.getLanguage());
@@ -70,6 +72,7 @@ export class HomePage {
     });
   }
 
+  //get categories of home icons
   getCategory() {
     this.loadingProvider.show();
     let param = {
@@ -92,6 +95,7 @@ export class HomePage {
     );
   }
 
+  //goto cart page
   gotoCart() {
     if (this.loginProvider.customer_id) {
       this.navCtrl.push(CartPage, { from: 'home' });
@@ -102,14 +106,17 @@ export class HomePage {
     }
   }
 
+  //goto home page
   gotoHome() {
     this.navCtrl.setRoot(this.navCtrl.getActive().component);
   }
 
+  //goto caategories page
   gotoCategory() {
     this.navCtrl.setRoot(CategoriesPage);
   }
 
+  //goto profile page
   gotoProfile() {
     if (this.loginProvider.customer_id) {
       this.navCtrl.setRoot(ProfilePage);
@@ -119,6 +126,7 @@ export class HomePage {
     }
   }
 
+  //goto notifications page
   gotoNotifications() {
     // if (!this.loginProvider.authenticated()) {
     //   this.navCtrl.setRoot(LoginPage);
@@ -128,14 +136,17 @@ export class HomePage {
     // }
   }
 
+  //goto search page
   gotoSearch() {
     this.navCtrl.push(ProductListPage, { from: 'home' });
   }
 
+  //goto offers page
   gotoOffers() {
     this.navCtrl.push(SpecialOffersPage);
   }
 
+  //get cart quantity
   public getProducts() {
     let param = {
       language_id: this.language_id,

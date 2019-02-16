@@ -10,6 +10,7 @@ import { LoginPage } from '../../Account/login/login';
 import { AlertController, Alert } from 'ionic-angular';
 import { OrderProvider } from '../../../providers/order/order';
 import { OrderDetailsPage } from '../order-details/order-details';
+import { HomePage } from '../../Main/home/home';
 
 @IonicPage()
 @Component({
@@ -22,6 +23,7 @@ export class OrderPage {
   public filterData;
   public responseData;
   public orders;
+  public from;
 
   public pagination;
   public sorts;
@@ -59,13 +61,16 @@ export class OrderPage {
   ) {
 
     this.setText();
-
+    this.from = this.navParams.get('from');
+    console.log('this.from : ' + this.from);
     platform.registerBackButtonAction(() => {
       this.goBack();
     });
   }
 
+  //when view will be enter in page
   ionViewWillEnter() {
+    this.orderModel = [];
     if (!this.loginProvider.customer_id) {
       this.navCtrl.push(LoginPage);
     } else {
@@ -73,10 +78,17 @@ export class OrderPage {
     }
   }
 
+  //goto previous page
   goBack() {
-    this.navCtrl.setRoot(ProfilePage);
+    if (this.from == 'profile') {
+      this.navCtrl.setRoot(ProfilePage);
+    }
+    else {
+      this.navCtrl.setRoot(HomePage);
+    }
   }
 
+  //setting text according to language
   setText() {
     this.translate.setDefaultLang(this.languageProvider.getLanguage());
     this.translate.use(this.languageProvider.getLanguage());
@@ -107,6 +119,7 @@ export class OrderPage {
     });
   }
 
+  //get order from server
   public getServerData() {
     this.filterData = {
       'page': this.page,
@@ -169,6 +182,7 @@ export class OrderPage {
     return event;
   }
 
+  //bind server data OnScroll
   binddata() {
     for (let index = 0; index < this.orders.length; index++) {
       this.orderModel.push({
@@ -182,6 +196,7 @@ export class OrderPage {
     }
   }
 
+  //load more on Scroll Down 
   doInfinite(infiniteScroll) {
     // if (this.orders.length > 0 && this.pagination.length != this.page) {
     //   this.page++;
@@ -212,6 +227,7 @@ export class OrderPage {
     }
   }
 
+  //goto detail page
   viewDetail(data: any) {
     this.navCtrl.push(OrderDetailsPage, { order_id: data.order_id });
   }

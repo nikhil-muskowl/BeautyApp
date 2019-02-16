@@ -106,10 +106,12 @@ export class ProductDetailsPage {
     });
   }
 
+  //goto previous page
   goBack() {
     this.navCtrl.pop();
   }
 
+  //setting text according to language
   setText() {
     this.translate.setDefaultLang(this.languageProvider.getLanguage());
     console.log("getLanguage() : " + this.languageProvider.getLanguage());
@@ -165,6 +167,7 @@ export class ProductDetailsPage {
     });
   }
 
+  //when view will be enter in page
   ionViewWillEnter() {
     this.review_tab = 'description';
     this.platform.ready().then(() => {
@@ -172,6 +175,7 @@ export class ProductDetailsPage {
     })
   }
 
+  //create form and validations
   createForm() {
     this.cartForm = this.formBuilder.group({
       // detail_id: ['', Validators.required],
@@ -179,6 +183,7 @@ export class ProductDetailsPage {
     });
   }
 
+  //when view will be enter in page
   getProductDetails() {
     this.loadingProvider.show();
     this.categoryProvider.apiProductDetails(this.product_id).subscribe(
@@ -212,6 +217,7 @@ export class ProductDetailsPage {
     );
   }
 
+  //save product to cart
   save() {
     if (!this.customer_id) {
       // this.error_login = "Please login first";
@@ -261,6 +267,7 @@ export class ProductDetailsPage {
     }
   }
 
+  //add product to wishlist
   addWishlist() {
     if (!this.customer_id) {
       // this.error_login = "Please login first";
@@ -309,6 +316,7 @@ export class ProductDetailsPage {
     }
   }
 
+  //get cart product count
   getProducts() {
     let param = {
       language_id: this.language_id,
@@ -331,10 +339,12 @@ export class ProductDetailsPage {
     return event;
   }
 
+  //goto Cart page
   goTocart() {
     this.navCtrl.push(CartPage);
   }
 
+  //show confirm dialog of adding product in cart
   showConfirm() {
     let confirm = this.alertCtrl.create({
       title: this.success_txt,
@@ -359,6 +369,7 @@ export class ProductDetailsPage {
     confirm.present();
   }
 
+  //show confirm dialog of adding product in wishilist
   showConfirmWishlist() {
     let confirm = this.alertCtrl.create({
       title: this.success,
@@ -383,6 +394,7 @@ export class ProductDetailsPage {
     confirm.present();
   }
 
+  //show message to login
   showMessage() {
     let confirm = this.alertCtrl.create({
       title: this.warning,

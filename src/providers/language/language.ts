@@ -20,6 +20,7 @@ export class LanguageProvider {
     this.language_id = this.getLanguageId();
   }
 
+  //api get languages
   apigetLanguages(): any {
 
     this.URL = ConfigProvider.BASE_URL + '?route=restapi/product/language';
@@ -31,6 +32,7 @@ export class LanguageProvider {
     ).timeout(9000);
   }
 
+  //api get user currencies
   apiUserSetCurrencies(code): any {
 
     this.formData = new FormData();
@@ -46,7 +48,7 @@ export class LanguageProvider {
     ).timeout(9000);
   }
 
-
+  //set language code in storage
   public setLanguage(data) {
     try {
       window.localStorage.setItem('language_id', data.id);
@@ -55,6 +57,7 @@ export class LanguageProvider {
     }
   }
 
+  //get language code from storage
   public getLanguage() {
     try {
       if (window.localStorage.getItem('language')) {
@@ -68,6 +71,7 @@ export class LanguageProvider {
     }
   }
 
+  //set language id in storage
   public setLanguageId(data) {
     try {
       window.localStorage.setItem('language_id', data.id);
@@ -75,6 +79,7 @@ export class LanguageProvider {
     }
   }
 
+  //get language id from storage
   public getLanguageId() {
     try {
       if (window.localStorage.getItem('language_id')) {

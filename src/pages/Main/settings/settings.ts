@@ -49,7 +49,7 @@ export class SettingsPage {
     this.setText();
     this.getCurrency();
     this.getLanguage();
-    
+
     console.log("this.currency  : " + this.currency);
 
     platform.registerBackButtonAction(() => {
@@ -58,6 +58,7 @@ export class SettingsPage {
 
   }
 
+  //setting text according to language
   setText() {
     this.translate.setDefaultLang(this.languageProvider.getLanguage());
     this.translate.use(this.languageProvider.getLanguage());
@@ -80,6 +81,7 @@ export class SettingsPage {
 
   }
 
+  //get currencies from server
   getCurrency() {
     this.loadingProvider.present();
 
@@ -94,6 +96,7 @@ export class SettingsPage {
     this.loadingProvider.dismiss();
   }
 
+  //get Languages from server
   getLanguage() {
     // this.loadingProvider.present();
 
@@ -108,10 +111,12 @@ export class SettingsPage {
     // this.loadingProvider.dismiss();
   }
 
+  //goto previous page
   goBack() {
     this.navCtrl.setRoot(HomePage);
   }
 
+  //on currence change
   onCurrChange(data: any) {
     console.log('selected currency : ' + JSON.stringify(data));
 
@@ -120,6 +125,7 @@ export class SettingsPage {
     console.log(" Changed : " + this.settingsProvider.getCurrData());
   }
 
+  //on language change
   onLangChange(data: any) {
 
     console.log('selected language : ' + JSON.stringify(data));
@@ -128,6 +134,7 @@ export class SettingsPage {
     console.log(" Changed : " + this.settingsProvider.getCurrData());
   }
 
+  //on currence change
   changeCurrency(code) {
     this.loadingProvider.present();
 
@@ -146,6 +153,7 @@ export class SettingsPage {
     this.loadingProvider.dismiss();
   }
 
+  //on language change
   changeLanguage(code) {
     this.loadingProvider.present();
 

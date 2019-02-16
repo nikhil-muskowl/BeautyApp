@@ -86,6 +86,7 @@ export class ProductListPage {
     this.getServerData();
   }
 
+  //setting text according to language
   setText() {
     this.translate.setDefaultLang(this.languageProvider.getLanguage());
     console.log("getLanguage() : " + this.languageProvider.getLanguage());
@@ -111,6 +112,7 @@ export class ProductListPage {
     });
   }
 
+  //open search box
   getSearch() {
     if (this.isSearch == 0) {
       this.isSearch = 1;
@@ -121,6 +123,7 @@ export class ProductListPage {
     }
   }
 
+  //goto previous page
   goBack() {
     if (this.fromPage == 'home' || this.fromPage == undefined) {
       this.navCtrl.setRoot(HomePage);
@@ -130,6 +133,7 @@ export class ProductListPage {
     }
   }
 
+  //get product list from server
   getServerData() {
     this.filterData = {
       'search': this.search,
@@ -163,6 +167,7 @@ export class ProductListPage {
     );
   }
 
+  //open sorting popover
   presentSortActionSheet() {
     let actionSheet = this.actionSheetCtrl.create({
       title: this.sort_products,
@@ -187,6 +192,7 @@ export class ProductListPage {
     actionSheet.present();
   }
 
+  //open filter page
   openFilter() {
     let psrams = {
       countryOrigin: this.country_origin_filter,
@@ -217,6 +223,7 @@ export class ProductListPage {
   //   actionSheet.present();
   // }
 
+  //bind product list data OnScroll
   binddata() {
     for (let index = 0; index < this.products.length; index++) {
       this.productModel.push({
@@ -236,15 +243,18 @@ export class ProductListPage {
     }
   }
 
+  //on rate change
   onRateChange(rate) {
     this.rateValue = 0;
     this.rateValue = parseFloat(rate);
   }
 
+  //goto product details page
   getProductDetail(product) {
     this.navCtrl.push(ProductDetailsPage, { id: product.product_id });
   }
 
+  //load more on Scroll Down
   doInfinite(infiniteScroll) {
 
     if (this.pagination.length > 0) {
@@ -265,12 +275,14 @@ export class ProductListPage {
     }
   }
 
+  //on click on search button for product
   public onSearch(ev: any) {
     this.search = ev.target.value;
     this.productModel = [];
     this.getServerData();
   }
 
+  //cancel on search box
   public onSearchCancel() {
     this.search = '';
   }

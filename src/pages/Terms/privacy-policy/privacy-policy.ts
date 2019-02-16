@@ -38,6 +38,7 @@ export class PrivacyPolicyPage {
     this.getPolicy();
   }
 
+  //setting text according to language
   setText() {
     this.translate.setDefaultLang(this.languageProvider.getLanguage());
     this.translate.use(this.languageProvider.getLanguage());
@@ -50,6 +51,7 @@ export class PrivacyPolicyPage {
     });
   }
 
+  //get policy from server
   public getPolicy() {
     this.loadingProvider.present();
     // Use another API for policy in cart provider
@@ -69,6 +71,7 @@ export class PrivacyPolicyPage {
     return event;
   }
 
+  //on dismiss redirect to source page
   dismiss() {
     this.modalProvider.dismiss();
   }

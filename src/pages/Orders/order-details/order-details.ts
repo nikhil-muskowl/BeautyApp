@@ -74,10 +74,12 @@ export class OrderDetailsPage {
     });
   }
 
+  //goto previous page
   goBack() {
     this.navCtrl.pop();
   }
 
+  //setting text according to language
   setText() {
     this.translate.setDefaultLang(this.languageProvider.getLanguage());
     this.translate.use(this.languageProvider.getLanguage());
@@ -105,11 +107,12 @@ export class OrderDetailsPage {
     });
   }
 
+  //get order details from server
   public getServerData() {
     this.loadingProvider.present();
     this.orderProvider.getOrderDetail(this.order_id).subscribe(
       response => {
-       
+
         this.responseData = response.data;
         this.error_warning = this.responseData.error_warning;
         this.success = this.responseData.success;
@@ -174,6 +177,7 @@ export class OrderDetailsPage {
     return event;
   }
 
+  //check user is logged in
   isLogin() {
     console.log("Customer id " + this.loginProvider.getData());
     if (!this.loginProvider.getData()) {
@@ -182,6 +186,7 @@ export class OrderDetailsPage {
 
   }
 
+  //goto order detail page
   viewDetail(data: any) {
     this.navCtrl.push(ProductDetailsPage, { id: data.product_id });
   }

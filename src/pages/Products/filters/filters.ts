@@ -80,6 +80,7 @@ export class FiltersPage {
     this.getBrandData();
   }
 
+  //setting text according to language
   setText() {
     this.translate.setDefaultLang(this.languageProvider.getLanguage());
     console.log("getLanguage() : " + this.languageProvider.getLanguage());
@@ -106,6 +107,7 @@ export class FiltersPage {
 
   }
 
+  //get country origin data from server
   getServerData() {
 
     this.loadingProvider.show();
@@ -125,6 +127,7 @@ export class FiltersPage {
     );
   }
 
+  //get brand data from server
   getBrandData() {
 
     let param = {
@@ -149,6 +152,7 @@ export class FiltersPage {
     );
   }
 
+  //get price bounds from server
   getapiPricesData() {
     let param = {
       language_id: this.language_id,
@@ -175,10 +179,12 @@ export class FiltersPage {
     );
   }
 
+  //goto previous page
   goBack() {
     this.navCtrl.pop();
   }
 
+  //bind brand data on selection
   bindBranddata() {
     for (let index = 0; index < this.brands.length; index++) {
       if (this.selectedBrandsArray != undefined && this.selectedBrandsArray.indexOf(this.brands[index].manufacturer_id) >= 0) {
@@ -198,6 +204,7 @@ export class FiltersPage {
     }
   }
 
+  //bind country origon data on selection
   binddata() {
     for (let index = 0; index < this.country_origins.length; index++) {
       if (this.selectedArray != undefined && this.selectedArray.indexOf(this.country_origins[index].country_origin_id) >= 0) {
@@ -217,6 +224,7 @@ export class FiltersPage {
     }
   }
 
+  //get price bound on change price range
   changePriceRange(data) {
     this.selectedPriceArray = [];
     console.log("Prices : " + JSON.stringify(data));
@@ -224,6 +232,7 @@ export class FiltersPage {
     this.selectedPriceArray.push(data.upper);
   }
 
+  //to set filters
   applyFilters() {
     console.log("Apply Brands : " + JSON.stringify(this.selectedBrandsArray));
     console.log("Apply Country : " + JSON.stringify(this.selectedArray));
@@ -245,6 +254,7 @@ export class FiltersPage {
     }
   }
 
+  //clear filters
   clearFilters() {
     this.selectedArray = [];
     this.selectedBrandsArray = [];
@@ -260,6 +270,7 @@ export class FiltersPage {
     this.selectedPriceArray = [];
   }
 
+  //set on country select
   selectMember(data, i) {
 
     console.log("select data : " + JSON.stringify(data));
@@ -273,6 +284,7 @@ export class FiltersPage {
     console.log(this.selectedArray);
   }
 
+  //set on brand select
   selectedBrands(data, i) {
     console.log("select brand data : " + JSON.stringify(data));
     if (data.checked == true) {

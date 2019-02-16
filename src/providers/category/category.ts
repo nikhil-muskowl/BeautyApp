@@ -17,6 +17,7 @@ export class CategoryProvider {
     this.headers.set('Content-Type', 'application/json; charset=utf-8');
   }
 
+  //api get categories
   apiCategory(data) {
 
     this.formData = new FormData();
@@ -33,6 +34,7 @@ export class CategoryProvider {
     );
   }
 
+  //api get product detials
   apiProductList(data: any) {
 
     this.formData = new FormData();
@@ -74,6 +76,7 @@ export class CategoryProvider {
     );
   }
 
+  //api get product details
   apiProductDetails(id) {
 
     this.URL = ConfigProvider.BASE_URL + '?route=restapi/product&product_id=' + id;
@@ -85,6 +88,7 @@ export class CategoryProvider {
     );
   }
 
+  //api get product reviews
   public getReviews(data, product_id): any {
 
     this.URL = ConfigProvider.BASE_URL + '?route=restapi/product/product/review&product_id=' + product_id;
@@ -103,10 +107,10 @@ export class CategoryProvider {
     );
   }
 
+  //api post product reviews
   public postReviews(product_id, data): any {
-    
+
     this.formData = new FormData();
-    this.formData.append('product_id', product_id);
     this.formData.append('customer_id', this.loginProvider.customer_id);
     this.formData.append('name', data.name);
     this.formData.append('text', data.text);
@@ -122,6 +126,7 @@ export class CategoryProvider {
     );
   }
 
+  //api get special product from server
   public apispecialOffer(data: any) {
 
     this.formData = new FormData();
@@ -164,6 +169,7 @@ export class CategoryProvider {
     );
   }
 
+  //decode the HTML content
   public decodeEntities(encodedString) {
     var parser = new DOMParser;
     var dom = parser.parseFromString(

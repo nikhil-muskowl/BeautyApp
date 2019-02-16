@@ -109,6 +109,7 @@ export class EditProfilePage {
 
   }
 
+  //create form and validation
   createForm() {
     this.accountForm = this.formBuilder.group({
       firstname: [this.firstname, Validators.compose([Validators.maxLength(32), Validators.pattern('[a-zA-Z ]*'), Validators.required])],
@@ -126,10 +127,12 @@ export class EditProfilePage {
     });
   }
 
+  //goto previous page
   goBack() {
     this.navCtrl.pop();
   }
 
+  //setting text according to language
   setText() {
     this.translate.setDefaultLang(this.languageProvider.getLanguage());
     this.translate.use(this.languageProvider.getLanguage());
@@ -226,6 +229,7 @@ export class EditProfilePage {
     });
   }
 
+  //save profile data
   save() {
     this.submitAttempt = true;
     if (this.accountForm.valid) {

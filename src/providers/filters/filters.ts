@@ -19,6 +19,7 @@ export class FiltersProvider {
     this.headers.set('Content-Type', 'application/json; charset=utf-8');
   }
 
+  //api get country origin of products
   apiCountryOrigins() {
     this.formData = new FormData();
     this.URL = ConfigProvider.BASE_URL + '?route=restapi/product/country_origin';
@@ -30,6 +31,7 @@ export class FiltersProvider {
     );
   }
 
+  //api get brands
   apiBrands(data: any) {
     this.formData = new FormData();
     this.URL = ConfigProvider.BASE_URL + '?route=restapi/product/manufacturer';
@@ -46,6 +48,7 @@ export class FiltersProvider {
     );
   }
 
+  //api get products price range of the currency
   apiprices(data: any) {
 
     this.formData = new FormData();

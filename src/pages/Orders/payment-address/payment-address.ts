@@ -72,6 +72,7 @@ export class PaymentAddressPage {
     this.getServerData();
   }
 
+  //setting text according to language
   setText() {
     this.translate.setDefaultLang(this.languageProvider.getLanguage());
     this.translate.use(this.languageProvider.getLanguage());
@@ -108,6 +109,7 @@ export class PaymentAddressPage {
     });
   }
 
+  //get payment address from server
   getServerData() {
     this.addresses = [];
     this.loadingProvider.present();
@@ -168,6 +170,7 @@ export class PaymentAddressPage {
     return event;
   }
 
+  //goto add address page
   AddAddress() {
     let param;
     this.modalProvider.presentProfileModal(AddAddressPage, param);
@@ -179,15 +182,18 @@ export class PaymentAddressPage {
     });
   }
 
+  //on address change
   addressChange(address) {
     console.log("Select address id : " + JSON.stringify(address.address_id));
     this.payment_address_id = address.address_id;
   }
 
+  //goto previous page
   goBack() {
     this.navCtrl.pop();
   }
 
+  //save payment address and go to next
   save() {
     if (this.payment_address_id) {
       // this.loadingProvider.show();

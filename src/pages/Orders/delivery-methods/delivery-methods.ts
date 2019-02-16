@@ -75,6 +75,7 @@ export class DeliveryMethodsPage {
     this.getServerData();
   }
 
+  //setting text according to language
   setText() {
     this.translate.setDefaultLang(this.languageProvider.getLanguage());
     this.translate.use(this.languageProvider.getLanguage());
@@ -111,6 +112,7 @@ export class DeliveryMethodsPage {
     });
   }
 
+  //get delivey methods
   getServerData() {
     this.shipping_methods = [];
     let params = {
@@ -175,15 +177,18 @@ export class DeliveryMethodsPage {
     return event;
   }
 
+  //on delivery method change
   deliveryChange(shipping) {
     console.log("Selected shipping_code : " + JSON.stringify(shipping.quote[0].code));
     this.shipping_code = shipping.quote[0].code;
   }
 
+  //goto previous page
   goBack() {
     this.navCtrl.pop();
   }
 
+  //save delivery method
   save() {
     if (this.shipping_code) {
       // this.loadingProvider.show();

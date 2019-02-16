@@ -55,6 +55,7 @@ export class ForgotPasswordPage {
     this.createForm();
   }
 
+  //setting text according to language
   setText() {
     this.translate.setDefaultLang(this.languageProvider.getLanguage());
     this.translate.use(this.languageProvider.getLanguage());
@@ -82,16 +83,19 @@ export class ForgotPasswordPage {
     });
   }
 
+  //create form and validations
   createForm() {
     this.forgPasswordForm = this.formBuilder.group({
       email: ['', Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')])]
     });
   }
 
+  //goto previous page
   goBack() {
     this.navCtrl.pop();
   }
 
+  //send data to get password
   send() {
 
     this.submitAttempt = true;

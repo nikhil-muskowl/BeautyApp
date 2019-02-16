@@ -80,6 +80,7 @@ export class CartEditPage {
     }
   }
 
+  //setting text according to language
   setText() {
     this.translate.setDefaultLang(this.languageProvider.getLanguage());
     console.log("getLanguage() : " + this.languageProvider.getLanguage());
@@ -135,12 +136,14 @@ export class CartEditPage {
     });
   }
 
+  //create form and validation
   createForm() {
     this.cartForm = this.formBuilder.group({
       quantity: ['', Validators.required]
     });
   }
 
+  //save edit details to cart
   save() {
     this.submitAttempt = true;
 
@@ -187,6 +190,7 @@ export class CartEditPage {
 
   }
 
+  //redirect to previous page
   dismiss() {
     this.modalProvider.dismiss();
   }

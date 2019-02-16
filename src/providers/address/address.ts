@@ -21,6 +21,7 @@ export class AddressProvider {
     this.headers.set('Content-Type', 'application/json; charset=utf-8');
   }
 
+  //get addresses from server of user
   getAddress() {
 
     this.formData = new FormData();
@@ -35,6 +36,7 @@ export class AddressProvider {
     ).timeout(9000);
   }
 
+  //get address details from server of user
   apiViewAddress(address_id: any) {
 
     this.formData = new FormData();
@@ -50,6 +52,7 @@ export class AddressProvider {
     ).timeout(9000);
   }
 
+  //add addresses to server of user
   addAddress(data: any): any {
 
     this.formData = new FormData();
@@ -74,6 +77,7 @@ export class AddressProvider {
     );
   }
 
+  //add payment address on server of user
   addPaymentAddress(data: any): any {
 
     this.formData = new FormData();
@@ -98,6 +102,7 @@ export class AddressProvider {
     );
   }
 
+  //add shipping address on server of user
   addShippingAddress(data: any): any {
 
     this.formData = new FormData();
@@ -122,6 +127,7 @@ export class AddressProvider {
     );
   }
 
+  //edit address of user on server
   editAddress(data: any, address_id: any): any {
 
     this.formData = new FormData();
@@ -146,6 +152,7 @@ export class AddressProvider {
     );
   }
 
+  //remove address of user on server
   removeAddress(data: any): any {
 
     this.formData = new FormData();
@@ -161,6 +168,7 @@ export class AddressProvider {
     );
   }
 
+  //get countries from server
   getCountry(): any {
     this.formData = new FormData();
     this.URL = ConfigProvider.BASE_URL + '?route=restapi/account/address/countries';
@@ -172,6 +180,7 @@ export class AddressProvider {
     );
   }
 
+  //get zones from server
   getZone(id): any {
     this.formData = new FormData();
     this.URL = ConfigProvider.BASE_URL + '?route=restapi/account/address/zones&country_id=' + id;
@@ -183,6 +192,7 @@ export class AddressProvider {
     );
   }
 
+  //get destricts from server
   getDistrict(id): any {
     // this.URL = ConfigProvider.BASE_URL_ + 'district?zone_id=' + id;
     if (id != 0) {

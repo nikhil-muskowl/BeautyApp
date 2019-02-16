@@ -14,6 +14,7 @@ import { OrderPage } from '../../Orders/order/order';
 import { EditProfilePage } from '../edit-profile/edit-profile';
 import { ChangePasswordPage } from '../change-password/change-password';
 import { AddressesPage } from '../addresses/addresses';
+import { from } from 'rxjs/observable/from';
 
 @IonicPage()
 @Component({
@@ -72,6 +73,7 @@ export class ProfilePage {
     });
   }
 
+  //check before view enter in page
   ionViewCanEnter() {
     if (this.loginProvider.customer_id) {
       this.getProfile();
@@ -81,6 +83,7 @@ export class ProfilePage {
     }
   }
 
+  //setting text according to language
   setText() {
     this.translate.setDefaultLang(this.languageProvider.getLanguage());
     this.translate.use(this.languageProvider.getLanguage());
@@ -145,6 +148,7 @@ export class ProfilePage {
 
   }
 
+  //get profile data of user
   getProfile() {
     this.loginProvider.apiProfile().subscribe(response => {
       if (response) {
@@ -201,6 +205,7 @@ export class ProfilePage {
     );
   }
 
+  //logout from app
   logout() {
     let alert = this.alertCtrl.create({
       title: this.confirm_logout,
@@ -225,18 +230,22 @@ export class ProfilePage {
 
   }
 
+  //goto Wishlist page
   gotoWishlist() {
     this.navCtrl.push(WishlistPage, { from: 'profile' });
   }
 
+  //goto gotoAddress page
   gotoAddress() {
     this.navCtrl.push(AddressesPage);
   }
 
+  //goto Orders page
   gotoOrders() {
-    this.navCtrl.push(OrderPage);
+    this.navCtrl.push(OrderPage, { from: 'profile' });
   }
 
+  //goto EditAccount page
   gotoEditAccount() {
     let param = {
       firstname: this.customerFname,
@@ -247,6 +256,7 @@ export class ProfilePage {
     this.navCtrl.push(EditProfilePage, param);
   }
 
+  //goto ChangePassword page
   gotoChangePassword() {
     this.navCtrl.push(ChangePasswordPage);
   }

@@ -59,6 +59,7 @@ export class LoginPage {
     });
   }
 
+  //create form and validations
   createForm() {
     this.loginForm = this.formBuilder.group({
       email: ['', Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')])],
@@ -66,6 +67,7 @@ export class LoginPage {
     });
   }
 
+  //setting text according to language
   setText() {
     this.translate.setDefaultLang(this.languageProvider.getLanguage());
     this.translate.use(this.languageProvider.getLanguage());
@@ -102,6 +104,7 @@ export class LoginPage {
     });
   }
 
+  //check login credentials on server
   save() {
 
     this.submitAttempt = true;
@@ -152,10 +155,12 @@ export class LoginPage {
     }
   }
 
+  //goto previous page
   goBack() {
     this.navCtrl.setRoot(HomePage);
   }
 
+  //goto registration page
   goToRegsiter() {
     this.navCtrl.push(RegistrationPage);
   }

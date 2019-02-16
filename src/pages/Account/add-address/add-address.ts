@@ -100,6 +100,7 @@ export class AddAddressPage {
     this.setText();
   }
 
+  //setting text according to language
   setText() {
     this.translate.setDefaultLang(this.languageProvider.getLanguage());
     this.translate.use(this.languageProvider.getLanguage());
@@ -195,7 +196,8 @@ export class AddAddressPage {
       this.error_txt = text;
     });
   }
-
+ 
+  //create form and validations
   createForm() {
     this.addressForm = this.formBuilder.group({
       firstname: [this.fname, Validators.required],
@@ -209,10 +211,12 @@ export class AddAddressPage {
     });
   }
 
+  //goto previous page
   goBack() {
     this.modalProvider.dismiss();
   }
 
+  //save the adress
   save() {
     this.submitAttempt = true;
     if (this.addressForm.valid) {
@@ -264,6 +268,7 @@ export class AddAddressPage {
     }
   }
 
+  //get countries from server
   public getCountry() {
     //this.loadingProvider.present();
     this.addressProvider.getCountry().subscribe(
@@ -278,6 +283,7 @@ export class AddAddressPage {
     return event;
   }
 
+  //get zones from server
   public getZone(country_id) {
     this.country_id = country_id;
     // this.loadingProvider.present();
@@ -295,8 +301,8 @@ export class AddAddressPage {
     return event;
   }
 
+  //get selected zone id
   getZoneID(zone) {
     console.log("selected zone : " + zone);
   }
-
 }

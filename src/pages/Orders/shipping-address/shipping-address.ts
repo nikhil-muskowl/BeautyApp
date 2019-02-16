@@ -74,6 +74,7 @@ export class ShippingAddressPage {
     this.getServerData();
   }
 
+  //setting text according to language
   setText() {
     this.translate.setDefaultLang(this.languageProvider.getLanguage());
     this.translate.use(this.languageProvider.getLanguage());
@@ -110,6 +111,7 @@ export class ShippingAddressPage {
     });
   }
 
+  //get shipping address list from server
   getServerData() {
     this.addresses = [];
     this.loadingProvider.present();
@@ -170,6 +172,7 @@ export class ShippingAddressPage {
     return event;
   }
 
+  //goto add address page
   AddAddress() {
     let param;
     this.modalProvider.presentProfileModal(AddAddressPage, param);
@@ -181,15 +184,18 @@ export class ShippingAddressPage {
     });
   }
 
+  //on address change
   addressChange(address) {
     console.log("Select shipping address: " + JSON.stringify(address.address_id));
     this.shipping_address_id = address.address_id;
   }
 
+  //goto previous page
   goBack() {
     this.navCtrl.pop();
   }
 
+  //save shipping address
   save() {
     if (this.shipping_address_id) {
       // this.loadingProvider.show();

@@ -63,6 +63,7 @@ export class WishlistPage {
     });
   }
 
+  //setting text according to language
   setText() {
 
     this.translate.setDefaultLang(this.languageProvider.getLanguage());
@@ -101,10 +102,12 @@ export class WishlistPage {
     });
   }
 
+  //when view will be enter in page
   ionViewWillEnter() {
     this.isLogin();
   }
 
+  //check user is login or not
   isLogin() {
     this.customer_id = this.loginProvider.customer_id;
     if (!this.customer_id) {
@@ -112,6 +115,7 @@ export class WishlistPage {
     }
   }
 
+  //goto previous page
   goBack() {
     if (this.fromPage == 'profile')
       this.navCtrl.pop();
@@ -119,10 +123,12 @@ export class WishlistPage {
       this.navCtrl.setRoot(HomePage);
   }
 
+  //goto details page of selected product from list
   viewProductDetail(data: any) {
     this.navCtrl.push(ProductDetailsPage, { id: data.product_id });
   }
 
+  //remove item from wishlist
   remove(data: any) {
 
     this.loadingProvider.present();
@@ -157,6 +163,7 @@ export class WishlistPage {
 
   }
 
+  //get wishlist data of user from server
   getServerData() {
 
     this.loadingProvider.present();

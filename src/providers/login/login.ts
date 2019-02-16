@@ -27,6 +27,7 @@ export class LoginProvider {
     this.customer_id = Number(this.getData());
   }
 
+  //api to register user
   apiRegister(data: any) {
     this.formData = new FormData();
     this.URL = ConfigProvider.BASE_URL + '?route=restapi/register';
@@ -47,6 +48,7 @@ export class LoginProvider {
     );
   }
 
+  //api to login user
   apiLogin(data: any) {
     this.formData = new FormData();
     this.URL = ConfigProvider.BASE_URL + '?route=restapi/login';
@@ -62,6 +64,7 @@ export class LoginProvider {
     );
   }
 
+  //api to get user profile
   apiProfile() {
     this.formData = new FormData();
     this.URL = ConfigProvider.BASE_URL + '?route=restapi/account/profile';
@@ -76,6 +79,7 @@ export class LoginProvider {
     );
   }
 
+  //api to update user profile
   apiProfileUpdate(data: any) {
 
     this.formData = new FormData();
@@ -95,11 +99,13 @@ export class LoginProvider {
     );
   }
 
+  //set user id in storage
   setData(data) {
     this.customer_id = data.customer_id;
     window.localStorage.setItem('beauty_login', data.customer_id);
   }
 
+  //clear storage
   unSetData() {
     try {
       this.customer_id = undefined;
@@ -109,6 +115,7 @@ export class LoginProvider {
     }
   }
 
+  //get user id from storage
   getData() {
     try {
       return window.localStorage.getItem('beauty_login');
@@ -118,6 +125,7 @@ export class LoginProvider {
 
   }
 
+  //api to change pasword
   changePassword(data: any) {
     this.formData = new FormData();
 
@@ -135,6 +143,7 @@ export class LoginProvider {
     );
   }
 
+  //api to forgot passeord
   forgotPassword(data: any) {
     this.formData = new FormData();
     this.URL = ConfigProvider.BASE_URL + '?route=restapi/account/forgotten';
@@ -148,6 +157,7 @@ export class LoginProvider {
     );
   }
 
+  //logout user
   logout() {
     this.unSetData();
     window.localStorage.clear();

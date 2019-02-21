@@ -95,6 +95,11 @@ export class HomePage {
     );
   }
 
+  //goto products page of
+  gotoSkin() {
+    this.navCtrl.push(ProductListPage, { id: 33 });
+  }
+
   //goto cart page
   gotoCart() {
     if (this.loginProvider.customer_id) {

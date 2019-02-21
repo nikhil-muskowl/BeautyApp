@@ -24,6 +24,7 @@ export class ProductListPage {
   language_id;
   currency_id;
   fromPage;
+  from;
   public sorts;
   public limits;
   public pagination;

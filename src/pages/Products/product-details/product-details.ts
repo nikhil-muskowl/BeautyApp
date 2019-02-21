@@ -15,6 +15,7 @@ import { CartPage } from '../../Orders/cart/cart';
 import { WishlistPage } from '../../Account/wishlist/wishlist';
 import { LoginPage } from '../../Account/login/login';
 import { SettingsProvider } from '../../../providers/settings/settings';
+import { HomePage } from '../../Main/home/home';
 
 @IonicPage()
 @Component({
@@ -95,7 +96,9 @@ export class ProductDetailsPage {
     this.language_id = this.languageProvider.getLanguage();
     this.currency_id = this.settingsProvider.getCurrData();
     this.customer_id = this.loginProvider.getData();
+
     this.product_id = this.navParams.get("id");
+
     console.log("Product id : " + this.product_id);
     this.createForm();
     this.setText();
@@ -228,6 +231,7 @@ export class ProductDetailsPage {
     } else {
       this.submitAttempt = true;
 
+      console.log("this.cartForm.value.quantity : " + this.cartForm.value.quantity);
       if (this.cartForm.valid) {
         this.formData = {
           quantity: this.cartForm.value.quantity,

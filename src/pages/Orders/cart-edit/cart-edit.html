@@ -19,9 +19,23 @@
         <ion-col>
           <ion-item>
             <ion-label floating>{{quantity_txt}}</ion-label>
-            <ion-input [(ngModel)]="cart_quantity" formControlName="quantity" type="text" [class.invalid]="!cartForm.controls.quantity.valid && (cartForm.controls.quantity.dirty || submitAttempt)"></ion-input>
+            <!-- <ion-input [(ngModel)]="cart_quantity" formControlName="quantity" type="text" [class.invalid]="!cartForm.controls.quantity.valid && (cartForm.controls.quantity.dirty || submitAttempt)"></ion-input> -->
+            <ion-select [(ngModel)]="cart_quantity" formControlName="quantity">
+              <ion-option value="1">1</ion-option>
+              <ion-option value="2">2</ion-option>
+              <ion-option value="3">3</ion-option>
+              <ion-option value="4">4</ion-option>
+              <ion-option value="5">5</ion-option>
+              <ion-option value="6">6</ion-option>
+              <ion-option value="7">7</ion-option>
+              <ion-option value="8">8</ion-option>
+              <ion-option value="9">9</ion-option>
+              <ion-option value="10">10</ion-option>
+            </ion-select>
           </ion-item>
-          <p class="invalid-message" *ngIf="!cartForm.controls.quantity.valid  && (cartForm.controls.quantity.dirty || submitAttempt)">{{field_error}}</p>
+          <p class="invalid-message"
+            *ngIf="!cartForm.controls.quantity.valid  && (cartForm.controls.quantity.dirty || submitAttempt)">
+            {{field_error}}</p>
         </ion-col>
       </ion-row>
       <ion-row>
